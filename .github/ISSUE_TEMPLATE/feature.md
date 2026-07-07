@@ -1,8 +1,8 @@
 ---
 name: 'Issue: 이슈 생성 템플릿'
 about: 해당 이슈 생성 템플릿을 사용하여 이슈를 생성해주세요.
-title: '[태그] 이슈 요약'
-labels: []
+title: '[담당 영역][FEAT] 작업 내용'
+labels: ['feat']
 assignees: []
 ---
 
