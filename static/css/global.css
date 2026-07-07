@@ -5,15 +5,15 @@
   box-sizing: border-box;
 }
 
-/* 모든 페이지의 기본 배경 틀*/
-.page {
+body {
   margin: 0;
   min-height: 100vh;
   background-color: var(--color-bg-page);
-  color: var(--color-primary);
+  color: var(--color-text-primary);
   font-family: "Inter", sans-serif;
 }
 
-h1 {
-  font-size: 10rem;
+/* 모든 페이지의 기본 배경 틀*/
+.page {
+  min-height: 100vhl;
 }
