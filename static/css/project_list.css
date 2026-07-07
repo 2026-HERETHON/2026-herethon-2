@@ -8,7 +8,7 @@ header {
   background-color: var(--color-bg-default);
   padding: 20px;
 
-  border-bottom: 1px solid var(--color-border-light);
+  border-bottom: 1px solid var(--color-bg-guide);
 }
 
 .header-wrap {
@@ -118,6 +118,7 @@ nav {
   background-color: var(--color-bg-default);
   padding: 26px 24px;
   gap: 20px;
+  border-right: 1px solid var(--color-bg-guide);
 }
 
 nav h4 {
@@ -191,4 +192,7 @@ nav > div {
   color: var(--color-text-disabled);
 }
 
-/* 직무 선택 */
+/* 근무 형태 */
+.work-type {
+  border-bottom: none;
+}
