@@ -1,0 +1,110 @@
+/* 헤더 영역 */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 70px;
+  background-color: var(--color-bg-default);
+  padding: 20px;
+
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.header-wrap {
+  padding: 17px 20px;
+}
+
+/* 로고 영역 */
+.header-logo {
+  display: flex;
+  align-items: center;
+}
+
+.header-logo-text {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  margin-top: 12px;
+}
+
+.logo-desc {
+  color: var(--color-brand-desc);
+  font-size: 0.5rem;
+  font-weight: 200;
+  line-height: normal;
+}
+
+.logo-brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-brand-purple);
+}
+
+.RE {
+  color: var(--color-text-primary);
+}
+
+.colon {
+  color: var(--color-brand-cyan);
+}
+
+/* 메뉴 영역 */
+.header-menu {
+  margin-right: auto;
+  margin-left: 47px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-menu a {
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  font-weight: 400;
+  text-decoration: none;
+  cursor: pointer;
+  letter-spacing: 0px;
+}
+
+.header-menu a:hover {
+  color: var(--color-primary);
+  font-weight: 700;
+  letter-spacing: 0.01px;
+}
+
+.header-menu a:after {
+  content: "attr(data-label)";
+  font-weight: 700;
+  display: block;
+  height: 0px;
+  visibility: hidden;
+}
+
+.header-menu span {
+  display: inline-block;
+  align-items: center;
+  line-height: 40px;
+  border-bottom: 3px solid var(--color-bg-default);
+}
+
+.header-menu span:hover {
+  border-bottom: 3px solid var(--color-primary);
+}
+
+.header-profile {
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--color-primary);
+  border-radius: 50%;
+  background-color: var(--color-primary-light);
+
+  padding: 10px 14px;
+}
+
+.header-profile a {
+  color: var(--color-primary-dark);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
