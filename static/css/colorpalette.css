@@ -17,7 +17,7 @@
   --color-bg-overlay: rgba(17, 24, 39, 0.45);
 
   /* 텍스트 컬러 */
-  --color-text-primary: #111827;
+  --color-text-primary: #1f2937;
   --color-text-secondary: #4b5563;
   --color-text-muted: #6b7280;
   --color-text-disabled: #9ca3af;
@@ -27,6 +27,8 @@
   --color-border-light: #e5e7eb;
   --color-border-default: #dbeafe;
   --color-border-strong: #cbd6e3;
+  --color-border-input: #d1d5db;
+  --color-border-line: #f3f4f6;
 
   /* 성공 상태 컬러 */
   --color-success: #059669;

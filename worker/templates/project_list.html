@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../../static/css/project_list.css" />
   </head>
   <body>
+    <!-- 헤더 영역 -->
     <header>
       <div class="header-logo">
         <img
@@ -30,7 +31,41 @@
         <a>양</a>
       </div>
     </header>
-    <nav></nav>
+
+    <!-- 왼쪽 사이드바 -->
+    <nav>
+      <!--필터 영역-->
+      <div class="search">
+        <div class="search-title">
+          <h4>필터</h4>
+          <span class="search-reset">초기화</span>
+        </div>
+        <input type="input" class="search-bar" placeholder="키워드 검색" />
+      </div>
+
+      <!--직무 선택-->
+      <div class="career">
+        <h4>직무</h4>
+        <input class="checkbox" type="checkbox" />콘텐츠 기획<br />
+        <input type="checkbox" />데이터 분석<br />
+        <input type="checkbox" />디자인<br />
+        <input type="checkbox" />개발<br />
+      </div>
+
+      <!--근무 형태 선택-->
+      <div>
+        <h4>근무형태</h4>
+        <input type="checkbox" />재택<br />
+        <input type="checkbox" />출근<br />
+        <input type="checkbox" />혼합<br />
+      </div>
+
+      <!--우수기업만 보기 체크박스-->
+      <div>
+        <h4>우수기업만 보기</h4>
+        <input type="checkbox" />
+      </div>
+    </nav>
     <main class="main"></main>
   </body>
 </html>
