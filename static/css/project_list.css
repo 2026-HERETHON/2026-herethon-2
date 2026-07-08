@@ -330,3 +330,7 @@ span {
 .project-card.is-hidden {
   display: none;
 }
+
+a {
+  text-decoration: none;
+}
