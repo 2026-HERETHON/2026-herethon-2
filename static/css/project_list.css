@@ -1,95 +1,41 @@
-/* 헤더 영역 */
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  height: 70px;
-  background-color: var(--color-bg-default);
-  padding: 20px;
-
-  border-bottom: 1px solid var(--color-bg-guide);
-}
-
-.header-wrap {
-  padding: 17px 20px;
-}
-
-/* 로고 영역 */
-.header-logo {
-  display: flex;
-  align-items: center;
-}
-
-.header-logo-text {
-  display: flex;
-  flex-direction: column;
-  margin-left: 10px;
-  margin-top: 12px;
-}
-
-.logo-desc {
-  color: var(--color-brand-desc);
-  font-size: 0.5rem;
-  font-weight: 200;
-  line-height: normal;
-}
-
-.logo-brand {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--color-brand-purple);
-}
-
-.RE {
-  color: var(--color-text-primary);
-}
-
-.colon {
-  color: var(--color-brand-cyan);
-}
-
+/* 헤더 */
 /* 메뉴 영역 */
 .header-menu {
-  margin-right: auto;
-  margin-left: 55px;
   display: flex;
+  margin-right: auto;
+  margin-left: 60px;
   align-items: center;
-  gap: 20px;
+  gap: 40px;
 }
 
 .header-menu a {
   color: var(--color-text-muted);
   font-size: 1rem;
   font-weight: 400;
-  text-decoration: none;
   cursor: pointer;
-  letter-spacing: 0px;
+  white-space: nowrap;
+
+  line-height: 40px;
+  border-bottom: 3px solid transparent;
 }
 
 .header-menu a:hover {
   color: var(--color-primary);
-  font-weight: 700;
-  letter-spacing: 0.01px;
+  font-weight: bold;
+  border-bottom-color: 3px solid var(--color-primary);
+  letter-spacing: 0.2px;
 }
 
-.header-menu a:after {
-  content: "attr(data-label)";
-  font-weight: 700;
+.header-menu a::after {
+  content: attr(data-label);
   display: block;
-  height: 0px;
+  height: 0;
   visibility: hidden;
+  font-weight: bold;
 }
 
-.header-menu span {
-  display: inline-block;
-  align-items: center;
-  line-height: 40px;
-  border-bottom: 3px solid var(--color-bg-default);
-}
-
-.header-menu span:hover {
-  border-bottom: 3px solid var(--color-primary);
+.found {
+  width: 87.55px;
 }
 
 .header-profile {
@@ -110,17 +56,6 @@ header {
 }
 
 /* 왼쪽 사이드바 */
-nav {
-  display: flex;
-  flex-direction: column;
-  width: 260px;
-  height: 100vh;
-  background-color: var(--color-bg-default);
-  padding: 26px 24px;
-  gap: 20px;
-  border-right: 1px solid var(--color-bg-guide);
-}
-
 nav h4 {
   margin: 0px;
   color: var(--color-text-primary);
