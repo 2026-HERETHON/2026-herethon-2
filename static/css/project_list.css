@@ -51,6 +51,7 @@
   background-color: var(--color-primary-light);
 
   padding: 10px 14px;
+  cursor: pointer;
 }
 
 .header-profile a {
@@ -119,6 +120,7 @@ nav > div {
   width: 212px;
   height: 40px;
 
+  outline: none;
   background-color: var(--color-bg-default);
 
   border: 1px solid var(--color-border-input);
@@ -153,6 +155,7 @@ nav > div {
   align-items: center;
   width: 100%;
   border-bottom: 1px solid var(--color-border-line);
+  margin-bottom: 10px;
 }
 
 .bar-left {
@@ -183,6 +186,7 @@ nav > div {
 }
 
 .bar-sort a {
+  display: flex;
   color: var(--color-text-disabled);
   font-size: 0.875rem;
   font-weight: 400;
@@ -193,19 +197,23 @@ nav > div {
   border-bottom: 3px solid transparent;
 }
 
+.sort1 {
+  width: 50px;
+}
+
+.sort2 {
+  width: 61px;
+}
+
+.sort3 {
+  width: 37px;
+}
+
 .bar-sort a:hover {
   color: var(--color-primary);
   font-weight: bold;
   border-bottom-color: 3px solid var(--color-primary);
   letter-spacing: 0.2px;
-}
-
-.bar-sort a::after {
-  content: attr(data-label);
-  display: block;
-  height: 0;
-  visibility: hidden;
-  font-weight: bold;
 }
 
 /* 프로젝트 카드 */
