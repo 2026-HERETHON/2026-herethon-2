@@ -2,6 +2,7 @@
 /* 메뉴 영역 */
 .page-wrap {
   display: flex;
+  width: 100%;
 }
 
 .header-menu {
@@ -144,10 +145,15 @@ nav > div {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 28px 34px;
+
+  margin: 98px 30px 20px 290px;
   width: 100%;
   gap: 8px;
+
+  overflow: hidden;
 }
+
+
 
 .project-title-bar {
   display: flex;
@@ -245,6 +251,7 @@ span {
   color: var(--color-text-muted);
   font-size: 0.6875rem;
   font-weight: 400;
+  white-space: nowrap;
 }
 
 .project-status {
