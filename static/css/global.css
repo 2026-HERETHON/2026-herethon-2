@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+/* 전체 기본 설정 */
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--color-bg-page);
+  color: var(--color-text-primary);
+  font-family: "Inter", sans-serif;
+}
+
+/* 헤더 영역 */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 70px;
+  background-color: var(--color-bg-default);
+  padding: 20px;
+
+  border-bottom: 1px solid var(--color-bg-guide);
+}
+
+.header-wrap {
+  padding: 17px 20px;
+}
+
+/* 로고 영역 */
+.header-logo {
+  display: flex;
+  align-items: center;
+}
+
+.header-logo-text {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  margin-top: 12px;
+}
+
+.logo-desc {
+  color: var(--color-brand-desc);
+  font-size: 0.5rem;
+  font-weight: 200;
+  line-height: normal;
+}
+
+.logo-brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-brand-purple);
+}
+
+.RE {
+  color: var(--color-text-primary);
+}
+
+.colon {
+  color: var(--color-brand-cyan);
+}
+
+/* 왼쪽 사이드바 */
+nav {
+  display: flex;
+  flex-direction: column;
+  width: 260px;
+  height: 100vh;
+  background-color: var(--color-bg-default);
+  padding: 26px 24px;
+  gap: 20px;
+  border-right: 1px solid var(--color-bg-guide);
+}

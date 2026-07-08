@@ -1,0 +1,134 @@
+/* 헤더 */
+/* 메뉴 영역 */
+.header-menu {
+  display: flex;
+  margin-right: auto;
+  margin-left: 60px;
+  align-items: center;
+  gap: 40px;
+}
+
+.header-menu a {
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  font-weight: 400;
+  cursor: pointer;
+  white-space: nowrap;
+
+  line-height: 40px;
+  border-bottom: 3px solid transparent;
+}
+
+.header-menu a:hover {
+  color: var(--color-primary);
+  font-weight: bold;
+  border-bottom-color: 3px solid var(--color-primary);
+  letter-spacing: 0.2px;
+}
+
+.header-menu a::after {
+  content: attr(data-label);
+  display: block;
+  height: 0;
+  visibility: hidden;
+  font-weight: bold;
+}
+
+.found {
+  width: 87.55px;
+}
+
+.header-profile {
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--color-primary);
+  border-radius: 50%;
+  background-color: var(--color-primary-light);
+
+  padding: 10px 14px;
+}
+
+.header-profile a {
+  color: var(--color-primary-dark);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+/* 왼쪽 사이드바 */
+nav h4 {
+  margin: 0px;
+  color: var(--color-text-primary);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0px 10px;
+}
+
+nav input[type="checkbox"] {
+  appearance: none;
+  outline: none;
+
+  width: 16px;
+  height: 16px;
+  margin: 10px;
+
+  border: 1px solid var(--color-border-input);
+  border-radius: 5px;
+  background-color: var(--color-bg-default);
+
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+nav input[type="checkbox"]:checked {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
+
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='9' viewBox='0 0 12 9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4.5L4.5 8L11 1' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px 8px;
+}
+
+nav > div {
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--color-border-line);
+}
+
+/* 필터 영역 */
+.search-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.search-reset {
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  font-weight: 400;
+  cursor: pointer;
+  padding: 0px 10px;
+}
+
+.search-bar {
+  width: 212px;
+  height: 40px;
+
+  background-color: var(--color-bg-default);
+
+  border: 1px solid var(--color-border-input);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 0px;
+  outline: none;
+}
+
+.search-bar::placeholder {
+  color: var(--color-text-disabled);
+}
+
+/* 근무 형태 */
+.work-type {
+  border-bottom: none;
+}

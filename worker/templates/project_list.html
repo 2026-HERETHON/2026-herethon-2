@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>REBridge</title>
+    <link rel="stylesheet" href="../../static/css/colorpalette.css" />
+    <link rel="stylesheet" href="../../static/css/global.css" />
+    <link rel="stylesheet" href="../../static/css/project_list.css" />
+  </head>
+  <body>
+    <!-- 헤더 영역 -->
+    <header>
+      <div class="header-logo">
+        <img
+          class="header-logo-img"
+          src="../../static/img/logo.svg"
+          alt="logo"
+        />
+        <div class="header-logo-text">
+          <span class="logo-desc">당신의 두 번째 커리어 브릿지</span>
+          <span class="logo-brand"
+            ><span class="RE">RE</span><span class="colon">:</span>Bridge</span
+          >
+        </div>
+      </div>
+      <div class="header-menu">
+        <a data-label="프로젝트 찾기" class="found">프로젝트 찾기</a>
+        <a data-label="마이페이지">마이페이지</a>
+      </div>
+      <div class="header-profile">
+        <a>양</a>
+      </div>
+    </header>
+
+    <!-- 왼쪽 사이드바 -->
+    <nav>
+      <!--필터 영역-->
+      <div class="search">
+        <div class="search-title">
+          <h4>필터</h4>
+          <span class="search-reset">초기화</span>
+        </div>
+        <input type="input" class="search-bar" placeholder="키워드 검색" />
+      </div>
+
+      <!--직무 선택-->
+      <div class="career">
+        <h4>직무</h4>
+        <input class="checkbox" type="checkbox" />콘텐츠 기획<br />
+        <input type="checkbox" />데이터 분석<br />
+        <input type="checkbox" />디자인<br />
+        <input type="checkbox" />개발<br />
+      </div>
+
+      <!--근무 형태 선택-->
+      <div class="work-type">
+        <h4>근무형태</h4>
+        <input type="checkbox" />재택<br />
+        <input type="checkbox" />출근<br />
+        <input type="checkbox" />혼합<br />
+      </div>
+    </nav>
+    <main class="main"></main>
+  </body>
+</html>
