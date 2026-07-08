@@ -1,5 +1,9 @@
 /* 헤더 */
 /* 메뉴 영역 */
+.page-wrap {
+  display: flex;
+}
+
 .header-menu {
   display: flex;
   margin-right: auto;
@@ -130,4 +134,161 @@ nav > div {
 /* 근무 형태 */
 .work-type {
   border-bottom: none;
+}
+
+/* 프로젝트 리스트(유저 메인화면) */
+.project-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 28px 34px;
+  width: 100%;
+  gap: 8px;
+}
+
+.project-title-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border-bottom: 1px solid var(--color-border-line);
+}
+
+.bar-left {
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.bar-left h4 {
+  color: var(--color-text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0px;
+}
+
+.bar-left span {
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+/* 프로젝트 정렬 */
+.bar-sort {
+  display: flex;
+  margin: 0px 10px 0px 100px;
+  align-items: center;
+  gap: 40px;
+}
+
+.bar-sort a {
+  color: var(--color-text-disabled);
+  font-size: 0.875rem;
+  font-weight: 400;
+  cursor: pointer;
+  white-space: nowrap;
+
+  line-height: 40px;
+  border-bottom: 3px solid transparent;
+}
+
+.bar-sort a:hover {
+  color: var(--color-primary);
+  font-weight: bold;
+  border-bottom-color: 3px solid var(--color-primary);
+  letter-spacing: 0.2px;
+}
+
+.bar-sort a::after {
+  content: attr(data-label);
+  display: block;
+  height: 0;
+  visibility: hidden;
+  font-weight: bold;
+}
+
+/* 프로젝트 카드 */
+.project-card {
+  display: flex;
+  width: 100%;
+  height: 95px;
+  background-color: var(--color-bg-default);
+  border: 1px solid var(--color-bg-guide);
+  border-radius: 10px;
+  padding: 15px;
+  justify-content: space-between;
+}
+
+.project-title-wrap {
+  display: flex;
+  color: var(--color-text-primary);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.project-card p,
+span {
+  margin: 0px;
+  padding: 0px;
+}
+
+.project-card span {
+  color: var(--color-text-muted);
+  font-size: 0.6875rem;
+  font-weight: 400;
+}
+
+.project-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 60px;
+  gap: 5px;
+}
+
+.matching-rate {
+  display: flex;
+  background-color: var(--color-error-bg);
+  border: none;
+  padding: 7px 14px;
+  border-radius: 20px;
+
+  font-size: 0.8125rem;
+  font-weight: 700;
+  gap: 3px;
+  color: var(--color-error);
+}
+
+.due-date {
+  color: var(--color-text-disabled);
+  font-size: 0.6875rem;
+  font-weight: 400;
+}
+
+/* 프로젝트 더보기 */
+.project-more {
+  display: flex;
+  margin: 10px;
+}
+
+.more-button {
+  outline: none;
+  background-color: var(--color-bg-default);
+  border: 1px solid var(--color-border-input);
+  border-radius: 8px;
+  width: 260px;
+  height: 40px;
+  margin-bottom: 20px;
+
+  color: var(--color-text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.more-button:hover {
+  cursor: pointer;
+  background-color: var(--color-bg-subtle);
 }

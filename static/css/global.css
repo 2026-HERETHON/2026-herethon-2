@@ -68,7 +68,6 @@ nav {
   display: flex;
   flex-direction: column;
   width: 260px;
-  height: 100vh;
   background-color: var(--color-bg-default);
   padding: 26px 24px;
   gap: 20px;
