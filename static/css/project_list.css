@@ -310,3 +310,8 @@ span {
   cursor: pointer;
   background-color: var(--color-bg-subtle);
 }
+
+/* 프로젝트 카드 6개 넘어가면 숨김 처리*/
+.project-card.is-hidden {
+  display: none;
+}
