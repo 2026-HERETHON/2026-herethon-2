@@ -52,7 +52,7 @@ header {
 /* 메뉴 영역 */
 .header-menu {
   margin-right: auto;
-  margin-left: 47px;
+  margin-left: 55px;
   display: flex;
   align-items: center;
   gap: 20px;
