@@ -1,5 +1,10 @@
 /* 헤더 */
 /* 메뉴 영역 */
+.page-wrap {
+  display: flex;
+  width: 100%;
+}
+
 .header-menu {
   display: flex;
   margin-right: auto;
@@ -47,6 +52,7 @@
   background-color: var(--color-primary-light);
 
   padding: 10px 14px;
+  cursor: pointer;
 }
 
 .header-profile a {
@@ -56,12 +62,17 @@
 }
 
 /* 왼쪽 사이드바 */
-nav h4 {
-  margin: 0px;
+nav h4,
+nav legend {
+  margin: 0px 0px 5px 0px;
   color: var(--color-text-primary);
   font-weight: 700;
   font-size: 1rem;
   padding: 0px 10px;
+}
+
+fieldset {
+  border: none;
 }
 
 nav input[type="checkbox"] {
@@ -90,9 +101,11 @@ nav input[type="checkbox"]:checked {
   background-size: 10px 8px;
 }
 
-nav > div {
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--color-border-line);
+fieldset {
+  display: flex;
+  border: none;
+  padding: 0;
+  margin: 0;
 }
 
 /* 필터 영역 */
@@ -115,6 +128,7 @@ nav > div {
   width: 212px;
   height: 40px;
 
+  outline: none;
   background-color: var(--color-bg-default);
 
   border: 1px solid var(--color-border-input);
@@ -127,8 +141,196 @@ nav > div {
 .search-bar::placeholder {
   color: var(--color-text-disabled);
 }
+/* 직무 */
 
 /* 근무 형태 */
-.work-type {
-  border-bottom: none;
+.career,
+.work-type,
+.search {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--color-border-line);
+}
+
+/* 프로젝트 리스트(유저 메인화면) */
+.project-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin: 100px 50px 30px 300px;
+  width: 100%;
+  gap: 8px;
+}
+
+.project-title-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  border-bottom: 1px solid var(--color-border-line);
+  margin-bottom: 10px;
+}
+
+.bar-left {
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.bar-left h4 {
+  color: var(--color-text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0px;
+}
+
+.bar-left span {
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+/* 프로젝트 정렬 */
+.bar-sort {
+  display: flex;
+  margin: 0px 10px 0px 100px;
+  align-items: center;
+  gap: 40px;
+}
+
+.bar-sort a {
+  display: flex;
+  color: var(--color-text-disabled);
+  font-size: 0.875rem;
+  font-weight: 400;
+  cursor: pointer;
+  white-space: nowrap;
+
+  line-height: 40px;
+  border-bottom: 3px solid transparent;
+}
+
+.sort1 {
+  width: 50px;
+}
+
+.sort2 {
+  width: 61px;
+}
+
+.sort3 {
+  width: 37px;
+}
+
+.bar-sort a:hover {
+  color: var(--color-primary);
+  font-weight: bold;
+  border-bottom-color: 3px solid var(--color-primary);
+  letter-spacing: 0.2px;
+}
+
+/* 프로젝트 카드  */
+.card-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.project-card {
+  display: flex;
+  height: 95px;
+  background-color: var(--color-bg-default);
+  border: 1px solid var(--color-bg-guide);
+  border-radius: 10px;
+  padding: 15px;
+  justify-content: space-between;
+}
+
+.project-title {
+  display: flex;
+  color: var(--color-text-primary);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.project-card p,
+span {
+  margin: 0px;
+  padding: 0px;
+}
+
+.project-card span {
+  color: var(--color-text-muted);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.project-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 60px;
+  gap: 5px;
+}
+
+.matching-rate {
+  display: flex;
+  background-color: var(--color-error-bg);
+  border: none;
+  padding: 7px 14px;
+  border-radius: 20px;
+
+  font-size: 0.8125rem;
+  font-weight: 700;
+  gap: 3px;
+  color: var(--color-error);
+}
+
+.due-date {
+  color: var(--color-text-disabled);
+  font-size: 0.6875rem;
+  font-weight: 400;
+}
+
+/* 프로젝트 더보기 */
+.project-more {
+  display: flex;
+  margin: 10px;
+}
+
+.more-button {
+  outline: none;
+  background-color: var(--color-bg-default);
+  border: 1px solid var(--color-border-input);
+  border-radius: 8px;
+  width: 260px;
+  height: 40px;
+  margin-bottom: 20px;
+
+  color: var(--color-text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.more-button:hover {
+  cursor: pointer;
+  background-color: var(--color-bg-subtle);
+}
+
+/* 프로젝트 카드 6개 넘어가면 숨김 처리*/
+.project-card.is-hidden {
+  display: none;
+}
+
+a {
+  text-decoration: none;
 }
