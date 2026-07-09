@@ -1,7 +1,18 @@
+/* 헤더 */
+body {
+  margin: 0;
+  overflow-x: hidden;
+  min-height: 100dvh;
+}
+.landing-header {
+  position: static;
+}
+
 .landing-menu {
   display: flex;
   align-items: center;
   gap: 1.94rem;
+  margin: 0px 100px;
 }
 
 .landing-menu a {
@@ -18,7 +29,7 @@
 .landing-menu a:hover {
   color: var(--color-primary);
   font-weight: bold;
-  border-bottom-color: 3px solid var(--color-primary);
+  border-bottom: 3px solid var(--color-primary);
   letter-spacing: 0.2px;
 }
 
@@ -44,4 +55,231 @@
   background-color: var(--color-primary-light);
   color: var(--color-primary);
   border: 1px solid var(--color-border-light);
+}
+
+/* 메인 */
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  min-height: calc(100dvh - 10rem);
+
+  height: 80vh;
+
+  padding: 4rem 2rem;
+  gap: 12.38rem;
+
+  background-color: var(--color-primary-light);
+}
+
+.landing-login,
+.poster-wrap {
+  margin: 0;
+}
+.landing-login {
+  max-width: 35rem;
+  flex-shrink: 0;
+}
+.poster-wrap {
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.positioning {
+  display: flex;
+  width: 16.875rem;
+  height: 2rem;
+  color: var(--color-primary-dark);
+  background-color: var(--color-bg-default);
+  border: 1px solid var(--color-primary);
+  border-radius: 20px;
+
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.56rem 2.91rem;
+  margin-bottom: 1.75rem;
+}
+
+.positioning-desc {
+  display: flex;
+  margin-top: 1.75rem;
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.brand-wrap h1 {
+  margin: 0px;
+  padding: 0px;
+  color: var(--color-text-primary);
+  font-size: 2.625rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.brand-wrap span {
+  font-size: 2.625rem;
+  font-weight: 700;
+}
+
+/* 유저타입 버튼 */
+.select-user-type {
+  margin: 3.12rem 0rem 1.37rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.select-user-type button {
+  padding: 1.06rem 2.81rem;
+  width: 12.75rem;
+  height: 3.25rem;
+
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-primary);
+  background-color: var(--color-bg-default);
+  color: var(--color-primary);
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.worker-btn {
+  background-color: var(--color-primary) !important;
+  color: var(--color-text-inverse) !important;
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.worker-btn:hover {
+  background-color: var(--color-primary-dark) !important;
+  cursor: pointer;
+}
+
+.comp-btn:hover {
+  background-color: var(--color-bg-subtle);
+  cursor: pointer;
+}
+
+.user-type-desc {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+/* 랜딩 포스터 */
+.landing-poster {
+  width: 30rem;
+  height: 29.375rem;
+  background-color: var(--color-bg-default);
+  border: 1px solid var(--color-border-light);
+  border-radius: 25px;
+}
+
+.ellipse-wrap {
+  width: 100%;
+  border-bottom: 1px solid var(--color-bg-guide);
+
+  display: flex;
+  gap: 8px;
+  padding: 20px;
+}
+
+.ellipse-wrap img {
+  width: 10px;
+  height: 10px;
+}
+
+.poster-main {
+  display: flex;
+  flex-direction: column;
+  margin: 1.38rem 1.87rem;
+  gap: 1rem;
+}
+
+.poster {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 15px;
+  border: 1px solid var(--color-border-light);
+}
+
+.poster-detail {
+  margin: 1.37rem 1rem 1rem;
+}
+
+.project-title {
+  color: var(--color-text-primary);
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin: 0rem 0rem 0.38rem;
+}
+
+.project-type {
+  color: var(--color-text-muted);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  margin: 0;
+}
+
+.project-style {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.project-style span {
+  margin: 0.75rem 0px;
+  padding: 0.31rem 1.16rem;
+  color: var(--color-text-secondary);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  background-color: var(--color-bg-subtle);
+  border-radius: 15px;
+}
+
+.matching-rate,
+.matching-rate-middle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  margin: 15px 20px;
+
+  width: 5.625rem;
+  height: 1.875rem;
+
+  font-size: 0.8125rem;
+  font-weight: 700;
+  gap: 5px;
+  color: var(--color-error);
+  background-color: var(--color-error-bg);
+}
+
+.matching-rate-middle {
+  background-color: var(--color-bg-subtle);
+
+  color: var(--color-text-secondary);
+}
+
+.landing-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 6.25rem;
+  background-color: var(--color-bg-default);
+
+  gap: 4.19rem;
+}
+
+.landing-footer p {
+  margin: 0;
+  padding: 0;
+
+  color: var(--color-primary);
+  font-size: 1.625rem;
+  font-weight: 700;
+  white-space: nowrap;
 }
