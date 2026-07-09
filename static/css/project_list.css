@@ -295,6 +295,19 @@ span {
   color: var(--color-error);
 }
 
+.matching-rate-middle {
+  display: flex;
+  background-color: var(--color-bg-subtle);
+  border: none;
+  padding: 7px 14px;
+  border-radius: 20px;
+
+  font-size: 0.8125rem;
+  font-weight: 700;
+  gap: 3px;
+  color: var(--color-text-secondary);
+}
+
 .due-date {
   color: var(--color-text-disabled);
   font-size: 0.6875rem;
