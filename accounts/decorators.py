@@ -2,7 +2,6 @@ from functools import wraps
 
 from django.shortcuts import redirect
 
-
 def role_required(required_role):
     # 로그인 여부 + role인지 체크
     # 비로그인 -> 랜딩으로
