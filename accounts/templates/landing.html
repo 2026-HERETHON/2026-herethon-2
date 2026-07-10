@@ -1,15 +1,116 @@
 <!doctype html>
 <html lang="ko">
-<head>
+  <head>
     <meta charset="UTF-8" />
-    <title>REBridge</title>
+    <title>RE:Bridge</title>
     <link rel="stylesheet" href="../../static/css/colorpalette.css" />
     <link rel="stylesheet" href="../../static/css/global.css" />
-</head>
-<body>
-    <header></header>
-    <main >
-        <h1>REBridge 랜딩 페이지</h1>
+    <link rel="stylesheet" href="../../static/css/landing.css" />
+  </head>
+  <body>
+    <!-- 헤더 -->
+    <header class="landing-header">
+      <div class="header-logo">
+        <img
+          class="header-logo-img"
+          src="../../static/img/logo.svg"
+          alt="logo"
+        />
+        <div class="header-logo-text">
+          <span class="logo-desc">당신의 두 번째 커리어 브릿지</span>
+          <span class="logo-brand"
+            ><span class="RE">RE</span><span class="colon">:</span>Bridge</span
+          >
+        </div>
+      </div>
+
+      <div class="landing-menu">
+        <a>서비스 소개</a>
+        <a>이용방법</a>
+        <a>FAQ</a>
+      </div>
+
+      <!-- (로그인페이지 진입 버튼) -->
+      <div class="header-login">
+        <a
+          class="header-login-button"
+          href="../../accounts/templates/login.html"
+          >로그인</a
+        >
+      </div>
+    </header>
+
+    <main>
+      <section class="landing-login">
+        <span class="positioning">경력단절 여성을 위한 프로젝트 매칭</span>
+        <div class="brand-wrap">
+          <h1>경력의 공백을,</h1>
+          <h1>
+            다시 잇는 다리,
+            <span class="logo-brand"
+              ><span class="RE">RE</span
+              ><span class="colon">:</span>Bridge</span
+            >
+          </h1>
+        </div>
+        <span class="positioning-desc"
+          >육아·돌봄으로 쌓인 숨은 경력을 AI가 찾아내고,<br />
+          꼭 맞는 프로젝트로 연결해드려요.</span
+        >
+
+        <!-- TPL: google_login_url (Google OAuth 로그인 시작 URL) -->
+        <section class="select-user-type">
+          <a class="worker-btn" href="">경력자로 시작하기</a>
+          <a class="comp-btn" href="">기업으로 시작하기</a>
+        </section>
+        <small class="user-type-desc"
+          >✔ 가입 즉시 자가진단으로 나만의 프로필 완성</small
+        >
+      </section>
+
+      <!-- 랜딩 포스터 -->
+      <section class="poster-wrap">
+        <aside class="landing-poster">
+          <div class="ellipse-wrap">
+            <img src="../../static/img/ellipse-red.svg" />
+            <img src="../../static/img/ellipse-yellow.svg" />
+            <img src="../../static/img/ellipse-mint.svg" />
+          </div>
+          <div class="poster-main">
+            <article class="poster">
+              <div class="poster-detail">
+                <p class="project-title">커머스 앱 UX 기획</p>
+                <p class="project-type">콘텐츠기획 · 재택 · 주 15시간</p>
+                <div class="project-style">
+                  <span>엑셀</span><span>커뮤니티 운영</span>
+                </div>
+              </div>
+              <div class="matching-rate">
+                <img src="../../static/img/heart-filled.svg" />
+                <p>92%</p>
+              </div>
+            </article>
+            <article class="poster">
+              <div class="poster-detail">
+                <p class="project-title">인스타그램 콘텐츠 제작</p>
+                <p class="project-type">마케팅 · 혼합근무 · 주 10시간</p>
+                <div class="project-style">
+                  <span>SNS 운영</span>
+                </div>
+              </div>
+              <div class="matching-rate-middle">
+                <img src="../../static/img/good-one.svg" />
+                <p>78%</p>
+              </div>
+            </article>
+          </div>
+        </aside>
+      </section>
     </main>
-</body>
+    <section class="landing-footer">
+      <p>#3단계 매칭 프로세스</p>
+      <p>#1분 안에 프로젝트 등록</p>
+      <p>#맞춤 추천 기준 5가지</p>
+    </section>
+  </body>
 </html>

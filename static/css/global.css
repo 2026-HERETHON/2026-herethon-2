@@ -40,6 +40,11 @@ body {
   font-family: "Inter", sans-serif;
 }
 
+/* 크롬, 사파리, opera에서 스크롤바 숨김 */
+body::-webkit-scrollbar {
+  display: none;
+}
+
 /* 헤더 영역 */
 header {
   display: flex;
@@ -49,8 +54,10 @@ header {
   height: 70px;
   background-color: var(--color-bg-default);
   padding: 20px;
-
   border-bottom: 1px solid var(--color-bg-guide);
+
+  position: fixed;
+  top: 0;
 }
 
 .header-wrap {
@@ -99,6 +106,7 @@ header {
   height: 100vh;
   background-color: var(--color-bg-default);
   padding: 26px 24px;
-  gap: 20px;
   border-right: 1px solid var(--color-bg-guide);
+  position: fixed;
+  top: 70px;
 }

@@ -1,0 +1,89 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-main {
+  width: 30rem;
+  height: 28.75rem;
+
+  background-color: var(--color-bg-default);
+  border: 1px solid var(--color-border-light);
+  border-radius: 15px;
+}
+
+.login-main,
+.logo-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-wrap {
+  gap: 22px;
+  margin-bottom: 1rem;
+}
+
+.positioning {
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+
+.select-desc {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 25rem;
+  height: 2rem;
+
+  color: var(--color-text-disabled);
+  font-size: 0.75rem;
+  font-weight: 400;
+
+  border-top: 1px solid var(--color-bg-guide);
+}
+
+/* 유저타입 선택 */
+.select-user-type {
+  margin: 3.12rem 2.5rem;
+  display: flex;
+  gap: 1.25rem;
+}
+
+.select-user-type a {
+  padding: 2.7rem 2.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.9375rem;
+
+  width: 11.875rem;
+  height: 8.5625rem;
+
+  border-radius: 0.8125rem;
+  border: 1px solid var(--color-border-light);
+  background: var(--color-bg-default);
+  text-decoration: none;
+}
+
+.select-user-type a:hover {
+  background-color: var(--color-bg-subtle);
+  cursor: pointer;
+}
+
+.select-user-type span {
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.select-user-type small {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
