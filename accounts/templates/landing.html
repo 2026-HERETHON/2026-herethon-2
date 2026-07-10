@@ -40,7 +40,6 @@
       </div>
     </header>
 
-    <!-- 랜딩 진입 로그인 -->
     <main>
       <section class="landing-login">
         <span class="positioning">경력단절 여성을 위한 프로젝트 매칭</span>
@@ -59,10 +58,15 @@
           꼭 맞는 프로젝트로 연결해드려요.</span
         >
 
-        <!--TBL: user.role (유저 타입 선택) -->
+        <!--TPL: user.role (유저 타입 선택, 랜딩->구글->온보딩으로 진입) -->
         <section class="select-user-type">
-          <button class="worker-btn" type="button">경력자로 시작하기</button>
-          <button class="comp-btn" type="button">기업으로 시작하기</button>
+          <a
+            class="worker-btn"
+            href="../../onboarding/templates/w_onboarding_step1.html"
+            >경력자로 시작하기</a
+          >
+
+          <a class="comp-btn">기업으로 시작하기</a>
         </section>
         <small class="user-type-desc"
           >✔ 가입 즉시 자가진단으로 나만의 프로필 완성</small
