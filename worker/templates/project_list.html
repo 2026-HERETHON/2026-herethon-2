@@ -134,14 +134,14 @@
                 <span class="type-time">{{ project.get_weekly_hours_display }} · </span>
                 <!--TBL: project.compensation_amount (보수 금액) -->
                 <span class="type-pay">시급 {{ project.compensation_amount }}원 · </span>
-                <!--TBL: 필수 스킬 -->
+                <!--TBL: 우대 스킬 -->
                 <span class="type-keyword">
-                  {% if project.required_skills_list %}
-                    {% for skill in project.required_skills_list %}
+                  {% if project.preferred_skills_list %}
+                    {% for skill in project.preferred_skills_list %}
                       {{ skill.name }}{% if not forloop.last %}, {% endif %}
                     {% endfor %}
                   {% else %}
-                    필수 스킬 없음
+                    우대 스킬 없음
                   {% endif %}
                 </span>
               </div>

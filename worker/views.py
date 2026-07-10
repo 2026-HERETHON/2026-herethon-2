@@ -334,19 +334,19 @@ def project_list(request):
         ranked_projects = list(warmup_projects)
         for project in ranked_projects:
             project.match_score = 100
-            project.required_skills_list = [
+            project.preferred_skills_list = [
                 project_skill.skill
                 for project_skill in project.project_skills.all()
-                if project_skill.priority == 'NORMAL'
+                if project_skill.priority == 'PREFERRED'
             ]
         projects = ranked_projects
     else:
         ranked_projects = rank_projects_for_worker(worker_profile, list(real_projects)) if worker_profile else list(real_projects)
         for project in ranked_projects:
-            project.required_skills_list = [
+            project.preferred_skills_list = [
                 project_skill.skill
                 for project_skill in project.project_skills.all()
-                if project_skill.priority == 'NORMAL'
+                if project_skill.priority == 'PREFERRED'
             ]
 
         if current_sort == 'deadline':
