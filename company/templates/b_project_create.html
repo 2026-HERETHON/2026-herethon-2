@@ -26,11 +26,6 @@
             background: #d6e6fb;
             font-weight: bold;
         }
-        .empty-message {
-            margin: 8px 0;
-            color: #666;
-            font-size: 14px;
-        }
         #hidden-ability-section { display: none; margin-top: 8px; }
     </style>
 </head>
@@ -103,10 +98,8 @@
 
         <div>
             <label>필수 스킬 (클릭: 선택 → 필수 → 우대 → 선택해제 순으로 전환돼요)</label>
-            <p style="color:#888; font-size:13px;">선택한 직무에 맞는 스킬만 보여줘요.</p>
-            <div id="skill-container">
-                <p class="empty-message">직무를 먼저 선택해주세요.</p>
-            </div>
+            <p style="color:#888; font-size:13px;">먼저 직무를 선택하면 그 직무의 스킬 목록이 나타나요.</p>
+            <div id="skill-container"></div>
             <input type="hidden" name="skill_priorities" id="skill-priorities-input">
         </div>
 
@@ -121,12 +114,10 @@
         </div>
 
         <div>
-            <button type="button" id="hidden-ability-toggle-btn">+ 숨은 능력 우대 조건 추가하기</button>
+            <button type="button" id="hidden-ability-toggle-btn">+ 숨은 능력 등록</button>
             <div id="hidden-ability-section">
-                <label>숨은 능력 우대 (선택사항)</label><br>
-                <div id="hidden-ability-options">
-                    <p class="empty-message">직무를 먼저 선택해주세요.</p>
-                </div>
+                <label>(선택사항, 직무 선택 시 그 직무의 3개만 표시돼요)</label><br>
+                <div id="hidden-ability-container"></div>
             </div>
         </div>
 
@@ -154,37 +145,35 @@
     </form>
 
     <script>
-        // Django에서 넘겨준 직무별 스킬 매핑: { "1": [{id, name}, ...], "2": [...] }
         const skillsByJob = JSON.parse('{{ skills_by_job_json|escapejs }}');
         const hiddenAbilitiesByJob = JSON.parse('{{ hidden_abilities_by_job_json|escapejs }}');
 
-        // 현재 선택된 스킬 상태: { skillId: "NORMAL" | "PREFERRED" }
+        const hiddenAbilityContainer = document.getElementById('hidden-ability-container');
+
+        function renderHiddenAbilities(jobId) {
+            hiddenAbilityContainer.innerHTML = '';
+            const abilities = hiddenAbilitiesByJob[jobId] || [];
+
+            abilities.forEach(ability => {
+                const label = document.createElement('label');
+                label.style.display = 'block';
+                label.innerHTML = `
+                    <input type="checkbox" name="hidden_abilities" value="${ability.id}">
+                    ${ability.name}
+                `;
+                hiddenAbilityContainer.appendChild(label);
+            });
+        }
+
         let skillState = {};
 
         const skillContainer = document.getElementById('skill-container');
         const priorityInput = document.getElementById('skill-priorities-input');
-        const hiddenAbilityOptions = document.getElementById('hidden-ability-options');
-
-        function renderEmptyMessage(container, message) {
-            container.innerHTML = `<p class="empty-message">${message}</p>`;
-        }
 
         function renderSkills(jobId) {
             skillState = {};
             skillContainer.innerHTML = '';
             const skills = skillsByJob[jobId] || [];
-
-            if (!jobId) {
-                renderEmptyMessage(skillContainer, '직무를 먼저 선택해주세요.');
-                priorityInput.value = '{}';
-                return;
-            }
-
-            if (!skills.length) {
-                renderEmptyMessage(skillContainer, '해당 직무에 연결된 스킬이 아직 없어요.');
-                priorityInput.value = '{}';
-                return;
-            }
 
             skills.forEach(skill => {
                 const tag = document.createElement('span');
@@ -219,36 +208,6 @@
 
                 skillContainer.appendChild(tag);
             });
-
-            priorityInput.value = '{}';
-        }
-
-        function renderHiddenAbilities(jobId) {
-            hiddenAbilityOptions.innerHTML = '';
-            const abilities = hiddenAbilitiesByJob[jobId] || [];
-
-            if (!jobId) {
-                renderEmptyMessage(hiddenAbilityOptions, '직무를 먼저 선택해주세요.');
-                return;
-            }
-
-            if (!abilities.length) {
-                renderEmptyMessage(hiddenAbilityOptions, '해당 직무에 연결된 숨은 능력이 없어요.');
-                return;
-            }
-
-            abilities.forEach(ability => {
-                const label = document.createElement('label');
-                const input = document.createElement('input');
-
-                input.type = 'checkbox';
-                input.name = 'hidden_abilities';
-                input.value = ability.id;
-
-                label.appendChild(input);
-                label.append(` ${ability.name}`);
-                hiddenAbilityOptions.appendChild(label);
-            });
         }
 
         document.querySelectorAll('.job-radio').forEach(radio => {
@@ -264,9 +223,10 @@
             const isHidden = hiddenAbilitySection.style.display === 'none';
             hiddenAbilitySection.style.display = isHidden ? 'block' : 'none';
             hiddenAbilityBtn.textContent = isHidden
-                ? '- 숨은 능력 우대 조건 접기'
-                : '+ 숨은 능력 우대 조건 추가하기';
+                ? '- 접기'
+                : '+ 추가하기';
         });
+
         document.getElementById('project-form').addEventListener('submit', () => {
             priorityInput.value = JSON.stringify(skillState);
         });

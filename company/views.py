@@ -3,6 +3,7 @@ import json
 from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import render, redirect
 
+from accounts.decorators import role_required, onboarding_required
 from .models import CompanyProfile
 from core.models import (
     HiddenAbility,
@@ -20,10 +21,36 @@ from projects.models import (
 )
 
 
+@role_required('COMPANY')
+def company_onboarding(request):
+    # 기업 온보딩 - 기업명만 간단히 받고 바로 기업 공고 등록으로
+
+    if request.user.onboarding_completed:
+        return redirect('company:project_manage')
+
+    if request.method == 'POST':
+        company_name = request.POST.get('company_name', '').strip()
+
+        if not company_name:
+            return render(request, 'b_company_onboarding.html', {
+                'error': '기업명을 입력해주세요.'
+            })
+
+        CompanyProfile.objects.create(
+            user=request.user,
+            company_name=company_name,
+        )
+        request.user.onboarding_completed = True
+        request.user.save(update_fields=['onboarding_completed'])
+
+        return redirect('company:project_create')
+
+    return render(request, 'b_company_onboarding.html')
+
+
 def _build_context():
     job_categories = JobCategory.objects.all()
     time_slots = TimeSlot.objects.all()
-    hidden_abilities = HiddenAbility.objects.all()
 
     skills_by_job = {}
     for js in JobSkill.objects.select_related('job_category', 'skill').all():
@@ -36,16 +63,12 @@ def _build_context():
         'job_category', 'hidden_ability'
     ).all():
         hidden_abilities_by_job.setdefault(relation.job_category_id, []).append(
-            {
-                'id': relation.hidden_ability_id,
-                'name': relation.hidden_ability.name,
-            }
+            {'id': relation.hidden_ability_id, 'name': relation.hidden_ability.name}
         )
 
     return {
         'job_categories': job_categories,
         'time_slots': time_slots,
-        'hidden_abilities': hidden_abilities,
         'skills_by_job_json': json.dumps(skills_by_job, cls=DjangoJSONEncoder),
         'hidden_abilities_by_job_json': json.dumps(
             hidden_abilities_by_job, cls=DjangoJSONEncoder
@@ -53,16 +76,13 @@ def _build_context():
     }
 
 
+@role_required('COMPANY')
+@onboarding_required
 def project_create(request):
     context = _build_context()
 
     if request.method == 'POST':
-        # TODO: 로그인/기업 온보딩 완료 후 request.user.company_profile로 교체
-        company = CompanyProfile.objects.first()
-
-        if company is None:
-            context['error'] = '테스트용 기업 프로필이 없습니다. Admin에서 CompanyProfile을 먼저 생성해주세요.'
-            return render(request, 'b_project_create.html', context)
+        company = request.user.company_profile
 
         try:
             skill_priorities = json.loads(request.POST.get('skill_priorities', '{}'))
@@ -106,6 +126,10 @@ def project_create(request):
     return render(request, 'b_project_create.html', context)
 
 
+@role_required('COMPANY')
+@onboarding_required
 def project_manage(request):
-    projects = Project.objects.all().order_by('-id')
+    projects = Project.objects.filter(
+        company_profile=request.user.company_profile
+    ).order_by('-id')
     return render(request, 'b_project_manage.html', {'projects': projects})

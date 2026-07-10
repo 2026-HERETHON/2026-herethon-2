@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>기업 정보 입력</title>
+</head>
+<body>
+    <h1>기업명 간단하게 받기</h1>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="post" id="company-onboarding-form">
+        {% csrf_token %}
+        <label>기업명</label>
+        <input type="text" name="company_name" id="company-name-input" required>
+        <button type="submit" id="company-submit-btn" disabled>시작하기</button>
+    </form>
+
+    <script>
+        const companyNameInput = document.getElementById('company-name-input');
+        const companySubmitButton = document.getElementById('company-submit-btn');
+
+        function updateCompanySubmitButton() {
+            companySubmitButton.disabled = !companyNameInput.value.trim();
+        }
+
+        companyNameInput.addEventListener('input', updateCompanySubmitButton);
+        updateCompanySubmitButton();
+    </script>
+</body>
+</html>

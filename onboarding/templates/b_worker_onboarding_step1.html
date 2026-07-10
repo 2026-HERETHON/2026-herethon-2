@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>온보딩 1단계</title>
+</head>
+<body>
+<header>
+    <a href="/">RE:Bridge</a>
+</header>
+
+<main>
+    <button type="button" onclick="history.back()">이전</button>
+    <p>1 / 4</p>
+    <h1>희망 직무 선택</h1>
+    <p>단일 선택</p>
+
+    <form method="post" id="step1-form">
+        {% csrf_token %}
+
+        {% if error %}
+            <p>{{ error }}</p>
+        {% endif %}
+
+        {% for job in job_categories %}
+        <div>
+            <input
+                type="radio"
+                name="job_category"
+                id="job_{{ job.id }}"
+                value="{{ job.id }}"
+                {% if selected_id == job.id %}checked{% endif %}
+            >
+            <label for="job_{{ job.id }}">{{ job.name }}</label>
+        </div>
+        {% endfor %}
+
+        <button type="submit" id="next-btn" disabled>다음</button>
+    </form>
+</main>
+
+<script>
+    const step1Radios = document.querySelectorAll('input[name="job_category"]');
+    const step1Button = document.getElementById('next-btn');
+
+    function updateStep1Button() {
+        step1Button.disabled = !document.querySelector('input[name="job_category"]:checked');
+    }
+
+    step1Radios.forEach((radio) => radio.addEventListener('change', updateStep1Button));
+    updateStep1Button();
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>역할 선택</title>
+</head>
+<body>
+    <h1>어떤 유형으로 시작하시겠어요?</h1>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="role" value="WORKER">경력자로 시작</button>
+        <button type="submit" name="role" value="COMPANY">기업으로 시작</button>
+    </form>
+</body>
+</html>
