@@ -40,10 +40,7 @@
       <div class="user-card">
         <!-- TPL: user.profile_img_url (프로필 이미지 url)-->
         <div class="user-profile-img">
-          <img
-          src="../../static/img/user.svg"
-          alt="user-profile"
-        />
+          <img src="../../static/img/user.svg" alt="user-profile" />
         </div>
 
         <div class="user-info">
@@ -260,16 +257,12 @@
               소상공인 대상 인스타그램 마케팅 콘텐츠 제작
             </p>
             <p class="text application-des">
-              <span>(주)로컬앤로컬</span> ·
-              <span>마케팅</span> ·
-              <span>혼합근무</span> ·
-              <span>주 10시간</span> ·
+              <span>(주)로컬앤로컬</span> · <span>마케팅</span> ·
+              <span>혼합근무</span> · <span>주 10시간</span> ·
               <span>프로젝트당 40만원</span> ·
               <span>SNS 운영, 콘텐츠 기획</span>
             </p>
-            <p class="text application">
-              지원일 <span>2026.06.20</span>
-            </p>
+            <p class="text application">지원일 <span>2026.06.20</span></p>
           </div>
 
           <div class="application-right">
@@ -285,22 +278,18 @@
           </div>
         </article>
 
-                <article class="group-box application-card">
+        <article class="group-box application-card">
           <div class="application-left">
             <p class="project-title application-title">
               소상공인 대상 인스타그램 마케팅 콘텐츠 제작
             </p>
             <p class="text application-des">
-              <span>(주)로컬앤로컬</span> ·
-              <span>마케팅</span> ·
-              <span>혼합근무</span> ·
-              <span>주 10시간</span> ·
+              <span>(주)로컬앤로컬</span> · <span>마케팅</span> ·
+              <span>혼합근무</span> · <span>주 10시간</span> ·
               <span>프로젝트당 40만원</span> ·
               <span>SNS 운영, 콘텐츠 기획</span>
             </p>
-            <p class="text application">
-              지원일 <span>2026.06.20</span>
-            </p>
+            <p class="text application">지원일 <span>2026.06.20</span></p>
           </div>
 
           <div class="application-right">
@@ -316,7 +305,6 @@
           </div>
         </article>
       </div>
-      
 
       <!-- 리턴십 제안 탭 -->
       <div class="tab-content" id="tab-offer">
@@ -362,8 +350,12 @@
             </div>
             <!-- 리턴십 제안 수락/거절 버튼 -->
             <div class="offer-actions">
-              <button type="submit" class="offer-btn btn-reject">거절하기</button>
-              <button type="submit" class="offer-btn btn-accept">수락하기</button>
+              <button type="submit" class="offer-btn btn-reject">
+                거절하기
+              </button>
+              <button type="submit" class="offer-btn btn-accept">
+                수락하기
+              </button>
             </div>
           </form>
         </section>
@@ -413,14 +405,15 @@
             <p class="form-label">희망 직무</p>
             <div class="form-field">
               <!-- TPL: worker_profile.job_category.name (희망 직무 목록 태그 형태로 반복) -->
-              <div class="tag-list">
+              <div class="tag-list" id="job-tag-list">
                 <span class="tag-item"
-                  >콘텐츠 기획 <button type="button" class="btn-tag-remove">
-                    ✕
-                  </button></span
+                  >콘텐츠 기획
+                  <button type="button" class="btn-tag-remove">✕</button></span
                 >
               </div>
-              <button type="button" class="btn-add" id="open-job-modal">+</button>
+              <button type="button" class="btn-add" id="open-job-modal">
+                +
+              </button>
             </div>
           </div>
 
@@ -428,30 +421,28 @@
           <div class="form-row">
             <p class="form-label">보유 스킬</p>
             <div class="form-field">
-              <div class="tag-list">
+              <div class="tag-list" id="skill-tag-list">
                 <!-- TPL: worker_skill.name (보유 스킬명 목록 반복) -->
                 <span class="tag-item"
-                  >엑셀 <button type="button" class="btn-tag-remove">
-                    ✕
-                  </button></span
+                  >엑셀
+                  <button type="button" class="btn-tag-remove">✕</button></span
                 >
                 <span class="tag-item"
-                  >데이터 분석 <button type="button" class="btn-tag-remove">
-                    ✕ 
-                  </button></span
+                  >데이터 분석
+                  <button type="button" class="btn-tag-remove">✕</button></span
                 >
                 <span class="tag-item"
-                  >SNS 콘텐츠 <button type="button" class="btn-tag-remove">
-                    ✕
-                  </button></span
+                  >SNS 콘텐츠
+                  <button type="button" class="btn-tag-remove">✕</button></span
                 >
                 <span class="tag-item"
-                  >커뮤니티 매니징 <button type="button" class="btn-tag-remove">
-                    ✕
-                  </button></span
+                  >커뮤니티 매니징
+                  <button type="button" class="btn-tag-remove">✕</button></span
                 >
               </div>
-              <button type="button" class="btn-add" id="open-skill-modal">+</button>
+              <button type="button" class="btn-add" id="open-skill-modal">
+                +
+              </button>
             </div>
           </div>
 
@@ -466,12 +457,19 @@
                 <option value="15to20">주 15~25시간</option>
                 <option value="over20">주 25시간 이상</option>
               </select>
-              
+
               <!-- 코어 타임 및 선호 근무 형태  -->
-              <button type="button" class="form-field dropdown-field" id="open-schedule-modal">
+              <button
+                type="button"
+                class="form-field dropdown-field"
+                id="open-schedule-modal"
+              >
                 <!-- TPL: worker_core_time.name · worker_profile.preferred_work_style (코어 타임, 선호 근무 형태)-->
                 <span class="dropdown-value">평일 오전 · 재택 근무 선호</span>
-                <img class="dropdown-arrow" src="../../static/img/dropdown.svg" />
+                <img
+                  class="dropdown-arrow"
+                  src="../../static/img/dropdown.svg"
+                />
               </button>
             </div>
           </div>
@@ -482,12 +480,12 @@
 
         <!-- 모달 -->
         <!-- 미선택된 태그만 보여주고 클릭하면 메인 tag-list로 추가됨. 삭제는 메인 tag-list의 X버튼에서만 가능 -->
-        
+
         <!-- 희망 직무 수정 모달 (평소 숨김, open-job-modal 클릭 시 표시) -->
         <div class="modal-overlay" id="job-modal" style="display: none">
           <div class="modal-box">
             <div class="modal-header">
-              <p class="subtitle">희망 직무 추가</p>
+              <p class="title">희망 직무 추가</p>
               <p class="caption">추가할 직무를 선택하세요</p>
             </div>
 
@@ -495,24 +493,43 @@
               <!-- TPL: job_category 중 worker_profile.job_category_id 에 포함되지 않은 항목만 반복 -->
               <div class="unselected-tag-list" id="job-unselected-list">
                 <!-- TPL: job_category.name (선택되지 않은 직무명) -->
-                <button type="button" class="unselected-tag" data-value="data_analysis">
+                <button
+                  type="button"
+                  class="unselected-tag"
+                  data-value="data_analysis"
+                >
                   데이터 분석 +
                 </button>
-                <button type="button" class="unselected-tag" data-value="design">
+                <button
+                  type="button"
+                  class="unselected-tag"
+                  data-value="design"
+                >
                   디자인 +
                 </button>
-                <button type="button" class="unselected-tag" data-value="development">
-                  개발 +</button>
+                <button
+                  type="button"
+                  class="unselected-tag"
+                  data-value="development"
+                >
+                  개발 +
+                </button>
               </div>
 
               <!-- TPL: 모든 직무가 이미 선택되어 미선택 항목이 없을 때 표시 -->
-              <p class="empty-message" id="job-empty-message" style="display: none;">
+              <p
+                class="empty-message"
+                id="job-empty-message"
+                style="display: none"
+              >
                 추가할 수 있는 직무가 없어요
               </p>
             </div>
 
             <div class="modal-footer">
-              <button type="button" class="btn-close-modal" id="done-job-modal">저장</button>
+              <button type="button" class="btn-close-modal" id="done-job-modal">
+                저장
+              </button>
             </div>
           </div>
         </div>
@@ -522,40 +539,49 @@
         <div class="modal-overlay" id="skill-modal" style="display: none">
           <div class="modal-box">
             <div class="modal-header">
-              <p class="modal-title">보유 스킬 추가</p>
-              <p class="modal-guide">추가할 스킬을 선택하세요</p>
+              <p class="title">보유 스킬 추가</p>
+              <p class="caption">추가할 스킬을 선택하세요</p>
             </div>
 
             <div class="modal-body">
-                <!-- TPL: 선택된 희망 직무 별 보유 스킬을 제외한 스킬 목록 반복 -->
-                <article class="selected-job-skill">
-                  <!-- TPL: worker_profile.job_category.name (선택된 직무명) -->
-                  <p class="skill-category-title">콘텐츠 기획</p>
-
-                  <!-- TPL: job_skill.name 중 worker_skill 에 포함되지 않은 항목만 반복 -->
-                  <div class="unselected-tag-list">
-                    <!-- TPL: job_skill.name (선택되지 않은 스킬명) -->
-                    <button type="button" class="unselected-tag" data-value="ppt">
-                      파워포인트<span class="add-icon">+</span>
-                    </button>
-                    <button type="button" class="unselected-tag" data-value="slack">
-                      Slack<span class="add-icon">+</span>
-                    </button>
-                    <button type="button" class="unselected-tag" data-value="notion">
-                      Notion<span class="add-icon">+</span>
-                    </button>
-                  </div>
-                </article>
+              <!-- TPL: 선택된 보유 스킬을 제외한 모든 희망 직무의 스킬 목록 반복 -->
+              <!-- TPL: worker_profile.job_category.job_skill.name ? (선택된 직무의 보유 스킬) -->
+              <!-- TPL: job_skill.name 중 worker_skill 에 포함되지 않은 항목만 반복 -->
+              <div class="unselected-tag-list" id="skill-unselected-list">
+                <!-- TPL: job_skill.name (선택되지 않은 스킬명) -->
+                <button type="button" class="unselected-tag" data-value="ppt">
+                  파워포인트 +
+                </button>
+                <button type="button" class="unselected-tag" data-value="slack">
+                  Slack +
+                </button>
+                <button
+                  type="button"
+                  class="unselected-tag"
+                  data-value="notion"
+                >
+                  Notion +
+                </button>
               </div>
 
               <!-- TPL: 모든 스킬이 이미 선택되어 미선택 항목이 하나도 없을 때 표시 -->
-              <p class="empty-message" id="skill-empty-message" style="display: none;">
+              <p
+                class="empty-message"
+                id="skill-empty-message"
+                style="display: none"
+              >
                 추가할 수 있는 스킬이 없어요
               </p>
             </div>
 
             <div class="modal-footer">
-              <button type="button" class="btn-close-modal" id="done-skill-modal">저장</button>
+              <button
+                type="button"
+                class="btn-close-modal"
+                id="done-skill-modal"
+              >
+                저장
+              </button>
             </div>
           </div>
         </div>
@@ -564,23 +590,28 @@
         <div class="modal-overlay" id="schedule-modal" style="display: none">
           <div class="modal-box">
             <div class="modal-header">
-              <p class="modal-title">가용 시간 수정</p>
-              <p class="modal-guide">가능한 시간대·근무 형태를 선택하세요</p>
+              <p class="title">가용 시간 수정</p>
+              <p class="caption">가능한 시간대·근무 형태를 선택하세요</p>
             </div>
 
-            <div class="modal-body">
+            <div class="modal-body select-box">
               <!-- 코어 타임 -->
               <div class="checkbox-group">
                 <div class="checkbox-group-header">
-                  <p class="checkbox-group-title">코어타임 (실시간 소통이 편한 시간대)</p>
-                  <span class="checkbox-group-hint">복수 선택이 가능해요</span>
+                  <p class="subtitle">코어타임 (실시간 소통이 편한 시간대)</p>
+                  <span class="caption">복수 선택이 가능해요</span>
                 </div>
 
                 <!-- TPL: time_slot 반복 (고정 4개: 이른 아침/오전/오후/저녁) -->
                 <!-- TPL: worker_core_time 에 포함되면 checked -->
                 <div class="core-time-list">
                   <label class="core-time-item">
-                    <input type="checkbox" name="core_times" value="early_morning" checked />
+                    <input
+                      type="checkbox"
+                      name="core_times"
+                      value="early_morning"
+                      checked
+                    />
                     <!-- TPL: time_slot.name (시간대명) -->
                     <span class="core-time-label">이른 아침</span>
                     <!-- TPL: time_slot.code ? (시간대코드?) -->
@@ -592,7 +623,11 @@
                     <span class="core-time-range">10:00~14:00</span>
                   </label>
                   <label class="core-time-item">
-                    <input type="checkbox" name="core_times" value="afternoon" />
+                    <input
+                      type="checkbox"
+                      name="core_times"
+                      value="afternoon"
+                    />
                     <span class="core-time-label">오후</span>
                     <span class="core-time-range">14:00~18:00</span>
                   </label>
@@ -602,22 +637,22 @@
                     <span class="core-time-range">18:00~22:00</span>
                   </label>
                 </div>
-
-                <!-- TPL: 정적 안내 문구 -->
-                <p class="checkbox-group-desc">
-                  가능한 시간대를 모두 선택해주세요 (예: 아이 등원 후 + 재우고 난 뒤)
-                </p>
               </div>
 
               <!-- 선호 근무 형태 -->
               <div class="checkbox-group">
-                <p class="checkbox-group-title">선호 근무 형태</p>
+                <p class="subtitle">선호 근무 형태</p>
 
                 <!-- TPL: worker_profile.preferred_work_style 옵션 반복 (고정 4개: 100% 재택/주 1회 출근/주 3회 이상 출근/매일 출근) -->
                 <!-- TPL: worker_profile.preferred_work_style 값과 일치하면 checked -->
                 <div class="work-type-list">
                   <label class="work-type-item">
-                    <input type="radio" name="work_type" value="full_remote" checked />
+                    <input
+                      type="radio"
+                      name="work_type"
+                      value="full_remote"
+                      checked
+                    />
                     <!-- TPL: worker_profile.preferred_work_style 옵션명 (선호 근무 형태명) -->
                     <span class="work-type-label">100% 재택</span>
                   </label>
@@ -638,12 +673,17 @@
             </div>
 
             <div class="modal-footer">
-              <button type="button" class="btn-save" id="done-schedule-modal">저장</button>
+              <button
+                type="button"
+                class="btn-close-modal"
+                id="done-schedule-modal"
+              >
+                저장
+              </button>
             </div>
           </div>
         </div>
       </div>
-
     </section>
 
     <script src="../../static/js/worker_mypage.js"></script>

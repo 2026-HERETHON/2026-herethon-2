@@ -774,7 +774,7 @@
   background-color: var(--color-bg-default);
   border: 1px solid var(--color-border-light);
   border-radius: 1rem;
-  width: 24rem;
+  width: 50rem;
   max-width: 90vw;
   max-height: 80vh;
   padding: 1.5rem;
@@ -784,27 +784,8 @@
   overflow: hidden;
 }
 
-/* 헤더 */
-.modal-header {
-  padding: 1.5rem 1.5rem 1rem;
-  border-bottom: 1px solid var(--color-border-input);
-}
-
-/* .modal-title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #111827;
-  margin-bottom: 0.375rem;
-} */
-
-/* .modal-guide {
-  font-size: 0.8125rem;
-  color: var(--color-text-muted);
-} */
-
 /* 모달 바디: 내용이 많으면 스크롤 */
 .modal-body {
-  padding: 1.25rem 1.5rem;
   overflow-y: auto;
   flex: 1;
 }
@@ -825,13 +806,20 @@
   border-radius: 999rem;
   padding: 0.375rem 0.875rem;
 
+  font-family: Inter;
   font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
   color: #374151;
   background-color: var(--color-bg-default);
 }
 
-.unselected-tag:hover {
-  background-color: var(--color-bg-subtle);
+.unselected-tag:hover,
+.unselected-tag.selected {
+  color: #2563eb;
+  background-color: var(--color-info-bg);
+  border: 1px solid #2563eb;
 }
 
 .empty-message {
@@ -842,11 +830,10 @@
 
 /* 모달 푸터: 버튼 영역 */
 .modal-footer {
-  /* border-top: 1px solid var(--color-border-input); */
-
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
+  margin-top: 2rem;
 }
 
 .btn-close-modal {
@@ -860,4 +847,97 @@
 
 .btn-close-modal:hover {
   background-color: #e5e7eb;
+}
+
+.select-box {
+  padding: 0 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.core-time-list {
+  display: flex;
+  gap: 0.75rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.core-time-item {
+  display: flex;
+  flex-direction: column;
+
+  background-color: var(--color-bg-default);
+  border: 1px solid var(--color-border-light);
+  border-radius: 1rem;
+  padding: 0.8rem 2.8rem;
+}
+
+.core-time-item:hover,
+.core-time-item:has(input:checked) {
+  background-color: var(--color-info-bg);
+  border: 1px solid var(--color-info);
+}
+
+.core-time-item input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.core-time-label {
+  color: var(--color-text-disabled);
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.6875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.core-time-range {
+  color: #4b5563;
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.work-type-list {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.work-type-item {
+  display: flex;
+  flex-direction: column;
+
+  background-color: var(--color-bg-default);
+  border: 1px solid var(--color-border-light);
+  border-radius: 999rem;
+  padding: 0.8rem 2.8rem;
+}
+
+.work-type-item:hover,
+.work-type-item:has(input:checked) {
+  background-color: var(--color-info-bg);
+  border: 1px solid var(--color-info);
+}
+
+.work-type-item input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.work-type-label {
+  color: var(--color-text-secondary);
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
