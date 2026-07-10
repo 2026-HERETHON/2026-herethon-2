@@ -76,6 +76,7 @@
 
       <div class="divider"></div>
 
+      <!-- 탭 네비게이션 -->
       <nav class="tab-nav">
         <button class="tab-btn active" data-tab="profile">프로필</button>
         <button class="tab-btn" data-tab="apply">지원현황</button>
@@ -84,7 +85,7 @@
       </nav>
 
       <!-- 프로필 탭 -->
-      <div class="tab-content" id="tab-profile">
+      <div class="tab-content active" id="tab-profile">
         <!-- 경력 사항 영역-->
         <div class="group-box career-group">
           <p class="subtitle">경력사항</p>
@@ -154,7 +155,7 @@
             </div>
 
             <!-- TPL: 매칭률 상태 클래스명 80% 이상: heart / 이하: good -->
-            <div class="matching-rate-item">
+            <div class="matching-rate-item heart">
               <!-- TPL: (매칭률 상태/80 이상이면 하트, 그 외 따봉) -->
               <img
                 class="matching-state-img"
@@ -163,7 +164,7 @@
               />
               <!-- TPL: (매칭률) -->
               <!-- TPL: 매칭률 상태 클래스명 80% 이상: heart / 이하: good -->
-              <span class="matching-rate">87%</span>
+              <span class="matching-rate heart">87%</span>
             </div>
           </article>
         </section>
@@ -191,13 +192,13 @@
                 <span>엑셀, 커뮤니티 운영, SNS 콘텐츠 기획</span>
               </p>
             </div>
-            <div class="matching-rate-item">
+            <div class="matching-rate-item heart">
               <img
                 class="matching-state-img"
                 src="../../static/img/heart-filled.svg"
                 alt="matching-state"
               />
-              <span class="matching-rate">92%</span>
+              <span class="matching-rate heart">92%</span>
             </div>
           </article>
         </section>
@@ -324,7 +325,7 @@
           <p class="title">리턴십 제안</p>
           <p class="caption">함께한 기업이 정규직 전환을 제안했습니다</p>
           <!-- TPL: returnship (리턴십 제안 목록 반복) -->
-          <article class="offer-card">
+          <form method="post" class="offer-form">
             <div class="group-box offer-item">
               <span class="offer-badge">NEW 제안</span>
               <div class="offer-company">
@@ -361,10 +362,10 @@
             </div>
             <!-- 리턴십 제안 수락/거절 버튼 -->
             <div class="offer-actions">
-              <button class="offer-btn btn-reject">거절하기</button>
-              <button class="offer-btn btn-accept">수락하기</button>
+              <button type="submit" class="offer-btn btn-reject">거절하기</button>
+              <button type="submit" class="offer-btn btn-accept">수락하기</button>
             </div>
-          </article>
+          </form>
         </section>
 
         <!-- 지난 리턴십 제안 내역 영역 -->
@@ -401,7 +402,7 @@
       </div>
 
       <!-- 근무 조건 탭 -->
-      <div class="tab-content active" id="tab-condition">
+      <div class="tab-content" id="tab-condition">
         <p class="title">근무 조건 수정</p>
         <p class="caption">
           희망 직무·보유 스킬·가용 시간을 수정하면 매칭 정확도가 올라가요
@@ -645,5 +646,7 @@
       </div>
 
     </section>
+
+    <script src="../../static/js/worker_mypage.js"></script>
   </body>
 </html>
