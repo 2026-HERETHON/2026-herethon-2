@@ -27,7 +27,7 @@
 .header-menu a:hover {
   color: var(--color-primary);
   font-weight: bold;
-  border-bottom-color: 3px solid var(--color-primary);
+  border-bottom: 3px solid var(--color-primary);
   letter-spacing: 0.2px;
 }
 
@@ -288,10 +288,11 @@ span {
   gap: 5px;
 }
 
-.matching-rate {
+.matching-rate,
+.matching-rate-middle {
   display: flex;
   background-color: var(--color-error-bg);
-  border: none;
+
   padding: 7px 14px;
   border-radius: 20px;
 
@@ -299,6 +300,12 @@ span {
   font-weight: 700;
   gap: 3px;
   color: var(--color-error);
+}
+
+.matching-rate-middle {
+  background-color: var(--color-bg-subtle);
+
+  color: var(--color-text-secondary);
 }
 
 .due-date {

@@ -23,7 +23,7 @@ def landing(request):
     if request.user.is_authenticated:
         return redirect(resolve_redirect_url(request.user, request))
 
-    return render(request, 'b_landing.html')
+    return render(request, 'landing.html')
 
 
 def google_login(request):
@@ -120,7 +120,7 @@ def role_select(request):
         if role not in ('WORKER', 'COMPANY'):
             return render(
                 request,
-                'b_role_select.html',
+                'login.html',
                 {'error': '역할을 선택해주세요.'},
             )
 
@@ -129,7 +129,7 @@ def role_select(request):
 
         return redirect(resolve_redirect_url(request.user, request))
 
-    return render(request, 'b_role_select.html')
+    return render(request, 'login.html')
 
 
 @require_POST
