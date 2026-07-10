@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>프로젝트 관리</title>
+</head>
+<body>
+    <h1>프로젝트 관리</h1>
+
+    {% for project in projects %}
+        <div style="border:1px solid #ddd; padding:12px; margin:8px;">
+            <h3>{{ project.title }}</h3>
+            <p>{{ project.description }}</p>
+            <p>상태: {{ project.status }}</p>
+            <p>마감일: {{ project.deadline }}</p>
+        </div>
+    {% empty %}
+        <p>등록된 프로젝트가 없습니다.</p>
+    {% endfor %}
+</body>
+</html>
