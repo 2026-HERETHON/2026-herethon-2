@@ -39,11 +39,12 @@
       <!-- 유저 카드 -->
       <div class="user-card">
         <!-- TPL: user.profile_img_url (프로필 이미지 url)-->
-        <img
-          class="user-profile-img"
+        <div class="user-profile-img">
+          <img
           src="../../static/img/user.svg"
           alt="user-profile"
         />
+        </div>
 
         <div class="user-info">
           <!-- TPL: user.name (유저 닉네임) -->
@@ -57,7 +58,7 @@
           <!-- TPL: 유저 보유 뱃지 리스트 -->
           <div class="badge-list">
             <span class="badge badge-pass"
-              ><img src="../../static/img/medal.svg" alt="" />웜업패스</span
+              ><img src="../../static/img/medal.svg" alt="" /> 웜업패스</span
             >
             <span class="badge badge-review"
               ><img src="../../static/img/check-green.svg" alt="" />기업 평가
@@ -83,13 +84,13 @@
       </nav>
 
       <!-- 프로필 탭 -->
-      <div class="tab-content active" id="tab-profile">
+      <div class="tab-content" id="tab-profile">
         <!-- 경력 사항 영역-->
-        <div class="career-group">
+        <div class="group-box career-group">
           <p class="subtitle">경력사항</p>
           <!-- TPL: worker_careers (경력 사항 목록 반복) -->
           <div class="career-list">
-            <p class="career-item">
+            <p class="text career-item">
               <!-- TPL: worker_careers.company_name (회사명) -->
               <span>ABC </span>
               <!-- TPL: worker_careers.role_title (직급/직책) -->
@@ -103,40 +104,40 @@
           </div>
         </div>
 
-        <div class="skill-and-ability">
+        <div class="skills">
           <!-- 보유 스킬 영역 -->
-          <div class="skill-group">
+          <div class="group-box skill-group">
             <p class="subtitle">보유 스킬</p>
             <!-- TPL: worker_skill (보유 스킬 목록 반복)  -->
-            <div class="skill-list">
+            <div class="item-list">
               <!-- TPL: worker_skill.name (보유 스킬명) -->
-              <span class="skill-item">엑셀</span>
-              <span class="skill-item">데이터 분석</span>
-              <span class="skill-item">SNS 콘텐츠</span>
+              <span class="item">엑셀</span>
+              <span class="item">데이터 분석</span>
+              <span class="item">SNS 콘텐츠</span>
             </div>
           </div>
           <!-- 숨은 능력 영역 -->
-          <div class="ability-group">
+          <div class="group-box skill-group">
             <p class="subtitle">숨은 능력</p>
             <!-- TPL: hidden_ability (숨은 능력 목록 반복) -->
-            <div class="ability-list">
+            <div class="item-list">
               <!-- TPL: hidden_ability.name (숨은 능력명) -->
-              <span class="ability-item">커뮤니티 매니징</span>
-              <span class="ability-item">SNS 마케팅</span>
+              <span class="item">커뮤니티 매니징</span>
+              <span class="item">SNS 마케팅</span>
             </div>
           </div>
         </div>
 
         <!-- 진행 중인 프로젝트 영역 -->
-        <section class="project-group">
-          <p class="subtitle">진행 중인 프로젝트</p>
+        <section>
+          <p class="subtitle subtitle-project">진행 중인 프로젝트</p>
           <!-- article(project-card)이 하나의 프로젝트 카드 -->
           <!-- TPL: 진행 중인 프로젝트 카드 목록 반복 -->
-          <article class="project-card">
+          <article class="group-box project-card">
             <div class="project-left">
               <!-- TPL: project.title (프로젝트명) -->
               <p class="project-title">스타트업 뉴스레터 기획 및 발행</p>
-              <p class="project-description">
+              <p class="text project-description">
                 <!-- TPL: company_profile.company_name (기업명) -->
                 <span>(주)그로스노트</span> ·
                 <!-- TPL: job_category.name (직무명) -->
@@ -151,6 +152,8 @@
                 <span>뉴스레터 기획, 카피라이팅</span>
               </p>
             </div>
+
+            <!-- TPL: 매칭률 상태 클래스명 80% 이상: heart / 이하: good -->
             <div class="matching-rate-item">
               <!-- TPL: (매칭률 상태/80 이상이면 하트, 그 외 따봉) -->
               <img
@@ -159,21 +162,22 @@
                 alt="matching-state"
               />
               <!-- TPL: (매칭률) -->
+              <!-- TPL: 매칭률 상태 클래스명 80% 이상: heart / 이하: good -->
               <span class="matching-rate">87%</span>
             </div>
           </article>
         </section>
 
         <!-- 완료된 프로젝트 영역 -->
-        <section class="project-group">
-          <p class="subtitle">완료된 프로젝트</p>
+        <section>
+          <p class="subtitle subtitle-project">완료된 프로젝트</p>
           <!-- TPL: 완료된 프로젝트 카드 목록 반복 -->
-          <article class="project-card">
+          <article class="group-box project-card">
             <div class="project-left">
               <p class="project-title">
                 커머스 앱 상세페이지 UX 기획 및 문구 교정
               </p>
-              <p class="project-description">
+              <p class="text project-description">
                 <span>(주)브릿지커머스</span>
                 ·
                 <span>콘텐츠 기획</span>
@@ -204,13 +208,13 @@
         <p class="title">지원현황</p>
         <p class="caption">지원한 프로젝트의 진행 상태를 확인하세요</p>
         <!-- TPL: application (지원 중인 프로젝트 카드 목록 반복) -->
-        <article class="application-card">
+        <article class="group-box application-card">
           <div class="application-left">
             <!-- TPL: project.title (프로젝트명) -->
-            <p class="project-title">
+            <p class="project-title application-title">
               소상공인 대상 인스타그램 마케팅 콘텐츠 제작
             </p>
-            <p class="project-description">
+            <p class="text application-des">
               <!-- TPL: company_profile.company_name (기업명) -->
               <span>(주)로컬앤로컬</span> ·
               <!-- TPL: job_category.name (직무명) -->
@@ -224,14 +228,15 @@
               <!-- TPL: project.project_type (업무 지원 유형) -->
               <span>SNS 운영, 콘텐츠 기획</span>
             </p>
-            <p class="application">
+            <p class="text application">
               <!-- TPL: application.applied_at (지원 일시) -->
               지원일 <span>2026.06.20</span>
             </p>
           </div>
 
           <div class="application-right">
-            <div class="matching-rate-item">
+            <!-- TPL: 매칭률 상태 클래스명 80% 이상: heart / 이하: good -->
+            <div class="matching-rate-item heart">
               <!-- TPL: (매칭률 상태/80 이상이면 하트, 그 외 따봉) -->
               <img
                 class="matching-state-img"
@@ -239,67 +244,78 @@
                 alt="matching-state"
               />
               <!-- TPL: (매칭률) -->
-              <span class="matching-rate">92%</span>
+              <!-- TPL: 매칭률 상태 클래스명 80% 이상: heart / 이하: good -->
+              <span class="matching-rate heart">92%</span>
             </div>
             <!-- TPL: application.status (지원 상태) -->
-            <div class="application-status">심사중</div>
+            <!-- TPL: 지원 상태에 따라 클래스명 accepted, pending, rejected -->
+            <div class="application-status pending">심사중</div>
           </div>
         </article>
 
-        <article class="application-card">
+        <article class="group-box application-card">
           <div class="application-left">
-            <p class="project-title">
+            <p class="project-title application-title">
               소상공인 대상 인스타그램 마케팅 콘텐츠 제작
             </p>
-            <p class="project-description">
-              <span>(주)로컬앤로컬</span> · <span>마케팅</span> ·
-              <span>혼합근무</span> · <span>주 10시간</span> ·
+            <p class="text application-des">
+              <span>(주)로컬앤로컬</span> ·
+              <span>마케팅</span> ·
+              <span>혼합근무</span> ·
+              <span>주 10시간</span> ·
               <span>프로젝트당 40만원</span> ·
               <span>SNS 운영, 콘텐츠 기획</span>
             </p>
-            <p class="application">지원일 <span>2026.06.20</span></p>
+            <p class="text application">
+              지원일 <span>2026.06.20</span>
+            </p>
           </div>
 
           <div class="application-right">
-            <div class="matching-rate-item">
+            <div class="matching-rate-item good">
               <img
                 class="matching-state-img"
                 src="../../static/img/good-one.svg"
                 alt="matching-state"
               />
-              <span class="matching-rate">71%</span>
+              <span class="matching-rate good">71%</span>
             </div>
-            <div class="application-status">합격</div>
+            <div class="application-status accepted">완료</div>
           </div>
         </article>
 
-        <article class="application-card">
+                <article class="group-box application-card">
           <div class="application-left">
-            <p class="project-title">
+            <p class="project-title application-title">
               소상공인 대상 인스타그램 마케팅 콘텐츠 제작
             </p>
-            <p class="project-description">
-              <span>(주)로컬앤로컬</span> · <span>마케팅</span> ·
-              <span>혼합근무</span> · <span>주 10시간</span> ·
+            <p class="text application-des">
+              <span>(주)로컬앤로컬</span> ·
+              <span>마케팅</span> ·
+              <span>혼합근무</span> ·
+              <span>주 10시간</span> ·
               <span>프로젝트당 40만원</span> ·
               <span>SNS 운영, 콘텐츠 기획</span>
             </p>
-            <p class="application">지원일 <span>2026.06.20</span></p>
+            <p class="text application">
+              지원일 <span>2026.06.20</span>
+            </p>
           </div>
 
           <div class="application-right">
-            <div class="matching-rate-item">
+            <div class="matching-rate-item good">
               <img
                 class="matching-state-img"
                 src="../../static/img/good-one.svg"
                 alt="matching-state"
               />
-              <span class="matching-rate">56%</span>
+              <span class="matching-rate good">56%</span>
             </div>
-            <div class="application-status">불합격</div>
+            <div class="application-status rejected">불합격</div>
           </div>
         </article>
       </div>
+      
 
       <!-- 리턴십 제안 탭 -->
       <div class="tab-content" id="tab-offer">
@@ -309,17 +325,17 @@
           <p class="caption">함께한 기업이 정규직 전환을 제안했습니다</p>
           <!-- TPL: returnship (리턴십 제안 목록 반복) -->
           <article class="offer-card">
-            <div class="offer-item">
-              <p class="offer-badge">NEW 제안</p>
+            <div class="group-box offer-item">
+              <span class="offer-badge">NEW 제안</span>
               <div class="offer-company">
-                <div class="offer-company-icon">
+                <div class="offer-company-img">
                   <img src="../../static/img/bag.svg" alt="company" />
                 </div>
                 <div class="offer-company-info">
                   <!-- TPL: company_profile.company_name (기업명) -->
                   <p class="offer-company-name">(주)리징지커머스</p>
                   <!-- TPL: (제안 시기..? 제안 이유..?) -->
-                  <p class="offer-reason">
+                  <p class="text offer-reason">
                     커머스 앱 상세페이지 UX 기획 프로젝트 완료 후 제안
                   </p>
                 </div>
@@ -336,26 +352,26 @@
                 <p class="offer-detail-row">
                   <span class="offer-detail-label">제안 메시지</span>
                   <!-- TPL: returnship.content (제안 내용) -->
-                  <span class="offer-detail-value"
+                  <span class="offer-detail-value offer-content"
                     >"함께한 프로젝트 성과가 좋아 정규직으로 모시고
                     싶습니다."</span
                   >
                 </p>
               </div>
-              <!-- 리턴십 제안 수락/거절 버튼 -->
-              <div class="offer-actions">
-                <button class="btn btn-reject">거절하기</button>
-                <button class="btn btn-accept">수락하기</button>
-              </div>
+            </div>
+            <!-- 리턴십 제안 수락/거절 버튼 -->
+            <div class="offer-actions">
+              <button class="offer-btn btn-reject">거절하기</button>
+              <button class="offer-btn btn-accept">수락하기</button>
             </div>
           </article>
         </section>
 
         <!-- 지난 리턴십 제안 내역 영역 -->
-        <section>
+        <section class="past-offer">
           <p class="subtitle">지난 제안 내역</p>
           <!-- TPL: (지난 리턴십 제안 목록 반복) -->
-          <article class="past-offer-card">
+          <article class="group-box past-offer-card">
             <div>
               <!-- TPL: company_profile.company_name (기업명) -->
               <p class="past-offer-company">(주)그로스토</p>
@@ -367,10 +383,11 @@
               </p>
             </div>
             <!-- TPL: returnship.status (리턴십 제안 수락 상태) -->
-            <div class="offer-status">수락 완료</div>
+            <!-- TPL: 수락 상태에 따른 클래스명 accept, reject -->
+            <div class="offer-status accept">수락 완료</div>
           </article>
 
-          <article class="past-offer-card">
+          <article class="group-box past-offer-card">
             <div>
               <p class="past-offer-company">(주)어보이드</p>
               <p class="past-offer-detail">
@@ -378,26 +395,26 @@
                 <span>계약직 신규 제안</span>
               </p>
             </div>
-            <div class="offer-status">수락 거절</div>
+            <div class="offer-status reject">수락 거절</div>
           </article>
         </section>
       </div>
 
       <!-- 근무 조건 탭 -->
-      <div class="tab-content" id="tab-condition">
+      <div class="tab-content active" id="tab-condition">
         <p class="title">근무 조건 수정</p>
         <p class="caption">
           희망 직무·보유 스킬·가용 시간을 수정하면 매칭 정확도가 올라가요
         </p>
-        <form class="condition-form">
+        <form class="group-box condition-form">
           <!-- 희망 직무 -->
           <div class="form-row">
             <p class="form-label">희망 직무</p>
-            <div class="tag-field">
+            <div class="form-field">
               <!-- TPL: worker_profile.job_category.name (희망 직무 목록 태그 형태로 반복) -->
               <div class="tag-list">
                 <span class="tag-item"
-                  >콘텐츠 기획<button type="button" class="btn-tag-remove">
+                  >콘텐츠 기획 <button type="button" class="btn-tag-remove">
                     ✕
                   </button></span
                 >
@@ -409,26 +426,26 @@
           <!-- 보유 스킬 -->
           <div class="form-row">
             <p class="form-label">보유 스킬</p>
-            <div class="tag-field">
+            <div class="form-field">
               <div class="tag-list">
                 <!-- TPL: worker_skill.name (보유 스킬명 목록 반복) -->
                 <span class="tag-item"
-                  >엑셀<button type="button" class="btn-tag-remove">
+                  >엑셀 <button type="button" class="btn-tag-remove">
                     ✕
                   </button></span
                 >
                 <span class="tag-item"
-                  >데이터 분석<button type="button" class="btn-tag-remove">
+                  >데이터 분석 <button type="button" class="btn-tag-remove">
+                    ✕ 
+                  </button></span
+                >
+                <span class="tag-item"
+                  >SNS 콘텐츠 <button type="button" class="btn-tag-remove">
                     ✕
                   </button></span
                 >
                 <span class="tag-item"
-                  >SNS 콘텐츠<button type="button" class="btn-tag-remove">
-                    ✕
-                  </button></span
-                >
-                <span class="tag-item"
-                  >커뮤니티 매니징<button type="button" class="btn-tag-remove">
+                  >커뮤니티 매니징 <button type="button" class="btn-tag-remove">
                     ✕
                   </button></span
                 >
@@ -443,14 +460,14 @@
             <div class="form-row-inline">
               <!-- 주간 가용 시간 -->
               <!-- TPL: worker_profile.weekly_hours (선택된 주간 가용 시간 selected 처리)-->
-              <select class="form-select" name="available_hours">
+              <select class="form-field form-select" name="available_hours">
                 <option value="under15" selected>주 15시간 미만</option>
                 <option value="15to20">주 15~25시간</option>
                 <option value="over20">주 25시간 이상</option>
               </select>
               
               <!-- 코어 타임 및 선호 근무 형태  -->
-              <button type="button" class="dropdown-field" id="open-schedule-modal">
+              <button type="button" class="form-field dropdown-field" id="open-schedule-modal">
                 <!-- TPL: worker_core_time.name · worker_profile.preferred_work_style (코어 타임, 선호 근무 형태)-->
                 <span class="dropdown-value">평일 오전 · 재택 근무 선호</span>
                 <img class="dropdown-arrow" src="../../static/img/dropdown.svg" />
@@ -469,8 +486,8 @@
         <div class="modal-overlay" id="job-modal" style="display: none">
           <div class="modal-box">
             <div class="modal-header">
-              <p class="modal-title">희망 직무 추가</p>
-              <p class="modal-guide">추가할 직무를 선택하세요</p>
+              <p class="subtitle">희망 직무 추가</p>
+              <p class="caption">추가할 직무를 선택하세요</p>
             </div>
 
             <div class="modal-body">
@@ -478,14 +495,13 @@
               <div class="unselected-tag-list" id="job-unselected-list">
                 <!-- TPL: job_category.name (선택되지 않은 직무명) -->
                 <button type="button" class="unselected-tag" data-value="data_analysis">
-                  데이터 분석<span class="add-icon">+</span>
+                  데이터 분석 +
                 </button>
                 <button type="button" class="unselected-tag" data-value="design">
-                  디자인<span class="add-icon">+</span>
+                  디자인 +
                 </button>
                 <button type="button" class="unselected-tag" data-value="development">
-                  개발<span class="add-icon">+</span>
-                </button>
+                  개발 +</button>
               </div>
 
               <!-- TPL: 모든 직무가 이미 선택되어 미선택 항목이 없을 때 표시 -->
@@ -495,7 +511,7 @@
             </div>
 
             <div class="modal-footer">
-              <button type="button" class="btn-close-modal" id="done-job-modal">닫기</button>
+              <button type="button" class="btn-close-modal" id="done-job-modal">저장</button>
             </div>
           </div>
         </div>
