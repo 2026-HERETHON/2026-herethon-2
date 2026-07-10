@@ -1,0 +1,56 @@
+/* 헤더 */
+/* 메뉴 영역 */
+.header-menu {
+  display: flex;
+  margin-right: auto;
+  margin-left: 60px;
+  align-items: center;
+  gap: 40px;
+}
+
+.header-menu a {
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  font-weight: 400;
+  cursor: pointer;
+  white-space: nowrap;
+
+  line-height: 40px;
+  border-bottom: 3px solid transparent;
+}
+
+.header-menu a:hover {
+  color: var(--color-primary);
+  font-weight: bold;
+  border-bottom-color: 3px solid var(--color-primary);
+  letter-spacing: 0.2px;
+}
+
+.header-menu a::after {
+  content: attr(data-label);
+  display: block;
+  height: 0;
+  visibility: hidden;
+  font-weight: bold;
+}
+
+.found {
+  width: 87.55px;
+}
+
+.header-profile {
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--color-primary);
+  border-radius: 50%;
+  background-color: var(--color-primary-light);
+
+  padding: 10px 14px;
+}
+
+.header-profile a {
+  color: var(--color-primary-dark);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
