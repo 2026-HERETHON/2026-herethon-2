@@ -113,10 +113,10 @@ def score_project_match(worker_profile, project):
         )
 
     weekly_hours_score = 10 if WEEKLY_HOURS_RANK.get(worker_profile.weekly_hours, 0) >= WEEKLY_HOURS_RANK.get(project.weekly_hours, 0) else 0
-    project_scale_score = _weighted_ratio(
-        len(project_scale_types & worker_scale_types),
-        len(project_scale_types),
-        5,
+    project_scale_score = (
+    5
+    if not project_scale_types or (project_scale_types & worker_scale_types)
+    else 0
     )
     career_years_score = 5 if CAREER_RANK.get(worker_profile.career_years, 0) >= CAREER_RANK.get(project.career_years, 0) else 0
 
