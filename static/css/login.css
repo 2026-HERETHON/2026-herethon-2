@@ -54,11 +54,12 @@ body {
   gap: 1.25rem;
 }
 
-.select-user-type button {
+.select-user-type a {
   padding: 2.7rem 2.2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 0.9375rem;
 
   width: 11.875rem;
@@ -69,7 +70,7 @@ body {
   background: var(--color-bg-default);
 }
 
-.select-user-type button:hover {
+.select-user-type a:hover {
   background-color: var(--color-bg-subtle);
   cursor: pointer;
 }
