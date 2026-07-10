@@ -34,11 +34,10 @@ body {
 }
 
 .header-login-button {
-  outline: none;
-  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 10px;
-
-  padding: 0.75rem 2.34rem;
   width: 6.875rem;
   height: 2.5rem;
 
@@ -50,9 +49,12 @@ body {
   font-weight: 700;
   margin-left: 80px;
   text-decoration: none;
+  border: 1px solid #ffffff00;
 }
 
 .header-login-button:hover {
+  font-size: 0.8125rem;
+  font-weight: 700;
   text-decoration: none;
   color: var(--color-primary);
   background-color: var(--color-primary-light);
