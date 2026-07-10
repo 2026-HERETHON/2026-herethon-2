@@ -183,7 +183,6 @@
                 tag.dataset.state = 'none';
 
                 tag.addEventListener('click', () => {
-                    // none → normal(필수) → preferred(우대) → none 순환
                     const current = tag.dataset.state;
                     let next;
                     if (current === 'none') next = 'normal';

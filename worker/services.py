@@ -158,37 +158,47 @@ def score_project_match(worker_profile, project):
 
 
 def rank_projects_for_worker(worker_profile, projects):
-    """프로젝트를 매칭률 기준으로 정렬하고 점수를 부여한다."""
     ranked_projects = [score_project_match(worker_profile, project) for project in projects]
     ranked_projects.sort(key=lambda project: (-project.match_score, project.deadline, -project.id))
     return ranked_projects
 
 
 def is_valid_activity_text(text):
-    """
-    AI 호출 전에 명백하게 잘못된 입력을 1차 검사한다.
-    - 한글/영문이 하나도 없는 입력
-    - 같은 문자만 반복되는 입력
-    """
+    """명백한 무의미 입력만 1차로 차단한다."""
     if not text:
         return False
+
     text = text.strip()
-    if len(text) < 3:
+
+    if len(text) < 2:
         return False
+
+    invalid_values = {
+        '없음',
+        '모름',
+        '몰라',
+        '아무거나',
+        '테스트',
+        'test',
+    }
+
+    if text.lower() in invalid_values:
+        return False
+
+    # 한글이나 영문이 하나도 없는 경우
     if not re.search(r'[가-힣A-Za-z]', text):
         return False
+
     compact = text.replace(' ', '')
-    if len(set(compact)) <= 1:
+
+    # 같은 문자만 반복된 경우: ㅋㅋㅋ, aaa
+    if len(set(compact)) == 1:
         return False
+
     return True
 
 
 def classify_hidden_abilities(activities, job_category_id):
-    """
-    공백기 활동을 희망 직무의 숨은 능력 중 하나로 분류한다.
-    유효하지 않은 입력(1차 검증 실패 또는 AI INVALID 판정)은 None으로 반환한다.
-    반환 목록의 순서와 개수는 입력 activities와 동일하다.
-    """
     if not activities:
         return []
 
@@ -224,25 +234,24 @@ def classify_hidden_abilities(activities, job_category_id):
     )
 
     prompt = f"""
-당신은 경력 공백기 동안 수행한 활동을 분석하여,
-그 안에 드러나는 업무 역량으로 분류하는 역할을 합니다.
+당신은 경력 공백기 동안의 활동을 분석하여,
+그 활동에서 드러나는 업무 역량으로 분류하는 역할을 합니다.
 
-먼저 각 입력이 실제 활동을 설명하고 있는지 판단하세요.
+다음처럼 의미가 없거나 활동이라고 보기 어려운 입력만 INVALID로 분류하세요.
 
-다음과 같은 입력은 INVALID로 분류하세요.
+- 한 글자 또는 의미 없는 짧은 입력
+- 자음, 숫자, 같은 문자 반복
+- "없음", "모름", "아무거나", "테스트" 같은 표현
 
-- 의미 없는 문자 또는 단어
-- 단순 테스트 입력
-- 자음, 숫자 또는 같은 문자의 반복
-- "없음", "모름", "아무거나"처럼 활동을 설명하지 않는 표현
+그 외에는 활동이 짧거나 다소 포괄적이더라도
+아래 숨은 능력 후보 중 가장 가까운 하나를 선택하세요.
 
-중요: 아래와 같이 구체적 활동이 드러나는 문장은 INVALID로 분류하지 마세요.
-- 지역구 선거 참여
-- 주식 차트 분석
-- 커뮤니티 운영
-
-유효한 활동이라면 아래 후보 중 가장 관련 있는 숨은 능력
-하나를 선택하세요.
+예:
+- 지역구 선거 참여 → 유효
+- 주식 차트 분석 → 유효
+- 커뮤니티 운영 → 유효
+- 학교 행사 참여 → 유효
+- 아이 돌봄 → 유효
 
 [숨은 능력 후보]
 {options_text}
@@ -250,8 +259,8 @@ def classify_hidden_abilities(activities, job_category_id):
 [분석할 활동 목록]
 {activities_text}
 
-각 활동의 순서대로 선택한 코드를 반환하세요.
-유효하지 않은 활동은 반드시 INVALID를 반환하세요.
+각 활동 순서대로 코드를 반환하세요.
+명백하게 의미 없는 입력만 INVALID로 반환하세요.
 """.strip()
 
     try:
@@ -287,7 +296,6 @@ def classify_hidden_abilities(activities, job_category_id):
     except Exception:
         return [None] * len(activities)
 
-    # 원래 activities 순서 유지하며 결과 매핑
     classified_ids = [None] * len(activities)
     for original_index, code in zip(valid_indexes, codes):
         if code != 'INVALID':

@@ -1,6 +1,4 @@
 def resolve_redirect_url(user, request=None):
-    # 유저 상태(role, onboarding_completed)에 따라 어디로 보내야 할지 URL name 리턴
-    # 로그인 직후, 랜딩페이지 재접속 시 등 여러 곳에서 공통으로 사용되는 유틸
     if not user.role:
         return 'accounts:role_select'
 
