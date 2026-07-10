@@ -247,6 +247,8 @@ def onboarding_step4(request):
                 WorkerSkill.objects.create(worker_profile=worker_profile, skill_id=skill_id)
 
             for activity_text, hidden_ability_id in zip(gap_activities, hidden_ability_ids):
+                if hidden_ability_id is None:
+                    continue
                 WorkerHiddenActivity.objects.create(
                     worker_profile=worker_profile,
                     activity_text=activity_text,
