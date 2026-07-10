@@ -16,8 +16,8 @@ from worker.models import (
     WorkerSkill,
 )
 
-from worker.services import classify_hidden_abilities
-from worker.services import get_worker_hidden_abilities, rank_projects_for_worker
+from worker.services.hidden_ability import classify_hidden_abilities, get_worker_hidden_abilities
+from worker.services.matching import rank_projects_for_worker
 
 
 def _get_prefetched_worker_profile(user):
