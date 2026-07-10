@@ -1,8 +1,8 @@
 /* 헤더 */
 body {
-  margin: 0;
+  display: flex;
+  flex-direction: column;
   overflow-x: hidden;
-  min-height: 100dvh;
 }
 .landing-header {
   position: static;
@@ -59,15 +59,13 @@ body {
 
 /* 메인 */
 main {
+  flex: 1;
+
   display: flex;
   justify-content: center;
   align-items: center;
 
   width: 100%;
-  min-height: calc(100dvh - 10rem);
-
-  height: 80vh;
-
   padding: 4rem 2rem;
   gap: 12.38rem;
 
@@ -269,6 +267,7 @@ main {
 
   width: 100%;
   height: 6.25rem;
+  flex-shrink: 0;
   background-color: var(--color-bg-default);
 
   gap: 4.19rem;
