@@ -1,0 +1,275 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>공고 등록</title>
+    <style>
+        .skill-tag {
+            display: inline-block;
+            padding: 6px 14px;
+            margin: 4px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            user-select: none;
+        }
+        /* 필수 선택 상태 */
+        .skill-tag.state-normal {
+            border: 1px solid #4a90d9;
+            background: #eaf3fc;
+        }
+        /* 우대 선택 상태 (더 굵고 강조) */
+        .skill-tag.state-preferred {
+            border: 3px solid #1a56db;
+            background: #d6e6fb;
+            font-weight: bold;
+        }
+        .empty-message {
+            margin: 8px 0;
+            color: #666;
+            font-size: 14px;
+        }
+        #hidden-ability-section { display: none; margin-top: 8px; }
+    </style>
+</head>
+<body>
+    <h1>새 프로젝트 공고 등록</h1>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="post" id="project-form">
+        {% csrf_token %}
+
+        <div>
+            <label>프로젝트명</label>
+            <input type="text" name="title" required>
+        </div>
+
+        <div>
+            <label>업무 지원 유형</label>
+            <label><input type="radio" name="project_type" value="WARMUP" required> 워밍업 프로젝트</label>
+            <label><input type="radio" name="project_type" value="REAL"> 실무 프로젝트</label>
+        </div>
+
+        <div>
+            <label>직무</label>
+            {% for job in job_categories %}
+                <label>
+                    <input type="radio" name="job_category" value="{{ job.id }}"
+                           class="job-radio" required>
+                    {{ job.name }}
+                </label>
+            {% endfor %}
+        </div>
+
+        <div>
+            <label>근무 형태</label>
+            <label><input type="radio" name="work_style" value="REMOTE" required> 100% 재택</label>
+            <label><input type="radio" name="work_style" value="ONSITE_WEEKLY_1"> 주 1회 출근</label>
+            <label><input type="radio" name="work_style" value="ONSITE_WEEKLY_3"> 주 3회 이상 출근</label>
+            <label><input type="radio" name="work_style" value="ONSITE_DAILY"> 매일 출근</label>
+        </div>
+
+        <div>
+            <label>가용 시간</label>
+            <label><input type="radio" name="weekly_hours" value="UNDER_15" required> 주 15시간 미만</label>
+            <label><input type="radio" name="weekly_hours" value="FIFTEEN_TO_25"> 주 15시간~25시간</label>
+            <label><input type="radio" name="weekly_hours" value="OVER_25"> 주 25시간 이상</label>
+        </div>
+
+        <div>
+            <label>업무 규모 (복수 선택 가능)</label>
+            <label><input type="checkbox" name="preferred_scales" value="SHORT"> 1~2주 단기</label>
+            <label><input type="checkbox" name="preferred_scales" value="LONG"> 1개월 이상 중기</label>
+            <label><input type="checkbox" name="preferred_scales" value="REGULAR_TRANSITION"> 정규직 전환 전제</label>
+        </div>
+
+        <div>
+            <label>경력 연차</label>
+            <label><input type="radio" name="career_years" value="ONE_TO_THREE" required> 1~3년</label>
+            <label><input type="radio" name="career_years" value="THREE_TO_FIVE"> 3~5년</label>
+            <label><input type="radio" name="career_years" value="FIVE_TO_SEVEN"> 5~7년</label>
+            <label><input type="radio" name="career_years" value="OVER_SEVEN"> 7년 이상</label>
+        </div>
+
+        <div>
+            <label>보수 금액</label>
+            <input type="number" name="compensation_amount" min="0" required>
+        </div>
+
+        <div>
+            <label>필수 스킬 (클릭: 선택 → 필수 → 우대 → 선택해제 순으로 전환돼요)</label>
+            <p style="color:#888; font-size:13px;">선택한 직무에 맞는 스킬만 보여줘요.</p>
+            <div id="skill-container">
+                <p class="empty-message">직무를 먼저 선택해주세요.</p>
+            </div>
+            <input type="hidden" name="skill_priorities" id="skill-priorities-input">
+        </div>
+
+        <div>
+            <label>코어 타임</label>
+            {% for time in time_slots %}
+                <label>
+                    <input type="checkbox" name="core_times" value="{{ time.id }}">
+                    {{ time.name }}
+                </label>
+            {% endfor %}
+        </div>
+
+        <div>
+            <button type="button" id="hidden-ability-toggle-btn">+ 숨은 능력 우대 조건 추가하기</button>
+            <div id="hidden-ability-section">
+                <label>숨은 능력 우대 (선택사항)</label><br>
+                <div id="hidden-ability-options">
+                    <p class="empty-message">직무를 먼저 선택해주세요.</p>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <label>상세 내용</label>
+            <textarea name="description" required></textarea>
+        </div>
+
+        <div>
+            <label>마감일</label>
+            <input type="date" name="deadline" required>
+        </div>
+
+        <div>
+            <label>프로젝트 기간</label>
+            <input type="text" name="duration" placeholder="예: 2주">
+        </div>
+
+        <div>
+            <label>모집 인원</label>
+            <input type="number" name="recruit_count" min="1" required>
+        </div>
+
+        <button type="submit">공고 등록하기</button>
+    </form>
+
+    <script>
+        // Django에서 넘겨준 직무별 스킬 매핑: { "1": [{id, name}, ...], "2": [...] }
+        const skillsByJob = JSON.parse('{{ skills_by_job_json|escapejs }}');
+        const hiddenAbilitiesByJob = JSON.parse('{{ hidden_abilities_by_job_json|escapejs }}');
+
+        // 현재 선택된 스킬 상태: { skillId: "NORMAL" | "PREFERRED" }
+        let skillState = {};
+
+        const skillContainer = document.getElementById('skill-container');
+        const priorityInput = document.getElementById('skill-priorities-input');
+        const hiddenAbilityOptions = document.getElementById('hidden-ability-options');
+
+        function renderEmptyMessage(container, message) {
+            container.innerHTML = `<p class="empty-message">${message}</p>`;
+        }
+
+        function renderSkills(jobId) {
+            skillState = {};
+            skillContainer.innerHTML = '';
+            const skills = skillsByJob[jobId] || [];
+
+            if (!jobId) {
+                renderEmptyMessage(skillContainer, '직무를 먼저 선택해주세요.');
+                priorityInput.value = '{}';
+                return;
+            }
+
+            if (!skills.length) {
+                renderEmptyMessage(skillContainer, '해당 직무에 연결된 스킬이 아직 없어요.');
+                priorityInput.value = '{}';
+                return;
+            }
+
+            skills.forEach(skill => {
+                const tag = document.createElement('span');
+                tag.className = 'skill-tag';
+                tag.textContent = skill.name;
+                tag.dataset.skillId = skill.id;
+                tag.dataset.state = 'none';
+
+                tag.addEventListener('click', () => {
+                    // none → normal(필수) → preferred(우대) → none 순환
+                    const current = tag.dataset.state;
+                    let next;
+                    if (current === 'none') next = 'normal';
+                    else if (current === 'normal') next = 'preferred';
+                    else next = 'none';
+
+                    tag.dataset.state = next;
+                    tag.classList.remove('state-normal', 'state-preferred');
+
+                    if (next === 'normal') {
+                        tag.classList.add('state-normal');
+                        skillState[skill.id] = 'NORMAL';
+                    } else if (next === 'preferred') {
+                        tag.classList.add('state-preferred');
+                        skillState[skill.id] = 'PREFERRED';
+                    } else {
+                        delete skillState[skill.id];
+                    }
+
+                    priorityInput.value = JSON.stringify(skillState);
+                });
+
+                skillContainer.appendChild(tag);
+            });
+
+            priorityInput.value = '{}';
+        }
+
+        function renderHiddenAbilities(jobId) {
+            hiddenAbilityOptions.innerHTML = '';
+            const abilities = hiddenAbilitiesByJob[jobId] || [];
+
+            if (!jobId) {
+                renderEmptyMessage(hiddenAbilityOptions, '직무를 먼저 선택해주세요.');
+                return;
+            }
+
+            if (!abilities.length) {
+                renderEmptyMessage(hiddenAbilityOptions, '해당 직무에 연결된 숨은 능력이 없어요.');
+                return;
+            }
+
+            abilities.forEach(ability => {
+                const label = document.createElement('label');
+                const input = document.createElement('input');
+
+                input.type = 'checkbox';
+                input.name = 'hidden_abilities';
+                input.value = ability.id;
+
+                label.appendChild(input);
+                label.append(` ${ability.name}`);
+                hiddenAbilityOptions.appendChild(label);
+            });
+        }
+
+        document.querySelectorAll('.job-radio').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                renderSkills(e.target.value);
+                renderHiddenAbilities(e.target.value);
+            });
+        });
+
+        const hiddenAbilityBtn = document.getElementById('hidden-ability-toggle-btn');
+        const hiddenAbilitySection = document.getElementById('hidden-ability-section');
+        hiddenAbilityBtn.addEventListener('click', () => {
+            const isHidden = hiddenAbilitySection.style.display === 'none';
+            hiddenAbilitySection.style.display = isHidden ? 'block' : 'none';
+            hiddenAbilityBtn.textContent = isHidden
+                ? '- 숨은 능력 우대 조건 접기'
+                : '+ 숨은 능력 우대 조건 추가하기';
+        });
+        document.getElementById('project-form').addEventListener('submit', () => {
+            priorityInput.value = JSON.stringify(skillState);
+        });
+    </script>
+</body>
+</html>
