@@ -146,7 +146,7 @@ selectedSkillTagList.addEventListener("click", (e) => {
   removeTag.className = "unselected-tag";
   removeTag.type = "button";
   removeTag.innerHTML = `${label} +`;
-  jobUnselectedList.appendChild(removeTag);
+  skillUnselectedList.appendChild(removeTag);
 
   // 태그 삭제
   tagItem.remove();
