@@ -33,6 +33,7 @@ header {
   justify-content: flex-start;
   align-items: center;
   margin-bottom: 1.19rem;
+  gap: 3px;
 
   .ellipse {
     width: 8px;
