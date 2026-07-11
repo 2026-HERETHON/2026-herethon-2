@@ -29,6 +29,8 @@
         >← 이전
         <div class="ellipse hidden"></div
       ></a>
+
+      <!--스텝 1~4 순서대로 active 누적 적용-->
       <div class="step-bar">
         <span class="step active"></span>
         <span class="step"></span>
@@ -38,13 +40,26 @@
       <small class="step-tatus">1/4단계</small>
       <h3 class="step1-desc">희망하시는 직무를 선택해주세요</h3>
       <p class="select-desc">중복 선택 가능해요</p>
+
+      <!--TPL: job_category.name 직무선택-->
       <form method="post">
         <div class="career-wrap">
-          <input type="radio" name="job-type" id="content" class="btn-hover">콘텐츠 기획</input>
-          <input type="radio" name="job-type" id="data" class="btn-hover">데이터 분석</input>
-          <input type="radio" name="job-type" id="design" class="btn-hover">디자인</input>
-          <input type="radio" name="job-type" id="develop" class="btn-hover">개발</input>
+          <input type="radio" name="job_type" id="content" />
+          <label for="content" class="btn-hover">콘텐츠 기획</label>
+          <input type="radio" name="job_type" id="data" />
+          <label for="data" class="btn-hover">데이터 분석</label>
+          <input type="radio" name="job_type" id="design" /><label
+            for="design"
+            class="btn-hover"
+            >디자인</label
+          >
+          <input type="radio" name="job_type" id="develop" /><label
+            for="develop"
+            class="btn-hover"
+            >개발</label
+          >
         </div>
+        <!--TPL: 온보딩 step2로 이동-->
         <button type="submit" class="next-btn btn-hover">다음</button>
       </form>
     </main>

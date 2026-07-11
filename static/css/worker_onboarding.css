@@ -86,12 +86,24 @@ header {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
+
+  place-items: center;
+
   margin: 3.5rem 0rem;
   gap: 1.25rem;
 }
 
-input[name="job-type"] {
-  width: 12rem;
+.career-wrap input {
+  position: absolute;
+  opacity: 0;
+}
+
+.career-wrap label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 12.85rem;
   height: 4rem;
 
   color: #374151;
@@ -106,9 +118,8 @@ input[name="job-type"] {
 
 .next-btn {
   white-space: nowrap;
-  width: 31.25rem;
+  width: 431.2px;
   height: 3.125rem;
-  padding: 1rem 14.75rem;
   background-color: var(--color-primary);
   color: var(--color-text-inverse);
   border: 1px solid var(--color-primary);
@@ -117,4 +128,16 @@ input[name="job-type"] {
 
 .hidden {
   display: none;
+}
+
+/* radio 선택값 유지*/
+input[name="job_type"]:checked + .btn-hover {
+  background-color: var(--color-primary-light);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  cursor: pointer;
+
+  span {
+    color: var(--color-primary);
+  }
 }
