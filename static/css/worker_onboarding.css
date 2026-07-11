@@ -28,11 +28,11 @@ header {
 }
 
 .back-btn {
-  width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   margin-bottom: 1.19rem;
+  margin-right: auto;
   gap: 3px;
 
   .ellipse {
