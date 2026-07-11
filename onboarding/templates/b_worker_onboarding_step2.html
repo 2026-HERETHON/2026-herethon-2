@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>온보딩 2단계</title>
+</head>
+<body>
+<header>
+    <a href="/">RE:Bridge</a>
+</header>
+
+<main>
+    <button type="button" onclick="location.href='{% url 'worker:onboarding_step1' %}'">이전</button>
+    <p>2 / 4</p>
+    <h1>보유 스킬과 경력 정보</h1>
+
+    <form method="post" id="step2-form">
+        {% csrf_token %}
+
+        <section>
+            <h2>보유 스킬</h2>
+            {% for js in skills %}
+            <div>
+                <input type="checkbox" name="skills" id="skill_{{ js.skill.id }}" value="{{ js.skill.id }}" {% if js.skill.id in selected_skills %}checked{% endif %}>
+                <label for="skill_{{ js.skill.id }}">{{ js.skill.name }}</label>
+            </div>
+            {% empty %}
+            <p>해당 직무에 연결된 스킬이 없어요.</p>
+            {% endfor %}
+        </section>
+
+        <section>
+            <h2>경력 연차</h2>
+            {% for value, label in career_choices %}
+            <div>
+                <input type="radio" name="career_years" id="career_{{ value }}" value="{{ value }}" {% if selected_career == value %}checked{% endif %}>
+                <label for="career_{{ value }}">{{ label }}</label>
+            </div>
+            {% endfor %}
+            {% if errors.career_years %}
+            <p>{{ errors.career_years }}</p>
+            {% endif %}
+        </section>
+
+        <section>
+            <h2>주요 성과 키워드</h2>
+            <input type="text" name="achievement_keywords" value="{{ achievement_keywords }}" maxlength="500">
+        </section>
+
+        <section>
+            <h2>경력 공백기 활동</h2>
+            <input type="text" name="gap_activities" value="{{ gap_activities }}">
+            <p>쉼표(,)로 구분하면 각각 저장됩니다.</p>
+            {% if gap_error %}
+            <p style="color: red;">{{ gap_error }}</p>
+            {% endif %}
+        </section>
+
+        <button type="submit" id="step2-next-btn" disabled>다음</button>
+    </form>
+</main>
+
+<script>
+    const step2CareerInputs = document.querySelectorAll('input[name="career_years"]');
+    const step2Button = document.getElementById('step2-next-btn');
+
+    function updateStep2Button() {
+        step2Button.disabled = !document.querySelector('input[name="career_years"]:checked');
+    }
+
+    step2CareerInputs.forEach((input) => input.addEventListener('change', updateStep2Button));
+    updateStep2Button();
+</script>
+</body>
+</html>

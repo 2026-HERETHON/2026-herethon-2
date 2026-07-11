@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>숨은 능력 결과</title>
+</head>
+<body>
+  <main>
+    <section>
+      <h1>공백기 활동 → 숨은 능력</h1>
+
+      {% if grouped_activities %}
+      <ul>
+        {% for ability_name, activity_texts in grouped_activities %}
+        <li>
+          <span>
+            {% for activity_text in activity_texts %}
+              {{ activity_text }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+          </span>
+          <span>→</span>
+          <strong>{{ ability_name }}</strong>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>기록된 경력 공백 활동이 없어요.</p>
+      {% endif %}
+    </section>
+
+    <div>
+      <a href="{% url 'worker:match_top3_result' %}">내 매칭 결과 보러 가기</a>
+    </div>
+  </main>
+</body>
+</html>

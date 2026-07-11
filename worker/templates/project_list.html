@@ -1,11 +1,12 @@
+{% load static %}
 <!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <title>RE:Bridge</title>
-    <link rel="stylesheet" href="../../static/css/colorpalette.css" />
-    <link rel="stylesheet" href="../../static/css/global.css" />
-    <link rel="stylesheet" href="../../static/css/project_list.css" />
+    <link rel="stylesheet" href="{% static 'css/colorpalette.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/global.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/project_list.css' %}" />
   </head>
   <body>
     <!-- 헤더 영역 -->
@@ -13,7 +14,7 @@
       <div class="header-logo">
         <img
           class="header-logo-img"
-          src="../../static/img/logo.svg"
+          src="{% static 'img/logo.svg' %}"
           alt="logo"
         />
         <div class="header-logo-text">
@@ -94,7 +95,7 @@
 
             <!-- TBL: 상태(project.status)가 모집중인 총 프로젝트 개수 삽입-->
             <span
-              >총 <span>24</span>건의 프로젝트 · 나와 잘 맞는 순으로 정렬되어
+              >총 <span>{{ project_count }}</span>건의 프로젝트 · 나와 잘 맞는 순으로 정렬되어
               있어요</span
             >
           </div>
@@ -102,223 +103,80 @@
         
           <div class="bar-sort">
             <!-- TPL: request.GET.sort (정렬 기준값: matching(임의추가)/deadline/created_at) -->
-            <a class="sort1" href="?sort=matching">매칭률순</a>
-            <a class="sort2" href="?sort=deadline">마감임박순</a>
-            <a class="sort3" href="?sort=latest">최신순</a>
+            <a class="sort1" href="?type=real&sort=matching">매칭률순</a>
+            <a class="sort2" href="?type=real&sort=deadline">마감임박순</a>
+            <a class="sort3" href="?type=real&sort=latest">최신순</a>
+            <a class="sort4" href="?type=warmup">워밍업 모아보기</a>
           </div>
         </div>
 
         <!--TPL: 프로젝트 목록 -->
         <div class="card-wrap">
           <!--하나의 article이 하나의 프로젝트 카드입니다.-->
-          <!--TPL: project (프로젝트 목록 반복) -->
+          <!--TBL: project (프로젝트 목록 반복) -->
+          {% for project in projects %}
           <article class="project-card">
             <section class="project-info">
               <!--TPL: project.title (프로젝트명) -->
               <p class="project-title">
-                커머스 앱 상세페이지 UX기획 및 문구 교정
+                {{ project.title }}
               </p>
 
               <!--프로젝트 정보 요약(카드의 왼쪽 영역)-->
               <div class="project-type-wrap">
-                <!--TPL: company_profile.company_name (기업명) -->
-                <span class="type-company">(주)브릿지커머스 · </span>
-                <!--TPL: job_category.name (직무명) -->
-                <span class="type-career">콘텐츠기획 · </span>
-                <!--TPL: project.work_style (근무 형태) -->
-                <span class="type-work">재택 · </span>
-                <!--TPL: project.weecly_hours (주간 가용 시간) -->
-                <span class="type-time">주 15시간 · </span>
-                <!--TPL: project.ompensation_amount (보수 금액) -->
-                <span class="type-pay">시급 25,000원 · </span>
-                <!--TPL: project.project_type (업무 지원 유형) -->
-                <span class="type-keyword"
-                  >엑셀, 커뮤니티 운영, SNS콘텐츠기획</span
-                >
+                <!--TBL: company_profile.company_name (기업명) -->
+                <span class="type-company">{{ project.company_profile.company_name }} · </span>
+                <!--TBL: job_category.name (직무명) -->
+                <span class="type-career">{{ project.job_category.name }} · </span>
+                <!--TBL: project.work_style (근무 형태) -->
+                <span class="type-work">{{ project.get_work_style_display }} · </span>
+                <!--TBL: project.weecly_hours (주간 가용 시간) -->
+                <span class="type-time">{{ project.get_weekly_hours_display }} · </span>
+                <!--TBL: project.compensation_amount (보수 금액) -->
+                <span class="type-pay">시급 {{ project.compensation_amount }}원 · </span>
+                <!--TBL: 우대 스킬 -->
+                <span class="type-keyword">
+                  {% if project.preferred_skills_list %}
+                    {% for skill in project.preferred_skills_list %}
+                      {{ skill.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                  {% else %}
+                    우대 스킬 없음
+                  {% endif %}
+                </span>
               </div>
             </section>
 
             <!--프로젝트 상태(카드의 오른쪽 영역)-->
             <section class="project-status">
               <div class="matching-rate">
-                <img src="../../static/img/heart-filled.svg" />
-                <!--TPL: (매칭률) -->
-                <p>92%</p>
+                <img src="{% static 'img/heart-filled.svg' %}" />
+                <!--TBL: (매칭률) -->
+                <p>{{ project.match_score|default:0 }}%</p>
               </div>
-              <!--TPL: project.deadlind (마감일) -->
-              <p class="due-date">마감 D-9</p>
-            </section>
-          </article>
-
-          <!-- 하기 article은 모두 추후 연동 시 삭제 예정 -->
-          <article class="project-card">
-            <section class="project-info">
-              <p class="project-title">
-                커머스 앱 상세페이지 UX기획 및 문구 교정
+              <!--TBL: project.deadline (마감일) -->
+              <p class="due-date">
+                {% if project.deadline_d_day > 0 %}
+                D-{{ project.deadline_d_day }}
+                {% elif project.deadline_d_day == 0 %}
+                D-DAY
+                {% else %}
+                마감
+                {% endif %}
               </p>
-
-              <!--프로젝트 정보 요약(카드의 왼쪽 영역)-->
-              <div class="project-type-wrap">
-                <span class="type-company">(주)브릿지커머스 · </span>
-                <span class="type-career">콘텐츠기획 · </span>
-                <span class="type-work">재택 · </span>
-                <span class="type-time">주 15시간 · </span>
-                <span class="type-pay">시급 25,000원 · </span>
-                <span class="type-keyword"
-                  >엑셀, 커뮤니티 운영, SNS콘텐츠기획</span
-                >
-              </div>
-            </section>
-
-            <!--프로젝트 상태(카드의 오른쪽 영역)-->
-            <section class="project-status">
-              <div class="matching-rate">
-                <img src="../../static/img/heart-filled.svg" />
-                <p>92%</p>
-              </div>
-              <p class="due-date">마감 D-9</p>
             </section>
           </article>
-          <article class="project-card">
-            <section class="project-info">
-              <p class="project-title">
-                커머스 앱 상세페이지 UX기획 및 문구 교정
-              </p>
-
-              <!--프로젝트 정보 요약(카드의 왼쪽 영역)-->
-              <div class="project-type-wrap">
-                <span class="type-company">(주)브릿지커머스 · </span>
-                <span class="type-career">콘텐츠기획 · </span>
-                <span class="type-work">재택 · </span>
-                <span class="type-time">주 15시간 · </span>
-                <span class="type-pay">시급 25,000원 · </span>
-                <span class="type-keyword"
-                  >엑셀, 커뮤니티 운영, SNS콘텐츠기획</span
-                >
-              </div>
-            </section>
-
-            <!--프로젝트 상태(카드의 오른쪽 영역)-->
-            <section class="project-status">
-              <div class="matching-rate">
-                <img src="../../static/img/heart-filled.svg" />
-                <p>87%</p>
-              </div>
-              <p class="due-date">마감 D-9</p>
-            </section>
-          </article>
-          <article class="project-card">
-            <section class="project-info">
-              <p class="project-title">
-                커머스 앱 상세페이지 UX기획 및 문구 교정
-              </p>
-
-              <!--프로젝트 정보 요약(카드의 왼쪽 영역)-->
-              <div class="project-type-wrap">
-                <span class="type-company">(주)브릿지커머스 · </span>
-                <span class="type-career">콘텐츠기획 · </span>
-                <span class="type-work">재택 · </span>
-                <span class="type-time">주 15시간 · </span>
-                <span class="type-pay">시급 25,000원 · </span>
-                <span class="type-keyword"
-                  >엑셀, 커뮤니티 운영, SNS콘텐츠기획</span
-                >
-              </div>
-            </section>
-
-            <!--프로젝트 상태(카드의 오른쪽 영역)-->
-            <section class="project-status">
-              <div class="matching-rate">
-                <img src="../../static/img/heart-filled.svg" />
-                <p>87%</p>
-              </div>
-              <p class="due-date">마감 D-9</p>
-            </section>
-          </article>
-          <article class="project-card">
-            <section class="project-info">
-              <p class="project-title">
-                커머스 앱 상세페이지 UX기획 및 문구 교정
-              </p>
-
-              <!--프로젝트 정보 요약(카드의 왼쪽 영역)-->
-              <div class="project-type-wrap">
-                <span class="type-company">(주)브릿지커머스 · </span>
-                <span class="type-career">콘텐츠기획 · </span>
-                <span class="type-work">재택 · </span>
-                <span class="type-time">주 15시간 · </span>
-                <span class="type-pay">시급 25,000원 · </span>
-                <span class="type-keyword"
-                  >엑셀, 커뮤니티 운영, SNS콘텐츠기획</span
-                >
-              </div>
-            </section>
-
-            <!--프로젝트 상태(카드의 오른쪽 영역)-->
-            <section class="project-status">
-              <div class="matching-rate-middle">
-                <img src="../../static/img/good-one.svg" />
-                <p>78%</p>
-              </div>
-              <p class="due-date">마감 D-9</p>
-            </section>
-          </article>
-          <article class="project-card">
-            <section class="project-info">
-              <p class="project-title">
-                커머스 앱 상세페이지 UX기획 및 문구 교정
-              </p>
-
-              <!--프로젝트 정보 요약(카드의 왼쪽 영역)-->
-              <div class="project-type-wrap">
-                <span class="type-company">(주)브릿지커머스 · </span>
-                <span class="type-career">콘텐츠기획 · </span>
-                <span class="type-work">재택 · </span>
-                <span class="type-time">주 15시간 · </span>
-                <span class="type-pay">시급 25,000원 · </span>
-                <span class="type-keyword"
-                  >엑셀, 커뮤니티 운영, SNS콘텐츠기획</span
-                >
-              </div>
-            </section>
-
-            <!--프로젝트 상태(카드의 오른쪽 영역)-->
-            <section class="project-status">
-              <div class="matching-rate-middle">
-                <img src="../../static/img/good-one.svg" />
-                <p>78%</p>
-              </div>
-              <p class="due-date">마감 D-9</p>
-            </section>
-          </article>
-          <article class="project-card">
-            <section class="project-info">
-              <p class="project-title">
-                커머스 앱 상세페이지 UX기획 및 문구 교정
-              </p>
-
-              <!--프로젝트 정보 요약(카드의 왼쪽 영역)-->
-              <div class="project-type-wrap">
-                <span class="type-company">(주)브릿지커머스 · </span>
-                <span class="type-career">콘텐츠기획 · </span>
-                <span class="type-work">재택 · </span>
-                <span class="type-time">주 15시간 · </span>
-                <span class="type-pay">시급 25,000원 · </span>
-                <span class="type-keyword"
-                  >엑셀, 커뮤니티 운영, SNS콘텐츠기획</span
-                >
-              </div>
-            </section>
-
-            <!--프로젝트 상태(카드의 오른쪽 영역)-->
-            <section class="project-status">
-              <div class="matching-rate">
-                <img src="../../static/img/heart-filled.svg" />
-                <p>92%</p>
-              </div>
-              <p class="due-date">마감 D-9</p>
-            </section>
-          </article>
+          {% empty %}
+          <div class="no-projects" style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+            <p style="font-size: 16px; color: #666;">
+              {% if view_type == 'warmup' %}
+              아직 등록된 워밍업 프로젝트가 없어요.
+              {% else %}
+              아직 등록된 실무 프로젝트가 없어요.
+              {% endif %}
+            </p>
+          </div>
+          {% endfor %}
         </div>
 
         <!--클릭 시 6개씩 프로젝트 공고 노출되게 구현-->
@@ -329,5 +187,5 @@
     </div>
   </body>
 
-  <script src="../../static/js/project_list.js"></script>
+  <script src="{% static 'js/project_list.js' %}"></script>
 </html>

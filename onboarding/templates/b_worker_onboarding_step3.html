@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>온보딩 3단계</title>
+</head>
+<body>
+<header>
+    <a href="/">RE:Bridge</a>
+</header>
+
+<main>
+    <button type="button" onclick="location.href='{% url 'worker:onboarding_step2' %}'">이전</button>
+    <p>3 / 4</p>
+    <h1>근무 조건 입력</h1>
+
+    <form method="post" id="step3-form">
+        {% csrf_token %}
+
+        <section>
+            <h2>주간 가용 시간</h2>
+            {% for value, label in weekly_hours_choices %}
+            <div>
+                <input type="radio" name="weekly_hours" id="weekly_{{ value }}" value="{{ value }}" {% if selected_weekly_hours == value %}checked{% endif %}>
+                <label for="weekly_{{ value }}">{{ label }}</label>
+            </div>
+            {% endfor %}
+            {% if errors.weekly_hours %}
+            <p>{{ errors.weekly_hours }}</p>
+            {% endif %}
+        </section>
+
+        <section>
+            <h2>코어타임</h2>
+            {% for slot in time_slots %}
+            <div>
+                <input type="checkbox" name="core_times" id="time_{{ slot.id }}" value="{{ slot.id }}" {% if slot.id in selected_core_times %}checked{% endif %}>
+                <label for="time_{{ slot.id }}">{{ slot.name }}</label>
+            </div>
+            {% endfor %}
+        </section>
+
+        <section>
+            <h2>선호 근무 형태</h2>
+            {% for value, label in work_style_choices %}
+            <div>
+                <input type="radio" name="preferred_work_style" id="work_{{ value }}" value="{{ value }}" {% if selected_work_style == value %}checked{% endif %}>
+                <label for="work_{{ value }}">{{ label }}</label>
+            </div>
+            {% endfor %}
+            {% if errors.preferred_work_style %}
+            <p>{{ errors.preferred_work_style }}</p>
+            {% endif %}
+        </section>
+
+        <section>
+            <h2>선호 업무 규모</h2>
+            {% for value, label in scale_choices %}
+            <div>
+                <input type="checkbox" name="preferred_scales" id="scale_{{ value }}" value="{{ value }}" {% if value in selected_scales %}checked{% endif %}>
+                <label for="scale_{{ value }}">{{ label }}</label>
+            </div>
+            {% endfor %}
+        </section>
+
+        <button type="submit" id="step3-next-btn" disabled>다음</button>
+    </form>
+</main>
+
+<script>
+    const step3WeeklyInputs = document.querySelectorAll('input[name="weekly_hours"]');
+    const step3WorkStyleInputs = document.querySelectorAll('input[name="preferred_work_style"]');
+    const step3Button = document.getElementById('step3-next-btn');
+
+    function updateStep3Button() {
+        const hasWeeklyHours = !!document.querySelector('input[name="weekly_hours"]:checked');
+        const hasWorkStyle = !!document.querySelector('input[name="preferred_work_style"]:checked');
+        step3Button.disabled = !(hasWeeklyHours && hasWorkStyle);
+    }
+
+    step3WeeklyInputs.forEach((input) => input.addEventListener('change', updateStep3Button));
+    step3WorkStyleInputs.forEach((input) => input.addEventListener('change', updateStep3Button));
+    updateStep3Button();
+</script>
+</body>
+</html>

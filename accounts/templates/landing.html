@@ -1,11 +1,12 @@
+{% load static %}
 <!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <title>RE:Bridge</title>
-    <link rel="stylesheet" href="../../static/css/colorpalette.css" />
-    <link rel="stylesheet" href="../../static/css/global.css" />
-    <link rel="stylesheet" href="../../static/css/landing.css" />
+    <link rel="stylesheet" href="{% static 'css/colorpalette.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/global.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}" />
   </head>
   <body>
     <!-- 헤더 -->
@@ -34,7 +35,7 @@
       <div class="header-login">
         <a
           class="header-login-button"
-          href="../../accounts/templates/login.html"
+          href="{% url 'accounts:google_login' %}"
           >로그인</a
         >
       </div>
@@ -60,8 +61,8 @@
 
         <!-- TPL: google_login_url (Google OAuth 로그인 시작 URL) -->
         <section class="select-user-type">
-          <a class="worker-btn" href="">경력자로 시작하기</a>
-          <a class="comp-btn" href="">기업으로 시작하기</a>
+          <a class="worker-btn" href="{% url 'accounts:google_login' %}">경력자로 시작하기</a>
+          <a class="comp-btn" href="{% url 'accounts:google_login' %}">기업으로 시작하기</a>
         </section>
         <small class="user-type-desc"
           >✔ 가입 즉시 자가진단으로 나만의 프로필 완성</small
@@ -72,9 +73,9 @@
       <section class="poster-wrap">
         <aside class="landing-poster">
           <div class="ellipse-wrap">
-            <img src="../../static/img/ellipse-red.svg" />
-            <img src="../../static/img/ellipse-yellow.svg" />
-            <img src="../../static/img/ellipse-mint.svg" />
+            <img src="{% static 'img/ellipse-red.svg' %}" />
+            <img src="{% static 'img/ellipse-yellow.svg' %}" />
+            <img src="{% static 'img/ellipse-mint.svg' %}" />
           </div>
           <div class="poster-main">
             <article class="poster">
@@ -86,7 +87,7 @@
                 </div>
               </div>
               <div class="matching-rate">
-                <img src="../../static/img/heart-filled.svg" />
+                <img src="{% static 'img/heart-filled.svg' %}" />
                 <p>92%</p>
               </div>
             </article>
@@ -99,7 +100,7 @@
                 </div>
               </div>
               <div class="matching-rate-middle">
-                <img src="../../static/img/good-one.svg" />
+                <img src="{% static 'img/good-one.svg' %}" />
                 <p>78%</p>
               </div>
             </article>

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>매칭률 TOP 3</title>
+</head>
+<body>
+  <main>
+    <section>
+      <h1>매칭률 TOP 3</h1>
+      {% if not is_warmup_mode %}
+      <p>최고 매칭률: <strong>{{ best_match_score }}%</strong></p>
+      <p>매칭률 80% 이상 프로젝트: <strong>{{ high_match_count }}개</strong></p>
+      {% endif %}
+    </section>
+
+    <section>
+      {% for project in top_projects %}
+      <article>
+        {% if is_warmup_mode %}
+        <p>{{ project.title }}</p>
+        <p>{{ project.description }}</p>
+        <p>{{ project.get_work_style_display }}</p>
+        <div>
+          <p>코어 타임</p>
+          {% if project.core_times.all %}
+          <ul>
+            {% for core_time in project.core_times.all %}
+            <li>{{ core_time.time_slot.name }}</li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p>코어 타임 없음</p>
+          {% endif %}
+        </div>
+        {% else %}
+        <p>매칭률 {{ project.match_score }}%</p>
+        <p>{{ project.title }}</p>
+        <p>{{ project.company_profile.company_name }}</p>
+        <p>{{ project.get_work_style_display }}</p>
+        <p>{{ project.get_weekly_hours_display }}</p>
+        <div>
+          <p>우대 스킬</p>
+          {% if project.preferred_skills_list %}
+          <ul>
+            {% for skill in project.preferred_skills_list %}
+              <li>{{ skill.name }}</li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p>우대 스킬 없음</p>
+          {% endif %}
+        </div>
+        {% endif %}
+      </article>
+      {% empty %}
+      <div>
+        <p>아직 추천할 프로젝트가 없어요.</p>
+      </div>
+      {% endfor %}
+    </section>
+
+    <div>
+      <a href="{% url 'worker:project_list' %}">프로젝트 전체 보기</a>
+    </div>
+  </main>
+</body>
+</html>

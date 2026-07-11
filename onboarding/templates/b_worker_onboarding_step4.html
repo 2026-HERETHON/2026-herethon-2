@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>온보딩 4단계</title>
+</head>
+<body>
+<header>
+    <a href="/">RE:Bridge</a>
+</header>
+
+<main>
+    <button type="button" onclick="location.href='{% url 'worker:onboarding_step3' %}'">이전</button>
+    <p>4 / 4</p>
+    <h1>지원 방식 선택</h1>
+
+    <form method="post" id="step4-form">
+        {% csrf_token %}
+
+        <section>
+            <h2>업무 지원형태</h2>
+            {% for value, label in application_type_choices %}
+            <div>
+                <input type="radio" name="application_type" id="application_{{ value }}" value="{{ value }}" {% if selected_application_type == value %}checked{% endif %}>
+                <label for="application_{{ value }}">{{ label }}</label>
+            </div>
+            {% endfor %}
+            {% if errors.application_type %}
+            <p>{{ errors.application_type }}</p>
+            {% endif %}
+        </section>
+
+        <section>
+            <h2>현재 고민</h2>
+            {% for value, label in concern_choices %}
+            <div>
+                <input type="checkbox" name="concerns" id="concern_{{ value }}" value="{{ value }}" {% if value in selected_concerns %}checked{% endif %}>
+                <label for="concern_{{ value }}">{{ label }}</label>
+            </div>
+            {% endfor %}
+        </section>
+
+        <button type="submit" id="step4-submit-btn" disabled>결과 확인하기</button>
+    </form>
+</main>
+
+<script>
+    const step4Inputs = document.querySelectorAll('input[name="application_type"]');
+    const step4Button = document.getElementById('step4-submit-btn');
+
+    function updateStep4Button() {
+        step4Button.disabled = !document.querySelector('input[name="application_type"]:checked');
+    }
+
+    step4Inputs.forEach((input) => input.addEventListener('change', updateStep4Button));
+    updateStep4Button();
+</script>
+</body>
+</html>
