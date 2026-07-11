@@ -3,7 +3,35 @@
 /* 전체 기본 설정 */
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
+
+/* a 태그 기본 밑줄/색 제거 */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* button 기본 테두리/배경 제거 */
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font: inherit; /* 버튼 안 텍스트가 body 폰트를 상속 */
+}
+
+/* input, select 폰트 상속 */
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -71,7 +99,7 @@ header {
 }
 
 /* 왼쪽 사이드바 */
-nav {
+.sidebar-nav {
   display: flex;
   flex-direction: column;
   width: 260px;
