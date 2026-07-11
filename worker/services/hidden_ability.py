@@ -24,7 +24,7 @@ def get_worker_hidden_abilities(worker_profile):
 
 
 def is_valid_activity_text(text):
-    """명백한 무의미 입력만 1차로 차단한다."""
+    # 명백한 무의미 입력만 1차로 차단
     if not text:
         return False
 
