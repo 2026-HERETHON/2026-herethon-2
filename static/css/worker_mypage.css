@@ -204,6 +204,16 @@
   padding: 0 0.31rem;
 }
 
+/* 호버 시 weight 700 텍스트를 미리 숨겨서 공간 확보 */
+.tab-btn::before {
+  content: attr(data-label);
+  display: block;
+  height: 0;
+  visibility: hidden;
+  font-weight: 700;
+  overflow: hidden;
+}
+
 .tab-btn:hover,
 .tab-btn.active {
   color: var(--color-primary);
