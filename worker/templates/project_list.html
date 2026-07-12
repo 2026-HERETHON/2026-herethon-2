@@ -36,53 +36,60 @@
     <div class="page-wrap">
       <!-- 왼쪽 사이드바 -->
       <nav class="sidebar-nav">
-        <!--필터 영역-->
-        <div class="search">
-          <div class="search-title">
-            <h4>필터</h4>
-            <span class="search-reset">초기화</span>
-          </div>
-          <!--TPL: project.title (프로젝트 명 내에서 키워드 검색 -> 해당 키워드 들어간 프로젝트만 표시) -->
-          <form action="" method="get" class="search-form">
-            <input type="input" class="search-bar" placeholder="키워드 검색" />
-          </form>
-        </div>
+        <form method="get" id="filter-form">
+          <input type="hidden" name="type" value="{{ view_type }}">
+          <input type="hidden" name="sort" value="{{ current_sort }}">
 
-        <!--TPL: (직무 필터, 근무형태 필터 폼) -->
-        <form action="" method="get">
+          <!--필터 영역-->
+          <div class="search">
+            <div class="search-title">
+              <h4>필터</h4>
+              <a class="search-reset" href="?type={{ view_type }}&sort={{ current_sort }}">초기화</a>
+            </div>
+            <div class="search-form">
+              <input
+                type="text"
+                name="keyword"
+                class="search-bar"
+                placeholder="키워드 검색"
+                value="{{ keyword }}"
+              />
+            </div>
+          </div>
+
           <!--직무 선택-->
           <fieldset class="career">
             <legend>직무</legend>
 
-            <!--TPL: job_category.name (직무명 불러오기) -->
-            <label
-              ><input name="" class="checkbox" type="checkbox" />콘텐츠
-              기획</label
-            >
-            <label><input type="checkbox" />데이터 분석</label>
-            <label><input type="checkbox" />디자인</label>
-            <label><input type="checkbox" />개발</label>
+            {% for category in job_categories %}
+            <label>
+              <input
+                class="checkbox"
+                type="checkbox"
+                name="job_category"
+                value="{{ category.id }}"
+                {% if category.id in selected_job_categories %}checked{% endif %}
+              />
+              {{ category.name }}
+            </label>
+            {% endfor %}
           </fieldset>
 
           <!--근무 형태 선택-->
           <fieldset class="work-type">
             <legend>근무 형태</legend>
 
-            <!-- TPL: project.work_style (근무형태 값에 따라 해당 항목 checked 처리) -->
+            {% for value, label in work_style_choices %}
             <label>
-              <input type="checkbox" name="work_style" />
-              재택
+              <input
+                type="checkbox"
+                name="work_style"
+                value="{{ value }}"
+                {% if value in selected_work_styles %}checked{% endif %}
+              />
+              {{ label }}
             </label>
-
-            <label>
-              <input type="checkbox" name="work_style" />
-              출근
-            </label>
-
-            <label>
-              <input type="checkbox" name="work_style" />
-              혼합
-            </label>
+            {% endfor %}
           </fieldset>
         </form>
       </nav>
@@ -92,8 +99,6 @@
         <div class="project-title-bar">
           <div class="bar-left">
             <h4>프로젝트 찾기</h4>
-
-            <!-- TBL: 상태(project.status)가 모집중인 총 프로젝트 개수 삽입-->
             <span
               >총 <span>{{ project_count }}</span>건의 프로젝트 · 나와 잘 맞는 순으로 정렬되어
               있어요</span
@@ -101,7 +106,6 @@
           </div>
 
           <div class="bar-sort">
-            <!-- TPL: request.GET.sort (정렬 기준값: matching(임의추가)/deadline/created_at) -->
             <a class="sort1" href="?type=real&sort=matching">매칭률순</a>
             <a class="sort2" href="?type=real&sort=deadline">마감임박순</a>
             <a class="sort3" href="?type=real&sort=latest">최신순</a>
@@ -110,61 +114,55 @@
         </div>
 
         <!--TPL: 프로젝트 목록 -->
-        <div class="card-wrap">
-          <!--하나의 article이 하나의 프로젝트 카드입니다.-->
-          <!--TBL: project (프로젝트 목록 반복) -->
+        <div class="card-wrap" id="project-list">
           {% for project in projects %}
-          <article class="project-card">
-            <section class="project-info">
-              <!--TPL: project.title (프로젝트명) -->
-              <p class="project-title">
-                {{ project.title }}
-              </p>
+          <a
+            class="project-card-link"
+            href="{% url 'worker:project_detail' project.id %}"
+          >
+            <article class="project-card">
+              <section class="project-info">
+                <p class="project-title">
+                  {{ project.title }}
+                </p>
 
-              <!--프로젝트 정보 요약(카드의 왼쪽 영역)-->
-              <div class="project-type-wrap">
-                <!--TBL: company_profile.company_name (기업명) -->
-                <span class="type-company">{{ project.company_profile.company_name }} · </span>
-                <!--TBL: job_category.name (직무명) -->
-                <span class="type-career">{{ project.job_category.name }} · </span>
-                <!--TBL: project.work_style (근무 형태) -->
-                <span class="type-work">{{ project.get_work_style_display }} · </span>
-                <!--TBL: project.weecly_hours (주간 가용 시간) -->
-                <span class="type-time">{{ project.get_weekly_hours_display }} · </span>
-                <!--TBL: project.compensation_amount (보수 금액) -->
-                <span class="type-pay">시급 {{ project.compensation_amount }}원 · </span>
-                <!--TBL: 우대 스킬 -->
-                <span class="type-keyword">
-                  {% if project.preferred_skills_list %}
-                    {% for skill in project.preferred_skills_list %}
-                      {{ skill.name }}{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
+                <!--프로젝트 정보 요약(카드의 왼쪽 영역)-->
+                <div class="project-type-wrap">
+                  <span class="type-company">{{ project.company_profile.company_name }} · </span>
+                  <span class="type-career">{{ project.job_category.name }} · </span>
+                  <span class="type-work">{{ project.get_work_style_display }} · </span>
+                  <span class="type-time">{{ project.get_weekly_hours_display }} · </span>
+                  <span class="type-pay">시급 {{ project.compensation_amount }}원 · </span>
+                  <span class="type-keyword">
+                    {% if project.preferred_skills_list %}
+                      {% for skill in project.preferred_skills_list %}
+                        {{ skill.name }}{% if not forloop.last %}, {% endif %}
+                      {% endfor %}
+                    {% else %}
+                      우대 스킬 없음
+                    {% endif %}
+                  </span>
+                </div>
+              </section>
+
+              <!--프로젝트 상태(카드의 오른쪽 영역)-->
+              <section class="project-status">
+                <div class="matching-rate">
+                  <img src="{% static 'img/heart-filled.svg' %}" />
+                  <p>{{ project.match_score|default:0 }}%</p>
+                </div>
+                <p class="due-date">
+                  {% if project.deadline_d_day > 0 %}
+                  마감 D-{{ project.deadline_d_day }}
+                  {% elif project.deadline_d_day == 0 %}
+                  마감 D-DAY
                   {% else %}
-                    우대 스킬 없음
+                  마감
                   {% endif %}
-                </span>
-              </div>
-            </section>
-
-            <!--프로젝트 상태(카드의 오른쪽 영역)-->
-            <section class="project-status">
-              <div class="matching-rate">
-                <img src="{% static 'img/heart-filled.svg' %}" />
-                <!--TBL: (매칭률) -->
-                <p>{{ project.match_score|default:0 }}%</p>
-              </div>
-              <!--TBL: project.deadline (마감일) -->
-              <p class="due-date">
-                {% if project.deadline_d_day > 0 %}
-                D-{{ project.deadline_d_day }}
-                {% elif project.deadline_d_day == 0 %}
-                D-DAY
-                {% else %}
-                마감
-                {% endif %}
-              </p>
-            </section>
-          </article>
+                </p>
+              </section>
+            </article>
+          </a>
           {% empty %}
           <div class="no-projects" style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
             <p style="font-size: 16px; color: #666;">
@@ -178,10 +176,11 @@
           {% endfor %}
         </div>
 
-        <!--클릭 시 6개씩 프로젝트 공고 노출되게 구현-->
+        {% if has_next_page %}
         <section class="project-more">
           <button class="more-button" type="button">프로젝트 더보기</button>
         </section>
+        {% endif %}
       </main>
     </div>
   </body>
