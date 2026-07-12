@@ -3,6 +3,7 @@ from collections import OrderedDict
 from django.db import transaction
 from django.shortcuts import render, redirect
 from django.utils import timezone
+from django.db.models import Q
 
 from accounts.decorators import role_required, onboarding_required
 from core.models import JobCategory, JobSkill, TimeSlot
@@ -313,6 +314,18 @@ def project_list(request):
     current_sort = request.GET.get('sort', 'matching')
     if current_sort not in {'matching', 'deadline', 'latest'}:
         current_sort = 'matching'
+        
+    keyword = request.GET.get('keyword', '').strip()
+        
+    selected_job_categories = [
+        int(cat_id) for cat_id in request.GET.getlist('job_category')
+        if cat_id.isdigit()
+    ]
+    valid_work_style_values = {value for value, _ in WorkerProfile.WorkStyle.choices}
+    selected_work_styles = [
+        style for style in request.GET.getlist('work_style')
+        if style in valid_work_style_values
+    ]
 
     worker_profile = _get_prefetched_worker_profile(request.user)
 
@@ -323,6 +336,21 @@ def project_list(request):
         'preferred_scales',
         'hidden_abilities__hidden_ability',
     ).order_by('-id')
+    
+    if keyword:
+        projects_qs = projects_qs.filter(
+        Q(title__icontains=keyword)
+        | Q(company_profile__company_name__icontains=keyword)
+        | Q(project_skills__skill__name__icontains=keyword)
+        ).distinct()
+
+    
+    if selected_job_categories:
+        projects_qs = projects_qs.filter(job_category_id__in=selected_job_categories)
+
+    if selected_work_styles:
+        projects_qs = projects_qs.filter(work_style__in=selected_work_styles)
+
 
     real_projects = projects_qs.filter(
         project_type=Project.ProjectType.REAL,
@@ -365,14 +393,38 @@ def project_list(request):
     top_projects = ranked_projects[:3]
 
     worker_hidden_abilities = get_worker_hidden_abilities(worker_profile) if worker_profile else []
+    
+    #페이지 6개 단위, 더보기
+    PAGE_SIZE = 6
+    try:
+        page_number = int(request.GET.get('page', 1))
+    except (TypeError, ValueError):
+         page_number = 1
+    page_number = max(page_number, 1)
+    
+    total_count = len(projects)
+    visible_count = page_number * PAGE_SIZE
+    projects_to_show = projects[:visible_count]
+    has_next_page = visible_count < total_count
+    
+    next_querystring = request.GET.copy()
+    next_querystring['page'] = page_number + 1
+    next_page_querystring = next_querystring.urlencode()
 
-    return render(request, 'project_list.html', {
-        'projects': projects,
-        'project_count': len(projects),
+    return render(request, 'b_project_list.html', {
+        'projects': projects_to_show,
+        'project_count': total_count,
         'top_projects': top_projects,
         'worker_hidden_abilities': worker_hidden_abilities,
         'view_type': view_type,
         'current_sort': current_sort,
+        'job_categories': JobCategory.objects.all(),
+        'work_style_choices': WorkerProfile.WorkStyle.choices,
+        'selected_job_categories': selected_job_categories,
+        'selected_work_styles': selected_work_styles,
+        'keyword': keyword,
+        'has_next_page': has_next_page,
+        'next_page_querystring': next_page_querystring,
     })
 
 
