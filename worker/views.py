@@ -1,7 +1,7 @@
 from collections import OrderedDict
 
 from django.db import transaction
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.db.models import Q
 
@@ -411,7 +411,7 @@ def project_list(request):
     next_querystring['page'] = page_number + 1
     next_page_querystring = next_querystring.urlencode()
 
-    return render(request, 'b_project_list.html', {
+    return render(request, 'project_list.html', {
         'projects': projects_to_show,
         'project_count': total_count,
         'top_projects': top_projects,
@@ -426,6 +426,66 @@ def project_list(request):
         'has_next_page': has_next_page,
         'next_page_querystring': next_page_querystring,
     })
+
+@role_required('WORKER')
+@onboarding_required
+def project_detail(request, project_id):
+    worker_profile = _get_prefetched_worker_profile(request.user)
+
+    project = get_object_or_404(
+        Project.objects.select_related(
+            'company_profile',
+            'job_category',
+        ).prefetch_related(
+            'project_skills__skill',
+            'core_times__time_slot',
+            'preferred_scales',
+            'hidden_abilities__hidden_ability',
+        ),
+        id=project_id,
+    )
+
+    project.preferred_skills_list = [
+        project_skill.skill
+        for project_skill in project.project_skills.all()
+        if project_skill.priority == 'PREFERRED'
+    ]
+
+    project.required_skills_list = [
+        project_skill.skill
+        for project_skill in project.project_skills.all()
+        if project_skill.priority == 'REQUIRED'
+    ]
+
+    if (
+        project.project_type == Project.ProjectType.REAL
+        and worker_profile
+    ):
+        ranked_project = rank_projects_for_worker(
+            worker_profile,
+            [project],
+        )
+
+        if ranked_project:
+            project.match_score = ranked_project[0].match_score
+        else:
+            project.match_score = 0
+    elif project.project_type == Project.ProjectType.WARMUP:
+        project.match_score = 100
+    else:
+        project.match_score = 0
+
+    today = timezone.localdate()
+    project.deadline_d_day = (project.deadline - today).days
+
+    return render(
+        request,
+        'b_project_detail.html',
+        {
+            'project': project,
+            'worker_profile': worker_profile,
+        },
+    )
 
 
 @role_required('WORKER')
