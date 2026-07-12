@@ -227,6 +227,10 @@ fieldset {
   width: 37px;
 }
 
+.sort4 {
+  width: 88.72px;
+}
+
 .bar-sort a:hover {
   color: var(--color-primary);
   font-weight: bold;
