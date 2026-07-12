@@ -4,10 +4,11 @@ from django.db import transaction
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.db.models import Q
+from django.db.models import F
 
 from accounts.decorators import role_required, onboarding_required
 from core.models import JobCategory, JobSkill, TimeSlot
-from projects.models import Project
+from projects.models import Application, Project, ProjectSkill
 from worker.models import (
     WorkerConcern,
     WorkerCoreTime,
@@ -19,6 +20,11 @@ from worker.models import (
 
 from worker.services.hidden_ability import classify_hidden_abilities, get_worker_hidden_abilities
 from worker.services.matching import rank_projects_for_worker
+
+from django.contrib import messages
+from django.core.exceptions import ValidationError
+
+from projects.services.application import create_application
 
 
 def _get_prefetched_worker_profile(user):
@@ -445,31 +451,31 @@ def project_detail(request, project_id):
         id=project_id,
     )
 
+    project.view_count = F('view_count') + 1
+    project.save(update_fields=['view_count'])
+    project.refresh_from_db()
+
     project.preferred_skills_list = [
         project_skill.skill
         for project_skill in project.project_skills.all()
-        if project_skill.priority == 'PREFERRED'
+        if project_skill.priority == ProjectSkill.Priority.PREFERRED
     ]
 
     project.required_skills_list = [
         project_skill.skill
         for project_skill in project.project_skills.all()
-        if project_skill.priority == 'REQUIRED'
+        if project_skill.priority == ProjectSkill.Priority.NORMAL
     ]
 
-    if (
-        project.project_type == Project.ProjectType.REAL
-        and worker_profile
-    ):
-        ranked_project = rank_projects_for_worker(
+    if project.project_type == Project.ProjectType.REAL and worker_profile:
+        ranked_projects = rank_projects_for_worker(
             worker_profile,
             [project],
         )
-
-        if ranked_project:
-            project.match_score = ranked_project[0].match_score
-        else:
-            project.match_score = 0
+        project.match_score = (
+            ranked_projects[0].match_score
+            if ranked_projects else 0
+        )
     elif project.project_type == Project.ProjectType.WARMUP:
         project.match_score = 100
     else:
@@ -478,15 +484,72 @@ def project_detail(request, project_id):
     today = timezone.localdate()
     project.deadline_d_day = (project.deadline - today).days
 
+    existing_application = Application.objects.filter(
+        project=project,
+        worker_profile=worker_profile,
+    ).first()
+
+    can_apply = (
+        project.status == Project.Status.OPEN
+        and project.deadline >= today
+        and existing_application is None
+    )
+
     return render(
         request,
         'b_project_detail.html',
         {
             'project': project,
             'worker_profile': worker_profile,
+            'existing_application': existing_application,
+            'can_apply': can_apply,
         },
     )
 
+@role_required('WORKER')
+@onboarding_required
+def project_apply(request, project_id):
+    if request.method != 'POST':
+        return redirect(
+            'worker:project_detail',
+            project_id=project_id,
+        )
+
+    worker_profile = get_object_or_404(
+        WorkerProfile,
+        user=request.user,
+    )
+
+    project = get_object_or_404(
+        Project,
+        id=project_id,
+    )
+
+    uploaded_files = request.FILES.getlist('application_files')
+
+    try:
+        create_application(
+            project=project,
+            worker_profile=worker_profile,
+            files=uploaded_files,
+        )
+
+    except ValidationError as error:
+        message = (
+            error.messages[0]
+            if hasattr(error, 'messages')
+            else str(error)
+        )
+        messages.error(request, message)
+
+    else:
+        messages.success(request, '프로젝트 지원이 완료되었습니다.')
+
+    return redirect(
+        'worker:project_detail',
+        project_id=project.id,
+    )
+    
 
 @role_required('WORKER')
 @onboarding_required

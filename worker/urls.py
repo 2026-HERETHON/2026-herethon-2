@@ -17,4 +17,9 @@ urlpatterns = [
         views.project_detail,
         name='project_detail',
     ),
+    path(
+        'projects/<int:project_id>/apply/',
+        views.project_apply,
+        name='project_apply',
+    ),
 ]

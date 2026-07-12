@@ -1,0 +1,172 @@
+{% load static %}
+
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ project.title }}</title>
+</head>
+
+<body>
+  <a href="{% url 'worker:project_list' %}">목록으로</a>
+
+  {% if messages %}
+    {% for message in messages %}
+      <p>{{ message }}</p>
+    {% endfor %}
+  {% endif %}
+
+  <h1>{{ project.title }}</h1>
+
+  <p>
+    {{ project.company_profile.company_name }}
+    · {{ project.job_category.name }}
+    · {{ project.get_work_style_display }}
+    · {{ project.get_career_years_display }}
+  </p>
+
+  <p>
+    매칭률 {{ project.match_score }}%
+    |
+    {% if project.deadline_d_day > 0 %}
+        D-{{ project.deadline_d_day }}
+    {% elif project.deadline_d_day == 0 %}
+        D-Day
+    {% else %}
+        마감
+    {% endif %}
+    |
+    조회 {{ project.view_count }}
+    </p>
+
+  <hr>
+
+  <h2>프로젝트 개요</h2>
+  <p>{{ project.description|linebreaksbr }}</p>
+
+  <h2>필수 스킬</h2>
+  <ul>
+    {% for skill in project.required_skills_list %}
+      <li>{{ skill.name }}</li>
+    {% empty %}
+      <li>등록된 필수 스킬이 없습니다.</li>
+    {% endfor %}
+  </ul>
+
+  <h2>우대 스킬</h2>
+  <ul>
+    {% for skill in project.preferred_skills_list %}
+      <li>{{ skill.name }}</li>
+    {% empty %}
+      <li>등록된 우대 스킬이 없습니다.</li>
+    {% endfor %}
+  </ul>
+
+  <h2>코어 시간</h2>
+  <ul>
+
+    {% for core_time in project.core_times.all %}
+    <li>{{ core_time.time_slot.name }}</li>
+    {% empty %}
+    <li>협의 가능</li>
+    {% endfor %}
+
+    </ul>
+
+  <h2>근무 조건</h2>
+  <ul>
+    <li>근무 형태: {{ project.get_work_style_display }}</li>
+    <li>가용 시간: {{ project.get_weekly_hours_display }}</li>
+    <li>기간: {{ project.duration|default:"미정" }}</li>
+    <li>보수: {{ project.compensation_amount }}원</li>
+  </ul>
+
+  <!-- 스킬 갭 분석 구현해야 됨, 지원할 때 모달창 UI 맞춰서 구현해야 됨, 이미 지원한 프로젝트면 버튼 비활성화 + 밑에 간략하게 안내 -->
+  <hr>
+
+  {% if existing_application %}
+    <button type="button" disabled>
+      지원 완료
+    </button>
+
+  {% elif can_apply %}
+    <button type="button" id="open-apply-modal">
+      지원하기
+    </button>
+
+  {% else %}
+    <button type="button" disabled>
+      지원할 수 없는 프로젝트입니다
+    </button>
+  {% endif %}
+
+  <div id="apply-modal" hidden>
+    <h2>지원 서류 제출</h2>
+
+    <form
+      method="post"
+      action="{% url 'worker:project_apply' project.id %}"
+      enctype="multipart/form-data"
+    >
+      {% csrf_token %}
+
+      <input
+        id="application-files"
+        type="file"
+        name="application_files"
+        accept=".pdf,.ppt,.pptx,.jpg,.jpeg,.png"
+        multiple
+      >
+
+      <p id="file-count">첨부 파일 0/5</p>
+      <ul id="file-list"></ul>
+
+      <button type="button" id="close-apply-modal">
+        취소
+      </button>
+
+      <button type="submit">
+        제출하기
+      </button>
+    </form>
+  </div>
+
+  <script>
+    const openButton = document.getElementById("open-apply-modal");
+    const closeButton = document.getElementById("close-apply-modal");
+    const modal = document.getElementById("apply-modal");
+    const fileInput = document.getElementById("application-files");
+    const fileCount = document.getElementById("file-count");
+    const fileList = document.getElementById("file-list");
+
+    openButton?.addEventListener("click", () => {
+      modal.hidden = false;
+    });
+
+    closeButton?.addEventListener("click", () => {
+      modal.hidden = true;
+    });
+
+    fileInput?.addEventListener("change", () => {
+      const files = Array.from(fileInput.files);
+
+      if (files.length > 5) {
+        alert("파일은 최대 5개까지 첨부할 수 있습니다.");
+        fileInput.value = "";
+        fileCount.textContent = "첨부 파일 0/5";
+        fileList.innerHTML = "";
+        return;
+      }
+
+      fileCount.textContent = `첨부 파일 ${files.length}/5`;
+      fileList.innerHTML = "";
+
+      files.forEach((file) => {
+        const item = document.createElement("li");
+        item.textContent = file.name;
+        fileList.appendChild(item);
+      });
+    });
+  </script>
+</body>
+</html>
