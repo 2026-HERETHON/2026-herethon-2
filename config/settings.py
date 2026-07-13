@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'onboarding',
     'worker',
     'company',
+    'mypage'
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
