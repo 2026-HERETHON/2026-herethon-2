@@ -444,3 +444,193 @@ input[type="radio"] {
   font-weight: 700;
   line-height: normal;
 }
+
+/* 숨은 능력 모달 영역 */
+/* 오버레이: 화면 전체를 덮는 반투명 배경 */
+.modal-overlay {
+  position: fixed;
+  inset: 0; /* top:0, right:0, bottom:0, left:0 축약 */
+  background-color: rgba(0, 0, 0, 0.4);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 1000;
+}
+
+/* 실제 모달 박스 */
+.modal-box {
+  background-color: var(--color-bg-default);
+  border-radius: 1rem;
+  width: 42.5rem;
+  padding: 1.62rem 2rem 4.87rem;
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.38rem;
+}
+
+.modal-title {
+  color: #1f2937;
+  font-family: Inter;
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.caption {
+  color: #6b7280;
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.divider {
+  width: 100%;
+  height: 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.divider.first {
+  margin-top: 0.69rem;
+}
+
+.divider.second {
+  margin-top: 1.63rem;
+}
+
+/* 모달 바디: 내용이 많으면 스크롤 */
+.modal-body {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.hidden-ability-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1.13rem;
+}
+
+.hidden-ability-item {
+  display: flex;
+  align-items: flex-start;
+}
+
+.checkbox {
+  transform: translateY(0.25rem);
+  margin-right: 0.87rem;
+}
+
+.hidden-ability-text {
+  height: 3.5rem;
+  background-color: #f3f4f6;
+  border-radius: 0.625rem;
+}
+
+.hidden-ability-text.original {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 12.5rem;
+
+  color: #4b5563;
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.hidden-ability-text.translated {
+  width: 18.75rem;
+  display: flex;
+  align-items: center;
+  padding: 0 0.88rem;
+  gap: 0.5rem;
+}
+
+.translated-text {
+  color: #4b5563;
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.right-arrow-img {
+  margin: 1.31rem 0.75rem 1.31rem 0.63rem;
+}
+
+.matching-weight-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.56rem;
+  margin-top: 0.94rem;
+}
+
+.matching-weight-label {
+  color: #374151;
+  font-family: Inter;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.63rem;
+}
+
+.modal-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 9.375rem;
+  height: 3rem;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+
+  color: #4b5563;
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.hidden-ability-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 28.375rem;
+  height: 3rem;
+  background-color: #3b82f6;
+  border-radius: 0.5rem;
+
+  color: #eff6ff;
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}

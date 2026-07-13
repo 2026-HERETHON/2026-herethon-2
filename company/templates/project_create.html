@@ -488,7 +488,7 @@
     </main>
 
     <!-- 숨은 능력 모달 팝업 영역 -->
-    <div class="modal-overlay">
+    <div class="modal-overlay" style="display: none">
       <div class="modal-box">
         <div class="modal-header">
           <!-- TPL: 현재 선택한 직무명을 타이틀 및 캡션에 반영 -->
@@ -499,7 +499,7 @@
           </p>
         </div>
 
-        <div class="divider"></div>
+        <div class="divider first"></div>
 
         <div class="modal-body">
           <!-- 숨은 능력 목록 -->
@@ -510,13 +510,13 @@
                 <img src="../../static/img/checkbox-blank.svg" alt="checkbox" />
               </button>
               <!-- TPL: 숨은 능력(번역 전) -->
-              <div class="hidden-ability-original">맘카페 운영</div>
+              <div class="hidden-ability-text original">맘카페 운영</div>
               <img
                 class="right-arrow-img"
                 src="../../static/img/right-arrow.svg"
                 alt="right-arrow"
               />
-              <div class="hidden-ability-translated">
+              <div class="hidden-ability-text translated">
                 <img
                   class="green-icon"
                   src="../../static/img/ellipse-green.svg"
@@ -529,13 +529,15 @@
               <button class="checkbox" type="button" data-checked="false">
                 <img src="../../static/img/checkbox-blank.svg" alt="checkbox" />
               </button>
-              <div class="hidden-ability-original">블로그 공동 구매 운영</div>
+              <div class="hidden-ability-text original">
+                블로그 공동 구매 운영
+              </div>
               <img
                 class="right-arrow-img"
                 src="../../static/img/right-arrow.svg"
                 alt="right-arrow"
               />
-              <div class="hidden-ability-translated">
+              <div class="hidden-ability-text translated">
                 <img
                   class="green-icon"
                   src="../../static/img/ellipse-green.svg"
@@ -547,13 +549,15 @@
               <button class="checkbox" type="button" data-checked="false">
                 <img src="../../static/img/checkbox-blank.svg" alt="checkbox" />
               </button>
-              <div class="hidden-ability-original">학교 행사 기획 보조</div>
+              <div class="hidden-ability-text original">
+                학교 행사 기획 보조
+              </div>
               <img
                 class="right-arrow-img"
                 src="../../static/img/right-arrow.svg"
                 alt="right-arrow"
               />
-              <div class="hidden-ability-translated">
+              <div class="hidden-ability-text translated">
                 <img
                   class="green-icon"
                   src="../../static/img/ellipse-green.svg"
@@ -563,7 +567,7 @@
             </div>
           </div>
 
-          <div class="divider"></div>
+          <div class="divider second"></div>
 
           <!-- 매칭 가중치 -->
           <div class="matching-weight-group">
