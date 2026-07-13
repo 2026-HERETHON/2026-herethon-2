@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>공고 등록</title>
+    <link rel="stylesheet" href="../../static/css/colorpalette.css" />
+    <link rel="stylesheet" href="../../static/css/global.css" />
+    <link rel="stylesheet" href="../../static/css/project_create.css" />
+  </head>
+  <body>
+    <!-- 헤더 영역 -->
+    <header>
+      <div class="header-logo">
+        <img
+          class="header-logo-img"
+          src="../../static/img/logo.svg"
+          alt="logo"
+        />
+        <div class="header-logo-text">
+          <span class="logo-desc">당신의 두 번째 커리어 브릿지</span>
+          <span class="logo-brand"
+            ><span class="RE">RE</span><span class="colon">:</span>Bridge</span
+          >
+        </div>
+      </div>
+      <div class="header-profile">
+        <!-- TPL:  기업 프로필 이름 -->
+        <a>주</a>
+      </div>
+    </header>
+
+    <!-- 왼쪽 사이드바 -->
+    <nav class="sidebar-nav">
+      <!-- TPL: href 실제 url 패턴으로 변경 필요 -->
+      <!-- TPL: 현재 active 클래스 하드 코딩함. 연동 시 현재 페이지의 active 판단 로직으로 교체 필요  -->
+      <a href="project_create.html" class="nav-menu active"> 공고 등록 </a>
+      <a href="#" class="nav-menu"> 프로젝트 관리하기 </a>
+      <a href="#" class="nav-menu"> 기업 정보 </a>
+    </nav>
+
+    <!-- 공고 등록 영역 -->
+    <main class="project_create">
+      <form method="post" id="project-create-form">
+        <!-- 좌측 메인 폼 영역 -->
+        <section class="project-form">
+          <!-- 기업명 -->
+          <div class="form-group">
+            <label for="company-name" class="form-label">기업명</label>
+            <input
+              type="text"
+              id="company-name"
+              name="company_name"
+              class="form-input"
+              placeholder="기업명을 입력하세요"
+              required
+            />
+          </div>
+
+          <!-- 프로젝트명 -->
+          <div class="form-group">
+            <label for="project-name" class="form-label"
+              >새 프로젝트 공고 등록</label
+            >
+            <input
+              type="text"
+              id="project-name"
+              name="project_name"
+              class="form-input"
+              placeholder="프로젝트명을 입력하세요"
+              required
+            />
+          </div>
+
+          <!-- 싱세 내용 -->
+          <div class="form-group">
+            <label for="project-detail" class="form-label">상세 내용</label>
+            <input
+              type="text"
+              id="project-detail"
+              name="project_detail"
+              class="form-input"
+              placeholder="프로젝트의 배경, 주요 업무, 협업 방식 등을 자유롭게 적어주세요"
+              required
+            />
+          </div>
+
+          <!-- 직무 유형 (단일 선택) -->
+          <div class="form-group">
+            <label class="form-label">직무유형 선택</label>
+            <div class="option-btn-group">
+              <!-- TPL: job_categories (직무 유형 버튼 반복) -->
+              <label class="option-btn">
+                <input type="radio" name="work_type" value="job.id" required />
+                콘텐츠 기획
+              </label>
+              <label class="option-btn">
+                <input type="radio" name="work_type" value="job.id" required />
+                데이터 분석
+              </label>
+              <label class="option-btn">
+                <input type="radio" name="work_type" value="job.id" required />
+                디자인
+              </label>
+              <label class="option-btn">
+                <input type="radio" name="work_type" value="job.id" required />
+                개발
+              </label>
+            </div>
+          </div>
+
+          <!-- 근무 형태 (단일 선택) -->
+          <div class="form-group">
+            <label class="form-label">근무 형태 선택</label>
+            <div class="option-btn-group">
+              <!-- TPL:  (근무 형태 버튼 반복) -->
+              <label class="option-btn">
+                <input type="radio" name="work_style" value="REMOTE" required />
+                100% 재택
+              </label>
+              <label class="option-btn">
+                <input
+                  type="radio"
+                  name="work_style"
+                  value="ONSITE_WEEKLY_1"
+                  required
+                />
+                주 1회 출근
+              </label>
+              <label class="option-btn">
+                <input
+                  type="radio"
+                  name="work_style"
+                  value="ONSITE_WEEKLY_3"
+                  required
+                />
+                주 3회 이상 출근
+              </label>
+              <label class="option-btn">
+                <input
+                  type="radio"
+                  name="work_style"
+                  value="ONSITE_DAILY"
+                  required
+                />
+                매일 출근
+              </label>
+            </div>
+          </div>
+
+          <!-- 가용 시간 (단일 선택) -->
+          <div class="form-group">
+            <label class="form-label">가용 시간 (주 0시간)</label>
+            <div class="option-btn-group">
+              <!-- TPL:  (가용 시간 버튼 반복) -->
+              <label class="option-btn">
+                <input
+                  type="radio"
+                  name="weekly_hours"
+                  value="UNDER_15"
+                  required
+                />
+                주 15시간 미만
+              </label>
+              <label class="option-btn">
+                <input
+                  type="radio"
+                  name="weekly_hours"
+                  value="FIFTEEN_TO_25"
+                  required
+                />
+                주 15시간~25시간
+              </label>
+              <label class="option-btn">
+                <input
+                  type="radio"
+                  name="weekly_hours"
+                  value="OVER_25"
+                  required
+                />
+                주 25시간 이상
+              </label>
+            </div>
+          </div>
+
+          <!-- 코어 타임 (복수 선택) -->
+          <div class="form-group">
+            <label class="form-label"
+              >코어타임 (소통 선호 시간대)<span class="form-label-des"
+                >복수 선택 가능</span
+              ></label
+            >
+            <div class="option-btn-group">
+              <!-- TPL:  (코어타임 버튼 반복) -->
+              <label class="option-btn">
+                <input
+                  type="checkbox"
+                  name="core_times"
+                  value="early_morning"
+                />
+                <span class="core-time-label">이른 아침</span>
+                <span class="core-time-range">07:00~10:00</span>
+              </label>
+              <label class="option-btn">
+                <input type="checkbox" name="core_times" value="morning" />
+                <span class="core-time-label">오전</span>
+                <span class="core-time-range">10:00~14:00</span>
+              </label>
+              <label class="option-btn">
+                <input type="checkbox" name="core_times" value="afternoon" />
+                <span class="core-time-label">오후</span>
+                <span class="core-time-range">14:00~18:00</span>
+              </label>
+              <label class="option-btn">
+                <input type="checkbox" name="core_times" value="evening" />
+                <span class="core-time-label">저녁</span>
+                <span class="core-time-range">18:00~22:00</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 업무 규모 (복수 선택) -->
+          <div class="form-group">
+            <label class="form-label"
+              >업무 규모
+              <span class="form-label-des">복수 선택 가능</span></label
+            >
+            <div class="option-btn-group">
+              <!-- TPL:  (업무 규모 버튼 반복) -->
+              <label class="option-btn">
+                <input type="checkbox" name="preferred_scales" value="SHORT" />
+                1~2주 단기
+              </label>
+              <label class="option-btn">
+                <input type="checkbox" name="preferred_scales" value="LONG" />
+                1개월 이상 중기
+              </label>
+              <label class="option-btn">
+                <input
+                  type="checkbox"
+                  name="preferred_scales"
+                  value="REGULAR_TRANSITION"
+                />
+                정규직 전환 전제 (리턴십)
+              </label>
+            </div>
+          </div>
+
+          <!-- 경력 연차 -->
+          <div class="form-group">
+            <label class="form-label">경력 연차</label>
+            <div class="option-btn-group">
+              <!-- TPL:  (경력 연차 버튼 반복) -->
+              <label class="option-btn"
+                ><input
+                  type="radio"
+                  name="career_years"
+                  value="ONE_TO_THREE"
+                  required
+                />
+                1~3년</label
+              >
+              <label class="option-btn"
+                ><input
+                  type="radio"
+                  name="career_years"
+                  value="THREE_TO_FIVE"
+                  required
+                />
+                3~5년</label
+              >
+              <label class="option-btn"
+                ><input
+                  type="radio"
+                  name="career_years"
+                  value="FIVE_TO_SEVEN"
+                  required
+                />
+                5~7년</label
+              >
+              <label class="option-btn"
+                ><input
+                  type="radio"
+                  name="career_years"
+                  value="OVER_SEVEN"
+                  required
+                />7년 이상</label
+              >
+            </div>
+          </div>
+
+          <!-- 우대 스킬 (선택 사항 + 복수 선택) -->
+          <div class="form-group">
+            <label class="form-label"
+              >우대 스킬
+              <span class="form-label-des">있으면 좋은 스킬 (선택)</span></label
+            >
+            <div class="skill-btn-group">
+              <!-- TPL: 직무 선택 시 해당 직무별 우대 스킬 목록 출력 -->
+              <!-- TPL:  (우대 스킬 버튼 반복) -->
+              <label class="skill-btn">
+                <input type="checkbox" name="skill_priorities" value="figma" />
+                Figma
+              </label>
+              <label class="skill-btn">
+                <input
+                  type="checkbox"
+                  name="skill_priorities"
+                  value="data-analysis"
+                />
+                데이터 분석
+              </label>
+              <label class="skill-btn">
+                <input
+                  type="checkbox"
+                  name="skill_priorities"
+                  value="photoshop"
+                />
+                포토샵
+              </label>
+              <label class="skill-btn">
+                <input
+                  type="checkbox"
+                  name="skill_priorities"
+                  value="google-analytics"
+                />
+                Google Analytics
+              </label>
+            </div>
+          </div>
+
+          <!-- 보유 스킬 (필수 사항 + 복수 선택) -->
+          <div class="form-group">
+            <label class="form-label"
+              >보유 스킬
+              <span class="form-label-des">중복 선택 가능 (필수)</span></label
+            >
+            <div class="skill-btn-group">
+              <!-- TPL: 직무 선택 시 해당 직무별 보유 스킬 목록 출력 -->
+              <!-- TPL:  (보유 스킬 버튼 반복) -->
+              <label class="skill-btn">
+                <input type="checkbox" name="skill" value="excel" />
+                엑셀
+              </label>
+              <label class="skill-btn">
+                <input type="checkbox" name="skill" value="powerpoint" />
+                파워포인트
+              </label>
+              <label class="skill-btn">
+                <input type="checkbox" name="skill" value="sns-contents" />
+                SNS 콘텐츠
+              </label>
+              <label class="skill-btn">
+                <input type="checkbox" name="skill" value="copywriting" />
+                카피라이팅
+              </label>
+              <label class="skill-btn">
+                <input type="checkbox" name="skill" value="slack" />
+                Slack
+              </label>
+              <label class="skill-btn">
+                <input type="checkbox" name="skill" value="notion" />
+                Notion
+              </label>
+              <label class="skill-btn">
+                <input type="checkbox" name="skill" value="jira" />
+                Jira
+              </label>
+              <label class="skill-btn">
+                <input type="checkbox" name="skill" value="zoom" />
+                Zoom
+              </label>
+            </div>
+          </div>
+
+          <button class="create-project-btn" type="submit" disabled>
+            공고 등록하기
+          </button>
+        </section>
+        <!-- 우측 사이드바 영역 -->
+        <section class="project-sidebar">
+          <!-- 모집 인원 -->
+          <div class="form-group">
+            <label for="recruit-count" class="form-label">모집 인원</label>
+            <input
+              type="number"
+              min="1"
+              id="recruit-count"
+              name="recruit_count"
+              class="form-input"
+              placeholder="예: 1명"
+              required
+            />
+          </div>
+
+          <!-- 보수 금액 -->
+          <div class="form-group">
+            <label for="pay-amount" class="form-label">보수 금액</label>
+            <input
+              type="number"
+              min="0"
+              id="pay-amount"
+              name="compensation_amount"
+              class="form-input"
+              placeholder="예: 시급 25,000원"
+              required
+            />
+          </div>
+
+          <!-- 모집 마감일 -->
+          <div class="form-group">
+            <label for="deadline-date" class="form-label">모집 마감일</label>
+            <input
+              type="date"
+              id="deadline-date"
+              name="deadline"
+              class="form-input"
+              placeholder="예: 2026.07.20"
+              required
+            />
+          </div>
+
+          <!-- 프로젝트 기간 -->
+          <!-- 실제 서버로 전송될 hidden input -->
+          <!-- <input type="hidden" name="duration" id="project-period" required />
+
+          <div class="form-group">
+            <label class="form-label">프로젝트 기간</label>
+            <div class="date-range-group">
+              <input
+                type="date"
+                id="project-start"
+                class="form-input"
+                placeholder="예: 07.20"
+                required
+              />
+              <span>~</span>
+              <input
+                type="date"
+                id="project-end"
+                class="form-input"
+                placeholder="예: 08.15"
+                required
+              />
+            </div>
+          </div> -->
+
+          <div class="form-group">
+            <label for="project-period" class="form-label">프로젝트 기간</label>
+            <input
+              type="text"
+              id="project-period"
+              class="form-input"
+              name="duration"
+              placeholder="예: 07.20 ~ 08.15"
+              required
+            />
+          </div>
+
+          <!-- 추가 사항 -->
+          <div class="form-card">
+            <p class="card-title">추가 사항</p>
+            <textarea
+              class="form-textarea card-des"
+              rows="3"
+              placeholder="추가적인 상세 업무/우대사항이 있다면 적어주세요"
+            ></textarea>
+          </div>
+
+          <!-- 숨은 능력 등록 -->
+          <div class="form-card">
+            <p class="card-title">숨은 능력 등록</p>
+            <p class="card-subtitle">매칭 기준 가중치 설정</p>
+            <p class="card-des">
+              보유 스킬 외 숨은 능력을 추가로<br />
+              등록하면 경력자들과 매칭률이 높아져요
+            </p>
+            <p class="card-des">
+              높은 매칭률을 유지하여<br />
+              <span class="badge">
+                <img
+                  class="badge-img"
+                  src="../../static/img/trophy.svg"
+                  alt=""
+                />
+                <span class="badge-text">우수기업</span>
+              </span>
+              <span>선정을 노려볼까요?</span>
+            </p>
+            <button class="hidden-modal-open-btn" type="button">
+              추가하기
+            </button>
+          </div>
+        </section>
+      </form>
+    </main>
+  </body>
+</html>

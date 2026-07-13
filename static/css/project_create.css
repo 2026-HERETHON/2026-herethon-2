@@ -1,0 +1,22 @@
+/* 헤더 */
+.header-profile {
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--color-primary);
+  border-radius: 50%;
+  background-color: var(--color-primary-light);
+
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.header-profile a {
+  color: var(--color-primary-dark);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.project_create {
+  margin-left: 260px; /* 왼쪽 사이드바 너비 */
+}
