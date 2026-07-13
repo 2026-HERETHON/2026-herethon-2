@@ -111,3 +111,20 @@ header {
   position: fixed;
   top: 70px;
 }
+
+a {
+  text-decoration: none;
+}
+
+
+/* 호버상태 버튼 */
+.btn-hover:hover {
+  background-color: var(--color-primary-light);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  cursor: pointer;
+
+  span {
+    color: var(--color-primary);
+  }
+}

@@ -71,11 +71,6 @@ body {
   text-decoration: none;
 }
 
-.select-user-type a:hover {
-  background-color: var(--color-bg-subtle);
-  cursor: pointer;
-}
-
 .select-user-type span {
   color: var(--color-text-primary);
   font-size: 1rem;
