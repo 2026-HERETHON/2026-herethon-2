@@ -421,30 +421,6 @@
           </div>
 
           <!-- 프로젝트 기간 -->
-          <!-- 실제 서버로 전송될 hidden input -->
-          <!-- <input type="hidden" name="duration" id="project-period" required />
-
-          <div class="form-group">
-            <label class="form-label">프로젝트 기간</label>
-            <div class="date-range-group">
-              <input
-                type="date"
-                id="project-start"
-                class="form-input"
-                placeholder="예: 07.20"
-                required
-              />
-              <span>~</span>
-              <input
-                type="date"
-                id="project-end"
-                class="form-input"
-                placeholder="예: 08.15"
-                required
-              />
-            </div>
-          </div> -->
-
           <div class="form-group">
             <label for="project-period" class="form-label">프로젝트 기간</label>
             <input
@@ -469,6 +445,14 @@
 
           <!-- 숨은 능력 등록 -->
           <div class="form-card">
+            <!-- 숨은 능력 모달에서 추가 시 hidden input에 저장 -->
+            <input
+              type="hidden"
+              id="hidden-abilities-input"
+              name="hidden_abilities"
+              value="[]"
+            />
+
             <p class="card-title">숨은 능력 등록</p>
             <p class="card-subtitle">매칭 기준 가중치 설정</p>
             <p class="card-des">
@@ -487,12 +471,133 @@
               </span>
               <span>선정을 노려볼까요?</span>
             </p>
-            <button class="hidden-modal-open-btn" type="button">
+            <button class="modal-open-btn" type="button" disabled>
               추가하기
             </button>
           </div>
         </section>
       </form>
     </main>
+
+    <!-- 숨은 능력 모달 팝업 영역 -->
+    <div class="modal-overlay">
+      <div class="modal-box">
+        <div class="modal-header">
+          <!-- TPL: 현재 선택한 직무명을 타이틀 및 캡션에 반영 -->
+          <p class="modal-title">숨은 능력 매칭 항목 추가_콘텐츠 기획</p>
+          <p class="caption">
+            콘텐츠 기획 직무와 관련된 숨은 능력을 선택하면 매칭 가중치에
+            반영돼요
+          </p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="modal-body">
+          <!-- 숨은 능력 목록 -->
+          <div class="hidden-ability-list">
+            <!-- TPL: 현재 선택한 직무의 숨은 능력 아이템 목록 반복 -->
+            <div class="hidden-ability-item">
+              <button class="checkbox" type="button" data-checked="false">
+                <img src="../../static/img/checkbox-blank.svg" alt="checkbox" />
+              </button>
+              <!-- TPL: 숨은 능력(번역 전) -->
+              <div class="hidden-ability-original">맘카페 운영</div>
+              <img
+                class="right-arrow-img"
+                src="../../static/img/right-arrow.svg"
+                alt="right-arrow"
+              />
+              <div class="hidden-ability-translated">
+                <img
+                  class="green-icon"
+                  src="../../static/img/ellipse-green.svg"
+                />
+                <!-- TPL: 숨은 능력 (번역 후) -->
+                <span class="translated-text">커뮤니티 매니징</span>
+              </div>
+            </div>
+            <div class="hidden-ability-item">
+              <button class="checkbox" type="button" data-checked="false">
+                <img src="../../static/img/checkbox-blank.svg" alt="checkbox" />
+              </button>
+              <div class="hidden-ability-original">블로그 공동 구매 운영</div>
+              <img
+                class="right-arrow-img"
+                src="../../static/img/right-arrow.svg"
+                alt="right-arrow"
+              />
+              <div class="hidden-ability-translated">
+                <img
+                  class="green-icon"
+                  src="../../static/img/ellipse-green.svg"
+                />
+                <span class="translated-text">콘텐츠 기획 / SNS 마케팅</span>
+              </div>
+            </div>
+            <div class="hidden-ability-item">
+              <button class="checkbox" type="button" data-checked="false">
+                <img src="../../static/img/checkbox-blank.svg" alt="checkbox" />
+              </button>
+              <div class="hidden-ability-original">학교 행사 기획 보조</div>
+              <img
+                class="right-arrow-img"
+                src="../../static/img/right-arrow.svg"
+                alt="right-arrow"
+              />
+              <div class="hidden-ability-translated">
+                <img
+                  class="green-icon"
+                  src="../../static/img/ellipse-green.svg"
+                />
+                <span class="translated-text">프로젝트 운영 지원</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- 매칭 가중치 -->
+          <div class="matching-weight-group">
+            <label class="matching-weight-label">매칭 가중치</label>
+            <div class="option-btn-group">
+              <!-- TPL: (매칭 가중치 버튼 반복) -->
+              <label class="option-btn">
+                <input
+                  type="radio"
+                  name="matching_weight"
+                  value="LOW"
+                  required
+                />
+                낮음
+              </label>
+              <label class="option-btn">
+                <input
+                  type="radio"
+                  name="matching_weight"
+                  value="MEDIUM"
+                  required
+                />
+                보통
+              </label>
+              <label class="option-btn">
+                <input
+                  type="radio"
+                  name="matching_weight"
+                  value="HIGH"
+                  required
+                />
+                높음
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="modal-close-btn" type="button">취소</button>
+          <button class="hidden-ability-add-btn" type="button">추가하기</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
