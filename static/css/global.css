@@ -116,7 +116,6 @@ a {
   text-decoration: none;
 }
 
-
 /* 호버상태 버튼 */
 .btn-hover:hover {
   background-color: var(--color-primary-light);
