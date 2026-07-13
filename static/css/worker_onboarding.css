@@ -368,6 +368,14 @@ input:checked + .btn-hover {
   margin-bottom: 15px;
 }
 
+.application-type {
+  justify-content: center;
+}
+
+.application-type label {
+  flex: 1;
+}
+
 .step4-form span {
   font-size: 0.75rem;
   font-weight: 400;
