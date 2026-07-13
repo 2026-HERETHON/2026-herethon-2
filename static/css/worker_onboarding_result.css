@@ -25,7 +25,7 @@ section {
 
 .result-wrap {
   place-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .result-box {
@@ -125,4 +125,15 @@ article {
   width: 50px;
   height: 50px;
   margin: 0px 16px;
+  color: var(--color-primary);
+}
+.next-btn {
+  white-space: nowrap;
+  width: 431.2px;
+  height: 3.125rem;
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+  border: 1px solid var(--color-primary);
+  border-radius: 10px;
+  margin-top: 6rem;
 }
