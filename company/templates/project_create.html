@@ -34,19 +34,27 @@
     <nav class="sidebar-nav">
       <!-- TPL: href 실제 url 패턴으로 변경 필요 -->
       <!-- TPL: 현재 active 클래스 하드 코딩함. 연동 시 현재 페이지의 active 판단 로직으로 교체 필요  -->
-      <a href="project_create.html" class="nav-menu active"> 공고 등록 </a>
-      <a href="#" class="nav-menu"> 프로젝트 관리하기 </a>
-      <a href="#" class="nav-menu"> 기업 정보 </a>
+      <a
+        href="project_create.html"
+        class="nav-menu active"
+        data-label="공고 등록"
+      >
+        공고 등록
+      </a>
+      <a href="#" class="nav-menu" data-label="프로젝트 관리하기">
+        프로젝트 관리하기
+      </a>
+      <a href="#" class="nav-menu" data-label="기업 정보"> 기업 정보 </a>
     </nav>
 
     <!-- 공고 등록 영역 -->
     <main class="project_create">
       <form method="post" id="project-create-form">
         <!-- 좌측 메인 폼 영역 -->
-        <section class="project-form">
+        <section class="project-form-left">
           <!-- 기업명 -->
           <div class="form-group">
-            <label for="company-name" class="form-label">기업명</label>
+            <label for="company-name" class="form-label-1">기업명</label>
             <input
               type="text"
               id="company-name"
@@ -59,7 +67,7 @@
 
           <!-- 프로젝트명 -->
           <div class="form-group">
-            <label for="project-name" class="form-label"
+            <label for="project-name" class="form-label-1"
               >새 프로젝트 공고 등록</label
             >
             <input
@@ -72,22 +80,20 @@
             />
           </div>
 
-          <!-- 싱세 내용 -->
+          <!-- 상세 내용 -->
           <div class="form-group">
-            <label for="project-detail" class="form-label">상세 내용</label>
-            <input
-              type="text"
+            <label for="project-detail" class="form-label-2">상세 내용</label>
+            <textarea
               id="project-detail"
-              name="project_detail"
-              class="form-input"
+              class="form-textarea"
               placeholder="프로젝트의 배경, 주요 업무, 협업 방식 등을 자유롭게 적어주세요"
               required
-            />
+            ></textarea>
           </div>
 
           <!-- 직무 유형 (단일 선택) -->
           <div class="form-group">
-            <label class="form-label">직무유형 선택</label>
+            <label class="form-label-2">직무유형 선택</label>
             <div class="option-btn-group">
               <!-- TPL: job_categories (직무 유형 버튼 반복) -->
               <label class="option-btn">
@@ -111,7 +117,7 @@
 
           <!-- 근무 형태 (단일 선택) -->
           <div class="form-group">
-            <label class="form-label">근무 형태 선택</label>
+            <label class="form-label-2">근무 형태 선택</label>
             <div class="option-btn-group">
               <!-- TPL:  (근무 형태 버튼 반복) -->
               <label class="option-btn">
@@ -150,7 +156,7 @@
 
           <!-- 가용 시간 (단일 선택) -->
           <div class="form-group">
-            <label class="form-label">가용 시간 (주 0시간)</label>
+            <label class="form-label-2">가용 시간 (주 0시간)</label>
             <div class="option-btn-group">
               <!-- TPL:  (가용 시간 버튼 반복) -->
               <label class="option-btn">
@@ -185,14 +191,14 @@
 
           <!-- 코어 타임 (복수 선택) -->
           <div class="form-group">
-            <label class="form-label"
+            <label class="form-label-2"
               >코어타임 (소통 선호 시간대)<span class="form-label-des"
                 >복수 선택 가능</span
               ></label
             >
             <div class="option-btn-group">
               <!-- TPL:  (코어타임 버튼 반복) -->
-              <label class="option-btn">
+              <label class="option-btn core-time-btn">
                 <input
                   type="checkbox"
                   name="core_times"
@@ -201,17 +207,17 @@
                 <span class="core-time-label">이른 아침</span>
                 <span class="core-time-range">07:00~10:00</span>
               </label>
-              <label class="option-btn">
+              <label class="option-btn core-time-btn">
                 <input type="checkbox" name="core_times" value="morning" />
                 <span class="core-time-label">오전</span>
                 <span class="core-time-range">10:00~14:00</span>
               </label>
-              <label class="option-btn">
+              <label class="option-btn core-time-btn">
                 <input type="checkbox" name="core_times" value="afternoon" />
                 <span class="core-time-label">오후</span>
                 <span class="core-time-range">14:00~18:00</span>
               </label>
-              <label class="option-btn">
+              <label class="option-btn core-time-btn">
                 <input type="checkbox" name="core_times" value="evening" />
                 <span class="core-time-label">저녁</span>
                 <span class="core-time-range">18:00~22:00</span>
@@ -221,7 +227,7 @@
 
           <!-- 업무 규모 (복수 선택) -->
           <div class="form-group">
-            <label class="form-label"
+            <label class="form-label-2"
               >업무 규모
               <span class="form-label-des">복수 선택 가능</span></label
             >
@@ -248,7 +254,7 @@
 
           <!-- 경력 연차 -->
           <div class="form-group">
-            <label class="form-label">경력 연차</label>
+            <label class="form-label-2">경력 연차</label>
             <div class="option-btn-group">
               <!-- TPL:  (경력 연차 버튼 반복) -->
               <label class="option-btn"
@@ -291,7 +297,7 @@
 
           <!-- 우대 스킬 (선택 사항 + 복수 선택) -->
           <div class="form-group">
-            <label class="form-label"
+            <label class="form-label-2"
               >우대 스킬
               <span class="form-label-des">있으면 좋은 스킬 (선택)</span></label
             >
@@ -331,7 +337,7 @@
 
           <!-- 보유 스킬 (필수 사항 + 복수 선택) -->
           <div class="form-group">
-            <label class="form-label"
+            <label class="form-label-2"
               >보유 스킬
               <span class="form-label-des">중복 선택 가능 (필수)</span></label
             >
@@ -377,11 +383,12 @@
             공고 등록하기
           </button>
         </section>
+
         <!-- 우측 사이드바 영역 -->
-        <section class="project-sidebar">
+        <section class="project-form-right">
           <!-- 모집 인원 -->
           <div class="form-group">
-            <label for="recruit-count" class="form-label">모집 인원</label>
+            <label for="recruit-count" class="form-label-3">모집 인원</label>
             <input
               type="number"
               min="1"
@@ -395,21 +402,21 @@
 
           <!-- 보수 금액 -->
           <div class="form-group">
-            <label for="pay-amount" class="form-label">보수 금액</label>
+            <label for="pay-amount" class="form-label-3">보수 금액</label>
             <input
               type="number"
               min="0"
               id="pay-amount"
               name="compensation_amount"
               class="form-input"
-              placeholder="예: 시급 25,000원"
+              placeholder="예: 보수 금액 25,000원"
               required
             />
           </div>
 
           <!-- 모집 마감일 -->
           <div class="form-group">
-            <label for="deadline-date" class="form-label">모집 마감일</label>
+            <label for="deadline-date" class="form-label-3">모집 마감일</label>
             <input
               type="date"
               id="deadline-date"
@@ -422,7 +429,9 @@
 
           <!-- 프로젝트 기간 -->
           <div class="form-group">
-            <label for="project-period" class="form-label">프로젝트 기간</label>
+            <label for="project-period" class="form-label-3"
+              >프로젝트 기간</label
+            >
             <input
               type="text"
               id="project-period"
@@ -433,18 +442,17 @@
             />
           </div>
 
-          <!-- 추가 사항 -->
-          <div class="form-card">
+          <!-- 추가 사항 (선택 사항) -->
+          <div class="form-card" id="additional-info">
             <p class="card-title">추가 사항</p>
             <textarea
-              class="form-textarea card-des"
-              rows="3"
+              class="form-textarea"
               placeholder="추가적인 상세 업무/우대사항이 있다면 적어주세요"
             ></textarea>
           </div>
 
           <!-- 숨은 능력 등록 -->
-          <div class="form-card">
+          <div class="form-card" id="hidden-ability">
             <!-- 숨은 능력 모달에서 추가 시 hidden input에 저장 -->
             <input
               type="hidden"
@@ -455,12 +463,12 @@
 
             <p class="card-title">숨은 능력 등록</p>
             <p class="card-subtitle">매칭 기준 가중치 설정</p>
-            <p class="card-des">
+            <p class="card-des card-des--first">
               보유 스킬 외 숨은 능력을 추가로<br />
               등록하면 경력자들과 매칭률이 높아져요
             </p>
-            <p class="card-des">
-              높은 매칭률을 유지하여<br />
+            <p class="card-des card-des--second">높은 매칭률을 유지하여</p>
+            <p class="card-des badge-des">
               <span class="badge">
                 <img
                   class="badge-img"
