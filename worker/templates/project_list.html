@@ -106,10 +106,33 @@
           </div>
 
           <div class="bar-sort">
-            <a class="sort1" href="?type=real&sort=matching">매칭률순</a>
-            <a class="sort2" href="?type=real&sort=deadline">마감임박순</a>
-            <a class="sort3" href="?type=real&sort=latest">최신순</a>
-            <a class="sort4" href="?type=warmup">워밍업 모아보기</a>
+            <a
+              class="sort1 {% if view_type == 'real' and current_sort == 'matching' %}active{% endif %}"
+              href="?type=real&sort=matching"
+            >
+              매칭률순
+            </a>
+
+            <a
+              class="sort2 {% if view_type == 'real' and current_sort == 'deadline' %}active{% endif %}"
+              href="?type=real&sort=deadline"
+            >
+              마감임박순
+            </a>
+
+            <a
+              class="sort3 {% if view_type == 'real' and current_sort == 'latest' %}active{% endif %}"
+              href="?type=real&sort=latest"
+            >
+              최신순
+            </a>
+
+            <a
+              class="sort4 {% if view_type == 'warmup' %}active{% endif %}"
+              href="?type=warmup"
+            >
+              워밍업 모아보기
+            </a>
           </div>
         </div>
 
