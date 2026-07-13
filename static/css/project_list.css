@@ -210,7 +210,6 @@ fieldset {
   font-weight: 400;
   cursor: pointer;
   white-space: nowrap;
-
   line-height: 40px;
   border-bottom: 3px solid transparent;
 }
@@ -231,17 +230,11 @@ fieldset {
   width: 88.72px;
 }
 
-.bar-sort a:hover {
+.bar-sort a:hover,
+.bar-sort a.active {
   color: var(--color-primary);
-  font-weight: bold;
-  border-bottom-color: 3px solid var(--color-primary);
-  letter-spacing: 0.2px;
-}
-
-.active {
-  color: var(--color-primary);
-  font-weight: bold;
-  border-bottom-color: 3px solid var(--color-primary);
+  font-weight: 700;
+  border-bottom: 3px solid var(--color-primary);
   letter-spacing: 0.2px;
 }
 

@@ -21,7 +21,7 @@
       </div>
       <div class="header-menu">
         <a href="{% url 'worker:project_list' %}" data-label="프로젝트 찾기" class="found">프로젝트 찾기</a>
-        <a href="{% url 'mypage:dashboard' %}" data-label="마이페이지">마이페이지</a> </div>
+        <a href="{% url 'mypage:dashboard' %}" data-label="마이페이지">마이페이지</a>
       </div>
       <div class="header-profile">
         <a>{{ user.name|slice:":1" }}</a>
@@ -43,7 +43,7 @@
         <div class="user-info">
           <p class="user-name">{{ user.name }}<span> 님</span></p>
           <p class="user-meta">
-            경력단절 <span>{{ worker_profile.get_career_years_display }}</span> ·
+            경력 <span>{{ worker_profile.get_career_years_display }}</span> ·
             <span>{{ worker_profile.job_category.name }}</span>
           </p>
           <!-- 웜업패스, 기업평가 배지는 구현 제외 -->
