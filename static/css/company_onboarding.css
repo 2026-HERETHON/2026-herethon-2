@@ -78,6 +78,7 @@ input {
   align-items: center;
   gap: 0.625rem;
   background: #3b82f6;
+  border-radius: 0.625rem;
 
   color: #fff;
   text-align: center;
