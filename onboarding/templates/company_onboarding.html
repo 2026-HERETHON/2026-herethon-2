@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>기업 정보 입력</title>
+    <link rel="stylesheet" href="../../static/css/colorpalette.css" />
+    <link rel="stylesheet" href="../../static/css/global.css" />
+    <link rel="stylesheet" href="../../static/css/company_onboarding.css" />
+  </head>
+  <body>
+    <!-- 헤더 영역 -->
+    <header>
+      <div class="header-logo">
+        <img
+          class="header-logo-img"
+          src="../../static/img/logo.svg"
+          alt="logo"
+        />
+        <div class="header-logo-text">
+          <span class="logo-desc">당신의 두 번째 커리어 브릿지</span>
+          <span class="logo-brand"
+            ><span class="RE">RE</span><span class="colon">:</span>Bridge</span
+          >
+        </div>
+      </div>
+    </header>
+
+    <!-- 기업 온보딩 영역 -->
+    <main class="company-onboarding">
+      <button type="button" class="btn-back">← 이전</button>
+      <h1>기업명을 입력해주세요</h1>
+      <p class="des">
+        구글 가입이 완료되었습니다! 서비스 시작을 위해 기업명을 입력해 주세요.
+      </p>
+      <!-- TPL: 기업명 입력 폼 -->
+      <form method="post" id="company-onboarding-form">
+        <input
+          type="text"
+          name="company_name"
+          id="company-name-input"
+          placeholder="예) 리브릿지"
+          required
+        />
+        <button type="submit" id="btn-company-submit" disabled>다음</button>
+      </form>
+      <!-- TPL: 에러 메세지 출력 -->
+    </main>
+
+    <script src="../../static/js/company_onboarding.js"></script>
+  </body>
+</html>

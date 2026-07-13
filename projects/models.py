@@ -159,7 +159,7 @@ class ApplicationFile(models.Model):  # 지원 첨부파일 (최대 5개, 종류
     application = models.ForeignKey(
         Application, on_delete=models.CASCADE, related_name='files'
     )
-    file_url = models.CharField(max_length=500)
+    file = models.FileField(upload_to='applications/%Y/%m/%d/')
     original_name = models.CharField(max_length=255)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 

@@ -12,4 +12,14 @@ urlpatterns = [
     path('results/hidden-ability/', views.hidden_ability_result, name='hidden_ability_result'),
     path('results/match-top3/', views.match_top3_result, name='match_top3_result'),
     path('projects/', views.project_list, name='project_list'),
+    path(
+        'projects/<int:project_id>/',
+        views.project_detail,
+        name='project_detail',
+    ),
+    path(
+        'projects/<int:project_id>/apply/',
+        views.project_apply,
+        name='project_apply',
+    ),
 ]

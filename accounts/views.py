@@ -90,20 +90,25 @@ def google_callback(request):
         return redirect('accounts:landing')
 
     google_uid = info.get('sub')
+    email= info.get('email', '')
 
-    if not google_uid:
+    if not google_uid or not email:
         return redirect('accounts:landing')
 
-    user, _ = User.objects.get_or_create(
-        google_uid=google_uid,
+    user, created = User.objects.get_or_create(
+        email=email,  # 이메일로 먼저 DB를 싹 뒤짐
         defaults={
-            'username': google_uid,
-            'email': info.get('email', ''),
+            'google_uid': google_uid,
+            'username': google_uid,  # 모델에 필수라면 uid로 임시 저장
             'name': info.get('name', ''),
             'profile_image_url': info.get('picture', ''),
         },
     )
-
+    
+    if not created and not user.google_uid:
+        user.google_uid = google_uid
+        user.save(update_fields=['google_uid'])
+        
     login(request, user)
 
     return redirect(resolve_redirect_url(user, request))
