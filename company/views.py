@@ -32,7 +32,7 @@ def company_onboarding(request):
         company_name = request.POST.get('company_name', '').strip()
 
         if not company_name:
-            return render(request, 'b_company_onboarding.html', {
+            return render(request, 'company_onboarding.html', {
                 'error': '기업명을 입력해주세요.'
             })
 
@@ -45,7 +45,7 @@ def company_onboarding(request):
 
         return redirect('company:project_create')
 
-    return render(request, 'b_company_onboarding.html')
+    return render(request, 'company_onboarding.html')
 
 
 def _build_context():
