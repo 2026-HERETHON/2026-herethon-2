@@ -6,6 +6,7 @@
     <title>기업 정보 입력</title>
     <link rel="stylesheet" href="../../static/css/colorpalette.css" />
     <link rel="stylesheet" href="../../static/css/global.css" />
+    <link rel="stylesheet" href="../../static/css/company_onboarding.css" />
   </head>
   <body>
     <!-- 헤더 영역 -->
@@ -26,22 +27,24 @@
     </header>
 
     <!-- 기업 온보딩 영역 -->
-    <section class="company-onboarding">
-      <p class="btn-back">← 이전</p>
-      <h1>기업명을 입력해주세요</h1>
-      <p class="des">
-        구글 가입이 완료되었습니다! 서비스 시작을 위해 기업명을 입력해 주세요.
-      </p>
-      <form method="post" id="company-onboarding-form">
-        <input
-          type="text"
-          name="company_name"
-          id="company-name-input"
-          placeholder="예) 리브릿지"
-          required
-        />
-        <button type="submit" id="btn-company-submit" disabled>다음</button>
-      </form>
-    </section>
+    <main class="company-onboarding">
+      <div class="company-onboarding-content">
+        <button type="button" class="btn-back">← 이전</button>
+        <h1>기업명을 입력해주세요</h1>
+        <p class="des">
+          구글 가입이 완료되었습니다! 서비스 시작을 위해 기업명을 입력해 주세요.
+        </p>
+        <form method="post" id="company-onboarding-form">
+          <input
+            type="text"
+            name="company_name"
+            id="company-name-input"
+            placeholder="예) 리브릿지"
+            required
+          />
+          <button type="submit" id="btn-company-submit" disabled>다음</button>
+        </form>
+      </div>
+    </main>
   </body>
 </html>
