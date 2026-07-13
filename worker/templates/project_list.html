@@ -25,8 +25,8 @@
         </div>
       </div>
       <div class="header-menu">
-        <a>프로젝트 찾기</a>
-        <a>마이페이지</a>
+        <a href="{% url 'worker:project_list' %}" data-label="프로젝트 찾기" class="found">프로젝트 찾기</a>
+        <a href="{% url 'mypage:dashboard' %}" data-label="마이페이지">마이페이지</a>
       </div>
       <div class="header-profile">
         <a>양</a>

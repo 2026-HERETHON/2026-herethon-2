@@ -28,6 +28,7 @@ function closeModal(modalEl) {
   modalEl.style.display = "none";
 }
 
+/*
 // 희망 직무 모달
 const jobModal = document.getElementById("job-modal");
 const openJobBtn = document.getElementById("open-job-modal");
@@ -88,7 +89,7 @@ selectedJobTagList.addEventListener("click", (e) => {
 
   // 태그 삭제
   tagItem.remove();
-});
+}); */
 
 // 보유 스킬 모달
 const skillModal = document.getElementById("skill-modal");
@@ -117,11 +118,16 @@ closeSkillBtn.addEventListener("click", () => {
   selectedBtns.forEach((btn) => {
     const label = btn.textContent.replace("+", "").trim();
 
+    const value = btn.dataset.value;
+
     // 선택된 tag-list에 새 태그 추가
     const newTag = document.createElement("span");
     newTag.className = "tag-item";
+
     newTag.innerHTML = `
-    ${label} <button type="button" class="btn-tag-remove">✕</button>
+    ${label} 
+      <input type="checkbox" name="skills" value="${value}" checked style="display:none;">
+      <button type="button" class="btn-tag-remove">✕</button>
     `;
     selectedSkillTagList.appendChild(newTag);
 
@@ -152,16 +158,18 @@ selectedSkillTagList.addEventListener("click", (e) => {
   tagItem.remove();
 });
 
+/*
 // 가용 시간 모달
 const scheduleModal = document.getElementById("schedule-modal");
 const openScheduleBtn = document.getElementById("open-schedule-modal");
 const closeScheduleBtn = document.getElementById("done-schedule-modal");
 
 openScheduleBtn.addEventListener("click", () => openModal(scheduleModal));
-closeScheduleBtn.addEventListener("click", () => closeModal(scheduleModal));
+closeScheduleBtn.addEventListener("click", () => closeModal(scheduleModal)); */
 
 // 모달 배경 클릭 처리
-const allModals = [jobModal, skillModal, scheduleModal];
+//const allModals = [jobModal, skillModal, scheduleModal];
+const allModals = [skillModal];
 
 allModals.forEach((modal) => {
   modal.addEventListener("click", (e) => {
@@ -170,3 +178,14 @@ allModals.forEach((modal) => {
     }
   });
 });
+
+// --- URL 파라미터를 읽어서 해당 탭 유지하기  ---
+const urlParams = new URLSearchParams(window.location.search);
+const activeTab = urlParams.get('tab');
+
+if (activeTab) {
+  const targetBtn = document.querySelector(`.tab-btn[data-tab="${activeTab}"]`);
+  if (targetBtn) {
+    targetBtn.click();
+  }
+}
