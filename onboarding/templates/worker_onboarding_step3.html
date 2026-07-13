@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../static/css/colorpalette.css" />
+    <link rel="stylesheet" href="../../static/css/global.css" />
+    <link rel="stylesheet" href="../../static/css/worker_onboarding.css" />
+    <title>worker onboarding step1</title>
+  </head>
+  <body>
+    <header>
+      <div class="header-logo">
+        <img
+          class="header-logo-img"
+          src="../../static/img/logo.svg"
+          alt="logo"
+        />
+        <div class="header-logo-text">
+          <span class="logo-desc">당신의 두 번째 커리어 브릿지</span>
+          <span class="logo-brand"
+            ><span class="RE">RE</span><span class="colon">:</span>Bridge</span
+          >
+        </div>
+      </div>
+    </header>
+    <main class="onboarding-main">
+      <a
+        class="back-btn"
+        href="../../onboarding/templates/worker_onboarding_step2.html"
+        >← 이전
+        <div class="ellipse hidden"></div
+      ></a>
+
+      <!--스텝 1~4 순서대로 active 누적 적용-->
+      <div class="step-bar">
+        <span class="step active"></span>
+        <span class="step active"></span>
+        <span class="step active"></span>
+        <span class="step"></span>
+      </div>
+      <small class="step-tatus">3/4단계</small>
+      <h3 class="step1-desc">일하실 수 있는 조건을 알려주세요</h3>
+      <p class="select-desc">매칭률 계산에 가장 중요한 정보예요</p>
+
+      <form method="post" id="step3-form" class="step3-form">
+        <!--TPL: 주간 가용 시간 -->
+
+        <h2>주간 가용 시간</h2>
+        <div class="weeklys-wrap">
+          <input type="radio" name="weekly_hours" id="weekly_15" />
+          <label for="weekly_15" class="btn-hover">주 15시간 미만</label>
+          <input type="radio" name="weekly_hours" id="weekly_25" />
+          <label for="weekly_25" class="btn-hover">주 15시간 ~ 25시간</label>
+          <input type="radio" name="weekly_hours" id="weekly_26" /><label
+            for="weekly_26"
+            class="btn-hover"
+            >주 25시간 이상</label
+          >
+        </div>
+
+        <!--TPL: 코어타임 -->
+        <h2>
+          코어타임 (실시간 소통이 편한 시간대)
+          <small class="multiple">복수 선택이 가능해요</small>
+        </h2>
+
+        <div class="cores-wrap">
+          <input type="checkbox" name="core_times" id="time_1" />
+          <label for="time_1" class="btn-hover"
+            ><span>이른 아침</span>07:00~10:00</label
+          >
+          <input type="checkbox" name="core_times" id="time_2" />
+          <label for="time_2" class="btn-hover"
+            ><span>오전</span>10:00~14:00</label
+          >
+          <input type="checkbox" name="core_times" id="time_3" /><label
+            for="time_3"
+            class="btn-hover"
+            ><span>오후</span>14:00~18:00</label
+          >
+          <input type="checkbox" name="core_times" id="time_4" /><label
+            for="time_4"
+            class="btn-hover"
+            ><span>저녁</span>18:00~22:00</label
+          >
+        </div>
+        <p class="can-times">
+          가능한 시간대를 모두 선택해주세요 (예: 아이 등원 후 + 재우고 난 뒤)
+        </p>
+
+        <!--TPL: 선호 근무 형태 -->
+        <h2>선호 근무 형태</h2>
+        <div class="preferred-work">
+          <input type="radio" name="preferred_work_style" id="work_1" />
+          <label for="work_1" class="btn-hover">100% 재택</label>
+          <input type="radio" name="preferred_work_style" id="work_2" />
+          <label for="work_2" class="btn-hover">주 1회 출근</label>
+          <input type="radio" name="preferred_work_style" id="work_3" /><label
+            for="work_3"
+            class="btn-hover"
+            >주 3회 이상 출근</label
+          >
+          <input type="radio" name="preferred_work_style" id="work_4" /><label
+            for="work_4"
+            class="btn-hover"
+            >매일 출근</label
+          >
+        </div>
+
+        <!--TPL: 선호하는 업무 규모 -->
+        <h2>선호하는 업무 규모</h2>
+        <small>복수 선택이 가능해요</small>
+
+        <div class="preferred-scales">
+          <input type="checkbox" name="preferred_scales" id="scale_1" />
+          <label for="scale_1" class="btn-hover">1~2주 단기</label>
+
+          <input type="checkbox" name="preferred_scales" id="scale_2" />
+          <label for="scale_2" class="btn-hover">1개월 이상 중기</label>
+
+          <input type="checkbox" name="preferred_scales" id="scale_3" />
+          <label for="scale_3" class="btn-hover"
+            >정규직 전환 전제 (리턴십)</label
+          >
+        </div>
+
+        <!--TPL: 온보딩 step4로 이동-->
+        <div class="btn-wrap">
+          <button
+            type="submit"
+            id="step3-next-btn"
+            class="next-btn btn-hover"
+            disabled
+          >
+            다음
+          </button>
+        </div>
+      </form>
+    </main>
+  </body>
+
+  <script src="../../static/js/w_onboarding.js"></script>
+</html>
