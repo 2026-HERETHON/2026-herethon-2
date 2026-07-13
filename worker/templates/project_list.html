@@ -99,10 +99,18 @@
         <div class="project-title-bar">
           <div class="bar-left">
             <h4>프로젝트 찾기</h4>
-            <span
-              >총 <span>{{ project_count }}</span>건의 프로젝트 · 나와 잘 맞는 순으로 정렬되어
-              있어요</span
-            >
+            <span>
+              총 <span>{{ project_count }}</span>건의 프로젝트 ·
+              {% if view_type == 'warmup' %}
+                워밍업 프로젝트를 모아보고 있어요
+              {% elif current_sort == 'deadline' %}
+                마감이 가까운 순으로 정렬되어 있어요
+              {% elif current_sort == 'latest' %}
+                최근 등록된 순으로 정렬되어 있어요
+              {% else %}
+                나와 잘 맞는 순으로 정렬되어 있어요
+              {% endif %}
+            </span>
           </div>
 
           <div class="bar-sort">
