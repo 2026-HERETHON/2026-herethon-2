@@ -1,0 +1,89 @@
+/* 기업 온보딩 */
+.company-onboarding {
+  padding-top: 6.37rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 박스 내 자식들 중앙 정렬 */
+  width: fit-content; /* 컨테이너 너비를 콘텐츠에 맞춤(가장 넓은 자식) */
+  margin: 0 auto; /* 컨테이너 박스 자체의 정렬 */
+}
+
+.btn-back {
+  color: #9ca3af;
+  font-family: Inter;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  align-self: flex-start;
+  transform: translateX(1rem);
+}
+
+h1 {
+  color: #1f2937;
+  text-align: center;
+  font-family: Inter;
+  font-size: 2.25rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  margin-top: 3.56rem;
+}
+
+.des {
+  color: #6b7280;
+  text-align: center;
+  font-family: Inter;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  margin-top: 1.19rem;
+}
+
+#company-onboarding-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4.06rem;
+  margin-top: 4.06rem;
+}
+
+input {
+  width: 23.0625rem;
+  height: 6.875rem;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 1.1875rem;
+
+  color: #6b7280;
+  font-family: Inter;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  padding: 2.69rem 2.19rem;
+}
+
+#btn-company-submit {
+  display: flex;
+  width: 31.25rem;
+  height: 3.125rem;
+  padding: 1rem 14.75rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+  background: #3b82f6;
+
+  color: #fff;
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.9375rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
