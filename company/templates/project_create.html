@@ -50,6 +50,7 @@
     <!-- 공고 등록 영역 -->
     <main class="project_create">
       <form method="post" id="project-create-form">
+        <!-- TPL: 모든 input의 name, value 값은 임의로 작성함. 연동 시 점검 필수 ! -->
         <!-- 좌측 메인 폼 영역 -->
         <section class="project-form-left">
           <!-- 기업명 -->
@@ -86,6 +87,7 @@
             <textarea
               id="project-detail"
               class="form-textarea"
+              name="detail"
               placeholder="프로젝트의 배경, 주요 업무, 협업 방식 등을 자유롭게 적어주세요"
               required
             ></textarea>
@@ -96,20 +98,22 @@
             <label class="form-label-2">직무유형 선택</label>
             <div class="option-btn-group">
               <!-- TPL: job_categories (직무 유형 버튼 반복) -->
+              <!-- TPL: input의 name 값 변경 시 JS 코드도 수정 필요 ! -->
+              <!-- TPL: 직무 유형 value 임의 숫자로 지정함. 연동 시 job.id로 수정-->
               <label class="option-btn">
-                <input type="radio" name="work_type" value="job.id" required />
+                <input type="radio" name="job_category" value="1" required />
                 콘텐츠 기획
               </label>
               <label class="option-btn">
-                <input type="radio" name="work_type" value="job.id" required />
+                <input type="radio" name="job_category" value="2" required />
                 데이터 분석
               </label>
               <label class="option-btn">
-                <input type="radio" name="work_type" value="job.id" required />
+                <input type="radio" name="job_category" value="3" required />
                 디자인
               </label>
               <label class="option-btn">
-                <input type="radio" name="work_type" value="job.id" required />
+                <input type="radio" name="job_category" value="4" required />
                 개발
               </label>
             </div>
@@ -301,37 +305,46 @@
               >우대 스킬
               <span class="form-label-des">있으면 좋은 스킬 (선택)</span></label
             >
-            <div class="skill-btn-group">
-              <!-- TPL: 직무 선택 시 해당 직무별 우대 스킬 목록 출력 -->
-              <!-- TPL:  (우대 스킬 버튼 반복) -->
-              <label class="skill-btn">
-                <input type="checkbox" name="skill_priorities" value="figma" />
-                Figma
-              </label>
-              <label class="skill-btn">
-                <input
-                  type="checkbox"
-                  name="skill_priorities"
-                  value="data-analysis"
-                />
-                데이터 분석
-              </label>
-              <label class="skill-btn">
-                <input
-                  type="checkbox"
-                  name="skill_priorities"
-                  value="photoshop"
-                />
-                포토샵
-              </label>
-              <label class="skill-btn">
-                <input
-                  type="checkbox"
-                  name="skill_priorities"
-                  value="google-analytics"
-                />
-                Google Analytics
-              </label>
+            <p class="skill-guide-msg" id="preferred-skill-guide">
+              직무를 먼저 선택해주세요
+            </p>
+
+            <div id="preferred-skill-wrapper">
+              <!-- TPL: 직무(job_id)별로 우대 스킬 그룹 목록 (div.skill-btn-group) 반복 -->
+              <!-- TPL: data-job-id 값 -> 실제 job.id로 교체 필요 -->
+              <!-- 콘텐츠 기획_우대 스킬 목록 (더미 데이터 job.id:1)-->
+              <div
+                class="skill-btn-group"
+                data-job-id="1"
+                style="display: none"
+              >
+                <!-- TPL: 선택한 직무(job.id)별 우대 스킬 버튼 목록 (div.skill-btn) 출력 -->
+                <!-- TPL: <label> 우대 스킬 버튼 아이템 / name, value 실제 값으로 전달 필요 -->
+                <label class="skill-btn">
+                  <input type="checkbox" name="skill_priorities" value="1" />
+                  데이터 분석
+                </label>
+                <label class="skill-btn">
+                  <input type="checkbox" name="skill_priorities" value="2" />
+                  SNS 콘텐츠
+                </label>
+              </div>
+
+              <!-- 데이터 분석_우대 스킬 목록 (더미 데이터 job.id:2)-->
+              <div
+                class="skill-btn-group"
+                data-job-id="2"
+                style="display: none"
+              >
+                <label class="skill-btn">
+                  <input type="checkbox" name="skill_priorities" value="3" />
+                  SQL
+                </label>
+                <label class="skill-btn">
+                  <input type="checkbox" name="skill_priorities" value="4" />
+                  Python
+                </label>
+              </div>
             </div>
           </div>
 
@@ -341,41 +354,46 @@
               >보유 스킬
               <span class="form-label-des">중복 선택 가능 (필수)</span></label
             >
-            <div class="skill-btn-group">
-              <!-- TPL: 직무 선택 시 해당 직무별 보유 스킬 목록 출력 -->
-              <!-- TPL:  (보유 스킬 버튼 반복) -->
-              <label class="skill-btn">
-                <input type="checkbox" name="skill" value="excel" />
-                엑셀
-              </label>
-              <label class="skill-btn">
-                <input type="checkbox" name="skill" value="powerpoint" />
-                파워포인트
-              </label>
-              <label class="skill-btn">
-                <input type="checkbox" name="skill" value="sns-contents" />
-                SNS 콘텐츠
-              </label>
-              <label class="skill-btn">
-                <input type="checkbox" name="skill" value="copywriting" />
-                카피라이팅
-              </label>
-              <label class="skill-btn">
-                <input type="checkbox" name="skill" value="slack" />
-                Slack
-              </label>
-              <label class="skill-btn">
-                <input type="checkbox" name="skill" value="notion" />
-                Notion
-              </label>
-              <label class="skill-btn">
-                <input type="checkbox" name="skill" value="jira" />
-                Jira
-              </label>
-              <label class="skill-btn">
-                <input type="checkbox" name="skill" value="zoom" />
-                Zoom
-              </label>
+            <p class="skill-guide-msg" id="required-skill-guide">
+              직무를 먼저 선택해주세요
+            </p>
+
+            <div id="required-skill-wrapper">
+              <!-- TPL: 직무(job_id)별로 보유 스킬 그룹 목록 (div.skill-btn-group) 반복 -->
+              <!-- TPL: data-job-id 값 -> 실제 job.id로 교체 필요 -->
+              <!-- 콘텐츠 기획_보유 스킬 목록 (더미 데이터 job.id:1) -->
+              <div
+                class="skill-btn-group"
+                data-job-id="1"
+                style="display: none"
+              >
+                <!-- TPL: 선택한 직무(job.id)별 보유 스킬 버튼 목록 (div.skill-btn) 출력 -->
+                <!-- TPL: <label> 보유 스킬 버튼 아이템 / name, value 실제 값으로 전달 필요 -->
+                <label class="skill-btn">
+                  <input type="checkbox" name="skill_required" value="1" />
+                  Figma
+                </label>
+                <label class="skill-btn">
+                  <input type="checkbox" name="skill_required" value="2" />
+                  데이터 분석
+                </label>
+              </div>
+
+              <!-- 데이터 분석_보유 스킬 목록 (더미 데이터 job.id:2)-->
+              <div
+                class="skill-btn-group"
+                data-job-id="2"
+                style="display: none"
+              >
+                <label class="skill-btn">
+                  <input type="checkbox" name="skill_required" value="3" />
+                  포토샵
+                </label>
+                <label class="skill-btn">
+                  <input type="checkbox" name="skill_required" value="4" />
+                  Google-Analytics
+                </label>
+              </div>
             </div>
           </div>
 
@@ -454,11 +472,19 @@
           <!-- 숨은 능력 등록 -->
           <div class="form-card" id="hidden-ability">
             <!-- 숨은 능력 모달에서 추가 시 hidden input에 저장 -->
+            <!-- 숨은 능력 리스트 -->
             <input
               type="hidden"
               id="hidden-abilities-input"
               name="hidden_abilities"
               value="[]"
+            />
+            <!-- 매칭 가중치 -->
+            <input
+              type="hidden"
+              id="hidden-ability-weight-input"
+              name="hidden_ability_weight"
+              value=""
             />
 
             <p class="card-title">숨은 능력 등록</p>
@@ -479,7 +505,12 @@
               </span>
               <span>선정을 노려볼까요?</span>
             </p>
-            <button class="modal-open-btn" type="button" disabled>
+            <button
+              class="modal-open-btn"
+              id="hidden-ability-open-btn"
+              type="button"
+              disabled
+            >
               추가하기
             </button>
           </div>
@@ -491,7 +522,7 @@
     <div class="modal-overlay" style="display: none">
       <div class="modal-box">
         <div class="modal-header">
-          <!-- TPL: 현재 선택한 직무명을 타이틀 및 캡션에 반영 -->
+          <!-- TPL: 선택된 직무명(job.name)을 타이틀 및 캡션에 반영 (현재 '콘텐츠 기획' 더미 데이터) -->
           <p class="modal-title">숨은 능력 매칭 항목 추가_콘텐츠 기획</p>
           <p class="caption">
             콘텐츠 기획 직무와 관련된 숨은 능력을 선택하면 매칭 가중치에
@@ -503,30 +534,52 @@
 
         <div class="modal-body">
           <!-- 숨은 능력 목록 -->
-          <div class="hidden-ability-list">
-            <!-- TPL: 현재 선택한 직무의 숨은 능력 아이템 목록 반복 -->
+
+          <!-- TPL: 직무(job_id)별로 숨은 능력 목록(div.hidden-ability-list) 반복 -->
+          <!-- TPL: data-job-id 값 -> 실제 job.id 로 교체 -->
+          <!-- 콘텐츠 기획_숨은 능력 목록 (더미 데이터 job.id:1)-->
+          <div
+            class="hidden-ability-list"
+            data-job-id="1"
+            style="display: none"
+          >
+            <!-- TPL: 선택된 직무(job.id)의 숨은 능력 아이템 (div.hidden-ability-item) 목록 반복 -->
             <div class="hidden-ability-item">
-              <button class="checkbox" type="button" data-checked="false">
+              <button
+                class="checkbox"
+                type="button"
+                data-checked="false"
+                data-key="1"
+              >
                 <img src="../../static/img/checkbox-blank.svg" alt="checkbox" />
               </button>
-              <!-- TPL: 숨은 능력(번역 전) -->
+
+              <!-- TPL: 번역 전 숨은 능력 -->
               <div class="hidden-ability-text original">맘카페 운영</div>
+
               <img
                 class="right-arrow-img"
                 src="../../static/img/right-arrow.svg"
                 alt="right-arrow"
               />
+
               <div class="hidden-ability-text translated">
                 <img
                   class="green-icon"
                   src="../../static/img/ellipse-green.svg"
                 />
-                <!-- TPL: 숨은 능력 (번역 후) -->
+                <!-- TPL: 번역 후 숨은 능력 -->
                 <span class="translated-text">커뮤니티 매니징</span>
               </div>
             </div>
+
             <div class="hidden-ability-item">
-              <button class="checkbox" type="button" data-checked="false">
+              <button
+                class="checkbox"
+                type="button"
+                data-checked="false"
+                data-key="2"
+              >
                 <img src="../../static/img/checkbox-blank.svg" alt="checkbox" />
               </button>
               <div class="hidden-ability-text original">
@@ -542,15 +595,28 @@
                   class="green-icon"
                   src="../../static/img/ellipse-green.svg"
                 />
-                <span class="translated-text">콘텐츠 기획 / SNS 마케팅</span>
+                <span class="translated-text">콘텐츠 기획 · SNS 마케팅</span>
               </div>
             </div>
+          </div>
+
+          <!-- 데이터 분석_숨은 능력 목록 (더미 데이터 job.id:2)-->
+          <div
+            class="hidden-ability-list"
+            data-job-id="2"
+            style="display: none"
+          >
             <div class="hidden-ability-item">
-              <button class="checkbox" type="button" data-checked="false">
+              <button
+                class="checkbox"
+                type="button"
+                data-checked="false"
+                data-key="3"
+              >
                 <img src="../../static/img/checkbox-blank.svg" alt="checkbox" />
               </button>
               <div class="hidden-ability-text original">
-                학교 행사 기획 보조
+                가계부 앱으로 지출 관리
               </div>
               <img
                 class="right-arrow-img"
@@ -562,7 +628,7 @@
                   class="green-icon"
                   src="../../static/img/ellipse-green.svg"
                 />
-                <span class="translated-text">프로젝트 운영 지원</span>
+                <span class="translated-text">데이터 정리 및 분석</span>
               </div>
             </div>
           </div>
@@ -613,5 +679,86 @@
         </div>
       </div>
     </div>
+
+    <!-- TPL: 직무별 우대 스킬, 보유 스킬, 숨은 능력 더미데이터 (백 연동 후 삭제 !) -->
+    <script id="job-data-json" type="application/json">
+      {
+        "content-planning": {
+          "label": "콘텐츠 기획",
+          "preferred_skills": ["figma", "sns-analysis", "canva"],
+          "required_skills": ["sns-contents", "copywriting", "notion"],
+          "hidden_abilities": [
+            {
+              "key": "cafe-manage",
+              "original": "맘카페 운영",
+              "translated": "커뮤니티 매니징"
+            },
+            {
+              "key": "blog-co-buy",
+              "original": "블로그 공동 구매 운영",
+              "translated": "콘텐츠 기획 / SNS 마케팅"
+            },
+            {
+              "key": "school-event",
+              "original": "학교 행사 기획 보조",
+              "translated": "프로젝트 운영 지원"
+            }
+          ]
+        },
+        "data-analysis": {
+          "label": "데이터 분석",
+          "preferred_skills": ["python", "sql", "tableau"],
+          "required_skills": ["excel", "google-analytics"],
+          "hidden_abilities": [
+            {
+              "key": "gamestat",
+              "original": "게임 커뮤니티 승률 통계 정리",
+              "translated": "데이터 시각화"
+            }
+          ]
+        },
+        "design": {
+          "label": "디자인",
+          "preferred_skills": [
+            "figma",
+            "data-analysis",
+            "photoshop",
+            "google-analytics"
+          ],
+          "required_skills": ["photoshop", "figma", "notion"],
+          "hidden_abilities": [
+            {
+              "key": "insta-feed",
+              "original": "인스타그램 피드 디자인",
+              "translated": "SNS 비주얼 디자인"
+            },
+            {
+              "key": "invite-card",
+              "original": "아이 초대장 직접 제작",
+              "translated": "그래픽 디자인 · 편집 디자인"
+            },
+            {
+              "key": "blog-detail",
+              "original": "블로그 마켓 상세페이지 제작",
+              "translated": "상세페이지 디자인"
+            }
+          ]
+        },
+        "dev": {
+          "label": "개발",
+          "preferred_skills": ["git", "figma"],
+          "required_skills": ["jira", "slack", "notion"],
+          "hidden_abilities": [
+            {
+              "key": "cafe-tool",
+              "original": "동호회 홈페이지 직접 제작",
+              "translated": "프론트엔드 개발"
+            }
+          ]
+        }
+      }
+    </script>
+
+    <script src="../../static/js/project_create.js"></script>
   </body>
 </html>
