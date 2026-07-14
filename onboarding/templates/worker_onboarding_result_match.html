@@ -1,162 +1,198 @@
+{% load static %}
+
 <!doctype html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../../static/css/colorpalette.css" />
-    <link rel="stylesheet" href="../../static/css/global.css" />
+
+    <link rel="stylesheet" href="{% static 'css/colorpalette.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/global.css' %}" />
     <link
       rel="stylesheet"
-      href="../../static/css/worker_onboarding_result_match.css"
+      href="{% static 'css/worker_onboarding_result_match.css' %}"
     />
+
     <title>worker onboarding match</title>
   </head>
+
   <body>
     <header>
       <div class="header-logo">
         <img
           class="header-logo-img"
-          src="../../static/img/logo.svg"
-          alt="logo"
+          src="{% static 'img/logo.svg' %}"
+          alt="RE:Bridge 로고"
         />
+
         <div class="header-logo-text">
-          <span class="logo-desc">당신의 두 번째 커리어 브릿지</span>
-          <span class="logo-brand"
-            ><span class="RE">RE</span><span class="colon">:</span>Bridge</span
-          >
+          <span class="logo-desc">
+            당신의 두 번째 커리어 브릿지
+          </span>
+
+          <span class="logo-brand">
+            <span class="RE">RE</span><span class="colon">:</span>Bridge
+          </span>
         </div>
       </div>
     </header>
+
     <main class="onboarding-main">
       <section class="result-wrap">
-        <h2>김리브 님에게 꼭 맞는 프로젝트를 찾았어요!</h2>
-        <small class="match-desc"
-          >매칭률 80% 이상인 프로젝트가 3개 있어요</small
-        >
-        <div class="matching-circle">
-          <svg viewBox="0 0 176 176" aria-hidden="true">
-            <circle class="track" cx="88" cy="88" r="74" />
-            <circle class="arc" cx="88" cy="88" r="74" />
-          </svg>
-          <div class="circle-text">
-            <p>92%</p>
-            <small>최고 매칭률</small>
+        {% if is_warmup_mode %}
+          <h2>
+            {{ request.user.name|default:request.user.username }} 님을 위한
+            워밍업 프로젝트예요!
+          </h2>
+
+          <div class="warmup-guide">
+            <div class="warmup-guide-icon">✓</div>
+
+            <div class="warmup-guide-text">
+              <strong>실무 전, 가볍게 업무 감각을 되찾아보세요</strong>
+
+              <p>
+                부담 없이 시작할 수 있는 워밍업 프로젝트
+                {{ top_projects|length }}개를 추천해드려요.
+              </p>
+            </div>
           </div>
-        </div>
+        {% else %}
+          <h2>
+            {{ request.user.name|default:request.user.username }} 님에게
+            꼭 맞는 프로젝트를 찾았어요!
+          </h2>
+
+          <small class="match-desc">
+            매칭률 80% 이상인 프로젝트가
+            {{ high_match_count }}개 있어요
+          </small>
+
+          <div class="matching-circle">
+            <svg viewBox="0 0 176 176" aria-hidden="true">
+              <circle
+                class="track"
+                cx="88"
+                cy="88"
+                r="74"
+              />
+
+              <circle
+                class="arc"
+                cx="88"
+                cy="88"
+                r="74"
+                style="
+                  --match-offset: calc(
+                    464.96 - (464.96 * {{ best_match_score }} / 100)
+                  );
+                "
+              />
+            </svg>
+
+            <div class="circle-text">
+              <p>{{ best_match_score }}%</p>
+              <small>최고 매칭률</small>
+            </div>
+          </div>
+        {% endif %}
       </section>
 
       <section class="best-match-proj">
-        <!--하나의 article이 하나의 프로젝트 카드입니다.-->
-        <!--TPL: top3 프로젝트 -->
-        <article class="project-card">
-          <!--프로젝트 상태-->
-          <section class="project-status">
-            <div class="matching-rate">
-              <img src="../../static/img/heart-filled.svg" />
-              <!--TBL: (매칭률) -->
-              <p>92%</p>
-            </div>
-          </section>
-          <section class="project-info">
-            <!--TBL: top3 프로젝트 명) -->
-            <p class="project-title">
-              커머스 앱 상세페이지 UX기획 및 문구 교정
-            </p>
+        {% for project in top_projects %}
+          <article class="project-card">
+            <section class="project-status">
+              {% if is_warmup_mode %}
+                <div class="matching-rate warmup-rate">
+                  <p>워밍업</p>
+                </div>
+              {% else %}
+                <div
+                  class="matching-rate {% if project.match_score < 70 %}low{% endif %}"
+                >
+                  <img
+                    src="{% static 'img/heart-filled.svg' %}"
+                    alt="매칭률"
+                  />
 
-            <!--프로젝트 정보 요약(카드의 왼쪽 영역)-->
-            <div class="project-type-wrap">
-              <!--TBL: company_profile.company_name (기업명) -->
-              <span class="type-company">(주)브릿지커머스 · </span>
+                  <p>{{ project.match_score }}%</p>
+                </div>
+              {% endif %}
+            </section>
 
-              <!--TBL: project.work_style (근무 형태) -->
-              <span class="type-work">재택 · </span>
-              <!--TBL: project.weecly_hours (주간 가용 시간) -->
-              <span class="type-time">주 15시간</span>
-            </div>
-            <div class="type-keyword-wrap">
-              <span class="type-keyword">엑셀</span>
-            </div>
-          </section>
-        </article>
+            <section class="project-info">
+              <p class="project-title">
+                {{ project.title }}
+              </p>
 
-        <!-- 하기 article 연동 후 제거하셔도 됩니다. -->
-        <article class="project-card">
-          <!--프로젝트 상태-->
-          <section class="project-status">
-            <div class="matching-rate">
-              <img src="../../static/img/heart-filled.svg" />
-              <!--TPL: (매칭률) -->
-              <p>92%</p>
-            </div>
-          </section>
-          <section class="project-info">
-            <!--TPL: top3 프로젝트 명) -->
-            <p class="project-title">
-              커머스 앱 상세페이지 UX기획 및 문구 교정
-            </p>
+              <div class="project-type-wrap">
+                <span class="type-company">
+                  {{ project.company_profile.company_name }} ·
+                </span>
 
-            <!--프로젝트 정보 요약(카드의 왼쪽 영역)-->
-            <div class="project-type-wrap">
-              <!--TPL: company_profile.company_name (기업명) -->
-              <span class="type-company">(주)브릿지커머스 · </span>
+                <span class="type-work">
+                  {{ project.get_work_style_display }} ·
+                </span>
 
-              <!--TPL: project.work_style (근무 형태) -->
-              <span class="type-work">재택 · </span>
-              <!--TPL: project.weecly_hours (주간 가용 시간) -->
-              <span class="type-time">주 15시간</span>
-            </div>
-            <div class="type-keyword-wrap">
-              <span class="type-keyword">엑셀</span>
-            </div>
-          </section>
-        </article>
+                <span class="type-time">
+                  {{ project.get_weekly_hours_display }}
+                </span>
+              </div>
 
-        <article class="project-card">
-          <!--프로젝트 상태-->
-          <section class="project-status">
-            <div class="matching-rate">
-              <img src="../../static/img/heart-filled.svg" />
-              <!--TPL: (매칭률) -->
-              <p>92%</p>
-            </div>
-          </section>
-          <section class="project-info">
-            <!--TPL: top3 프로젝트 명) -->
-            <p class="project-title">
-              커머스 앱 상세페이지 UX기획 및 문구 교정
-            </p>
+              {% if is_warmup_mode and project.description %}
+                <p class="project-description">
+                  {{ project.description|truncatechars:80 }}
+                </p>
+              {% endif %}
 
-            <!--프로젝트 정보 요약(카드의 왼쪽 영역)-->
-            <div class="project-type-wrap">
-              <!--TPL: company_profile.company_name (기업명) -->
-              <span class="type-company">(주)브릿지커머스 · </span>
+              <div class="type-keyword-wrap">
+                {% for skill in project.required_skills_list|slice:":3" %}
+                  <span class="type-keyword">
+                    {{ skill.name }}
+                  </span>
+                {% empty %}
+                  {% if is_warmup_mode %}
+                    <span class="type-keyword">
+                      기초 실무 체험
+                    </span>
+                  {% else %}
+                    <span class="type-keyword">
+                      필수 스킬 없음
+                    </span>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </section>
+          </article>
+        {% empty %}
+          <div class="empty-project">
+            {% if is_warmup_mode %}
+              <p>현재 모집 중인 워밍업 프로젝트가 없어요.</p>
 
-              <!--TPL: project.work_style (근무 형태) -->
-              <span class="type-work">재택 · </span>
-              <!--TPL: project.weecly_hours (주간 가용 시간) -->
-              <span class="type-time">주 15시간</span>
-            </div>
-            <div class="type-keyword-wrap">
-              <span class="type-keyword">엑셀</span>
-            </div>
-          </section>
-        </article>
+              <small>
+                새로운 워밍업 프로젝트를 준비하고 있어요.
+              </small>
+            {% else %}
+              <p>아직 추천할 프로젝트가 없어요.</p>
+            {% endif %}
+          </div>
+        {% endfor %}
       </section>
 
-      <!--TPL: 전체 프로젝트 보기 이동-->
       <div class="btn-wrap">
         <a
-          href="../../worker/templates/project_list.html"
+          href="{% url 'worker:project_list' %}{% if is_warmup_mode %}?type=warmup{% else %}?type=real{% endif %}"
           class="next-btn btn-hover"
         >
           전체 프로젝트 보기
         </a>
-        <small
-          >프로필과 근무 조건은 마이페이지에서 언제든 수정할 수 있어요</small
-        >
+
+        <small>
+          프로필과 근무 조건은 마이페이지에서 언제든 수정할 수 있어요
+        </small>
       </div>
     </main>
   </body>
-
-  <script src="../../static/js/w_onboarding.js"></script>
 </html>
+
+
