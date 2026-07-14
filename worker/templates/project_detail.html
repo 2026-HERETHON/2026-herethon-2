@@ -174,14 +174,14 @@
 
         <button type="submit" class="apply-btn btn-hover">지원하기</button>
 
-        <button class="attach-btn">+</button>
+        <button class="attach-btn openModalBtn">+</button>
         <small class="attach-text">이력서 첨부하기</small>
 
         <div id="modal" class="modal-overlay hidden">
           <div class="modal-content">
             <div class="modal-header">
               <h2>지원 서류 제출</h2>
-              <button id="closeModalBtn" class="modal-close">&times;</button>
+              <button class="modal-close closeModalBtn">&times;</button>
             </div>
 
             <small>이력서, 자기소개서, 포트폴리오 파일을 첨부해주세요</small>
@@ -193,7 +193,7 @@
             </div>
             <small class="attach-count">첨부 파일 (0/5)</small>
             <div class="btn-wrap">
-              <button class="btn-cancel">취소</button>
+              <button class="btn-cancel closeModalBtn">취소</button>
               <button class="btn-submit">제출하기</button>
             </div>
           </div>
@@ -201,4 +201,5 @@
       </nav>
     </main>
   </body>
+  <script src="../../static/js/project_detail.js"></script>
 </html>

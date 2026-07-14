@@ -357,6 +357,7 @@ section > ul {
   color: var(--color-bg-default);
   border-radius: 10px;
   margin-bottom: 0.44rem;
+  cursor: pointer;
 }
 
 .attach-btn {
