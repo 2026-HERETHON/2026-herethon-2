@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../static/css/colorpalette.css" />
+    <link rel="stylesheet" href="../../static/css/global.css" />
+    <link
+      rel="stylesheet"
+      href="../../static/css/worker_onboarding_result.css"
+    />
+    <title>worker onboarding hidden</title>
+  </head>
+  <body>
+    <header>
+      <div class="header-logo">
+        <img
+          class="header-logo-img"
+          src="../../static/img/logo.svg"
+          alt="logo"
+        />
+        <div class="header-logo-text">
+          <span class="logo-desc">당신의 두 번째 커리어 브릿지</span>
+          <span class="logo-brand"
+            ><span class="RE">RE</span><span class="colon">:</span>Bridge</span
+          >
+        </div>
+      </div>
+    </header>
+    <main class="onboarding-main">
+      <section>
+        <div class="result-wrap">
+          <div class="result-box">
+            <img src="../../static/img/check-bold.svg" />
+          </div>
+          <h2>분석이 끝났어요!</h2>
+          <small
+            >입력하신 공백기 활동을
+            <span class="hidden-skill-text">"숨은 능력"</span> 으로
+            번역했어요</small
+          >
+        </div>
+
+        <!--TPL: hidden_ability(숨은 능력명 변환)-->
+        <article>
+          <!--TPL: hidden_ability.name (숨은 능력명)-->
+          <div class="hidden-skill">맘카페 운영</div>
+          <svg
+            class="change-arrow"
+            xmlns="http://www.w3.org/2000/svg"
+            width="200"
+            height="200"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="none"
+              stroke="#3B82F6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M14 12H4m14.586 1.603l-.967.76c-1.565 1.234-2.348 1.851-2.984 1.57C14 15.652 14 14.688 14 12.76v-1.52c0-1.927 0-2.89.635-3.172c.636-.281 1.419.336 2.984 1.57l.967.76C19.529 11.14 20 11.511 20 12s-.471.86-1.414 1.603"
+              color="currentColor"
+            />
+          </svg>
+          <div class="matching-skill">
+            <img class="ellipse" src="../../static/img/ellipse-green.svg" />
+            <!--TPL: project_hidden_ability (변환된(번역된 능력))-->
+            <p class="match-skill">커뮤니티 매니징</p>
+          </div>
+        </article>
+
+        <!-- 하기 article 연동 후 제거하셔도 됩니다. -->
+        <article>
+          <div class="hidden-skill">블로그 공동구매 운영</div>
+          <svg
+            class="change-arrow"
+            xmlns="http://www.w3.org/2000/svg"
+            width="200"
+            height="200"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="none"
+              stroke="#3B82F6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M14 12H4m14.586 1.603l-.967.76c-1.565 1.234-2.348 1.851-2.984 1.57C14 15.652 14 14.688 14 12.76v-1.52c0-1.927 0-2.89.635-3.172c.636-.281 1.419.336 2.984 1.57l.967.76C19.529 11.14 20 11.511 20 12s-.471.86-1.414 1.603"
+              color="currentColor"
+            />
+          </svg>
+          <div class="matching-skill">
+            <img class="ellipse" src="../../static/img/ellipse-green.svg" />
+            <p class="match-skill">콘텐츠 기획 SNS 마케팅</p>
+          </div>
+        </article>
+
+        <article>
+          <div class="hidden-skill">학교 행사 기획 보조</div>
+          <svg
+            class="change-arrow"
+            xmlns="http://www.w3.org/2000/svg"
+            width="200"
+            height="200"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill="none"
+              stroke="#3B82F6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M14 12H4m14.586 1.603l-.967.76c-1.565 1.234-2.348 1.851-2.984 1.57C14 15.652 14 14.688 14 12.76v-1.52c0-1.927 0-2.89.635-3.172c.636-.281 1.419.336 2.984 1.57l.967.76C19.529 11.14 20 11.511 20 12s-.471.86-1.414 1.603"
+              color="currentColor"
+            />
+          </svg>
+          <div class="matching-skill">
+            <img class="ellipse" src="../../static/img/ellipse-green.svg" />
+            <p class="match-skill">프로젝트 운영 지원</p>
+          </div>
+        </article>
+      </section>
+
+      <!--TPL: 매칭 결과 보러가기-->
+      <div class="btn-wrap">
+        <button
+          type="submit"
+          id="result-next-btn"
+          class="next-btn btn-hover"
+          disabled
+        >
+          내 매칭 결과 보러가기
+        </button>
+      </div>
+    </main>
+  </body>
+
+  <script src="../../static/js/w_onboarding.js"></script>
+</html>
