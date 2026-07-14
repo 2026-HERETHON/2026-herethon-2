@@ -266,6 +266,15 @@ input[type="radio"] {
   line-height: normal;
 }
 
+.skill-guide-msg {
+  color: var(--color-text-secondary);
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
 .skill-btn-group {
   display: flex;
   flex-wrap: wrap;
