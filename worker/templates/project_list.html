@@ -25,8 +25,8 @@
         </div>
       </div>
       <div class="header-menu">
-        <a>프로젝트 찾기</a>
-        <a>마이페이지</a>
+        <a href="{% url 'worker:project_list' %}" data-label="프로젝트 찾기" class="found">프로젝트 찾기</a>
+        <a href="{% url 'mypage:dashboard' %}" data-label="마이페이지">마이페이지</a>
       </div>
       <div class="header-profile">
         <a>양</a>
@@ -147,8 +147,12 @@
 
               <!--프로젝트 상태(카드의 오른쪽 영역)-->
               <section class="project-status">
-                <div class="matching-rate">
+                <div class="matching-rate {% if project.match_score|default:0 < 80 %}low{% endif %}">
+                  {% if project.match_score|default:0 >= 80 %}
                   <img src="{% static 'img/heart-filled.svg' %}" />
+                  {% else %}
+                  <img src="{% static 'img/good-one.svg' %}" />
+                  {% endif %}
                   <p>{{ project.match_score|default:0 }}%</p>
                 </div>
                 <p class="due-date">

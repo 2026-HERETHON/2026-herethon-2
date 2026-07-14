@@ -135,7 +135,9 @@ main {
 }
 
 .select-user-type a {
-  padding: 1.06rem 2.81rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 12.75rem;
   height: 3.25rem;
 
