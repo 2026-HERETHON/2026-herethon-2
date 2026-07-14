@@ -486,7 +486,7 @@ input[type="radio"] {
   line-height: normal;
 }
 
-.caption {
+.modal-caption {
   color: var(--color-text-muted);
   font-family: Inter;
   font-size: 0.75rem;
@@ -636,7 +636,7 @@ input[type="radio"] {
 }
 
 .hidden-ability-add-btn:hover,
-.hidden-ability-add-btn.selected {
+.hidden-ability-add-btn:not(:disabled) {
   background-color: var(--color-primary);
   color: var(--color-primary-light);
 }

@@ -523,10 +523,9 @@
       <div class="modal-box">
         <div class="modal-header">
           <!-- TPL: 선택된 직무명(job.name)을 타이틀 및 캡션에 반영 (현재 '콘텐츠 기획' 더미 데이터) -->
-          <p class="modal-title">숨은 능력 매칭 항목 추가_콘텐츠 기획</p>
-          <p class="caption">
-            콘텐츠 기획 직무와 관련된 숨은 능력을 선택하면 매칭 가중치에
-            반영돼요
+          <p class="modal-title">숨은 능력 매칭 항목 추가_(직무명)</p>
+          <p class="modal-caption">
+            (직무명) 직무와 관련된 숨은 능력을 선택하면 매칭 가중치에 반영돼요
           </p>
         </div>
 
@@ -673,91 +672,12 @@
 
         <div class="modal-footer">
           <button class="modal-close-btn" type="button">취소</button>
-          <button class="hidden-ability-add-btn selected" type="button">
+          <button class="hidden-ability-add-btn" type="button" disabled>
             추가하기
           </button>
         </div>
       </div>
     </div>
-
-    <!-- TPL: 직무별 우대 스킬, 보유 스킬, 숨은 능력 더미데이터 (백 연동 후 삭제 !) -->
-    <script id="job-data-json" type="application/json">
-      {
-        "content-planning": {
-          "label": "콘텐츠 기획",
-          "preferred_skills": ["figma", "sns-analysis", "canva"],
-          "required_skills": ["sns-contents", "copywriting", "notion"],
-          "hidden_abilities": [
-            {
-              "key": "cafe-manage",
-              "original": "맘카페 운영",
-              "translated": "커뮤니티 매니징"
-            },
-            {
-              "key": "blog-co-buy",
-              "original": "블로그 공동 구매 운영",
-              "translated": "콘텐츠 기획 / SNS 마케팅"
-            },
-            {
-              "key": "school-event",
-              "original": "학교 행사 기획 보조",
-              "translated": "프로젝트 운영 지원"
-            }
-          ]
-        },
-        "data-analysis": {
-          "label": "데이터 분석",
-          "preferred_skills": ["python", "sql", "tableau"],
-          "required_skills": ["excel", "google-analytics"],
-          "hidden_abilities": [
-            {
-              "key": "gamestat",
-              "original": "게임 커뮤니티 승률 통계 정리",
-              "translated": "데이터 시각화"
-            }
-          ]
-        },
-        "design": {
-          "label": "디자인",
-          "preferred_skills": [
-            "figma",
-            "data-analysis",
-            "photoshop",
-            "google-analytics"
-          ],
-          "required_skills": ["photoshop", "figma", "notion"],
-          "hidden_abilities": [
-            {
-              "key": "insta-feed",
-              "original": "인스타그램 피드 디자인",
-              "translated": "SNS 비주얼 디자인"
-            },
-            {
-              "key": "invite-card",
-              "original": "아이 초대장 직접 제작",
-              "translated": "그래픽 디자인 · 편집 디자인"
-            },
-            {
-              "key": "blog-detail",
-              "original": "블로그 마켓 상세페이지 제작",
-              "translated": "상세페이지 디자인"
-            }
-          ]
-        },
-        "dev": {
-          "label": "개발",
-          "preferred_skills": ["git", "figma"],
-          "required_skills": ["jira", "slack", "notion"],
-          "hidden_abilities": [
-            {
-              "key": "cafe-tool",
-              "original": "동호회 홈페이지 직접 제작",
-              "translated": "프론트엔드 개발"
-            }
-          ]
-        }
-      }
-    </script>
 
     <script src="../../static/js/project_create.js"></script>
   </body>
