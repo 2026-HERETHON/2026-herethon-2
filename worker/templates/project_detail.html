@@ -32,13 +32,11 @@
       </div>
     </header>
 
-    <main claas="page-wrap">
+    <main>
       <!-- 프로젝트 상세화면  -->
       <div class="project-main">
         <div class="detail-header">
-          <a
-            class="back-btn"
-            href="../../onboarding/templates/worker_onboarding_step1.html"
+          <a class="back-btn" href="../../worker/templates/project_list.html"
             >← 목록으로
             <div class="ellipse hidden"></div
           ></a>
@@ -86,7 +84,7 @@
           </section>
           <section>
             <h3>필수 조건</h3>
-            <ul>
+            <ul class="dot-list">
               <li>엑셀 기본 활용 가능</li>
               <li>콘텐츠 기획 또는 카피라이팅 경험 1년 이상</li>
               <li>주 10시간 이상 작업 가능</li>
@@ -94,7 +92,7 @@
           </section>
           <section>
             <h3>우대 조건</h3>
-            <ul>
+            <ul class="dot-list">
               <li>Figma 사용 경험</li>
             </ul>
           </section>
@@ -130,13 +128,13 @@
 
           <section class="skill-gap-section">
             <h3>보유 스킬</h3>
-            <ul>
+            <ul class="get-skill">
               <li><img src="../../static/img/ellipse-green.svg" />엑셀</li>
               <li>
                 <img src="../../static/img/ellipse-green.svg" />파워포인트
               </li>
             </ul>
-            <ul>
+            <ul class="none-skill">
               <li><img src="../../static/img/ellipse-gray.svg" />Figma</li>
               <li>
                 <img src="../../static/img/ellipse-gray.svg" />데이터 분석
@@ -146,25 +144,25 @@
 
           <section class="skill-gap-section">
             <h3>보유 스킬</h3>
-            <ul>
+            <ul class="get-skill">
               <li>
                 <img src="../../static/img/ellipse-green.svg" />커뮤니티 매니징
               </li>
             </ul>
-            <ul>
+            <ul class="none-skill">
               <li><img src="../../static/img/ellipse-gray.svg" />SNS 마케팅</li>
             </ul>
           </section>
           <section class="skill-status">
-            <p>3개 보유 ·</p>
-            <p>3개 미보유</p>
+            <p class="get">3개 보유 ·</p>
+            <p class="none">3개 미보유</p>
           </section>
         </article>
 
-        <button class="apply-btn">지원하기</button>
+        <button class="apply-btn btn-hover">지원하기</button>
 
-        <button class="attach-btn"></button>
-        <small>이력서 첨부하기</small>
+        <button class="attach-btn">+</button>
+        <small class="attach-text">이력서 첨부하기</small>
       </nav>
     </main>
   </body>
