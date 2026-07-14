@@ -178,23 +178,36 @@
 
               <!--프로젝트 상태(카드의 오른쪽 영역)-->
               <section class="project-status">
-                <div class="matching-rate {% if project.match_score|default:0 < 80 %}low{% endif %}">
-                  {% if project.match_score|default:0 >= 80 %}
-                  <img src="{% static 'img/heart-filled.svg' %}" />
-                  {% else %}
-                  <img src="{% static 'img/good-one.svg' %}" />
-                  {% endif %}
-                  <p>{{ project.match_score|default:0 }}%</p>
-                </div>
-                <p class="due-date">
-                  {% if project.deadline_d_day > 0 %}
-                  마감 D-{{ project.deadline_d_day }}
-                  {% elif project.deadline_d_day == 0 %}
-                  마감 D-DAY
-                  {% else %}
-                  마감
-                  {% endif %}
-                </p>
+                {% if view_type == 'warmup' %}
+                  <p class="due-date warmup-due-date">
+                    {% if project.deadline_d_day > 0 %}
+                      마감 D-{{ project.deadline_d_day }}
+                    {% elif project.deadline_d_day == 0 %}
+                      마감 D-DAY
+                    {% else %}
+                      마감
+                    {% endif %}
+                  </p>
+                {% else %}
+                  <div class="matching-rate {% if project.match_score|default:0 < 80 %}low{% endif %}">
+                    {% if project.match_score|default:0 >= 80 %}
+                      <img src="{% static 'img/heart-filled.svg' %}" />
+                    {% else %}
+                      <img src="{% static 'img/good-one.svg' %}" />
+                    {% endif %}
+                    <p>{{ project.match_score|default:0 }}%</p>
+                  </div>
+
+                  <p class="due-date">
+                    {% if project.deadline_d_day > 0 %}
+                      마감 D-{{ project.deadline_d_day }}
+                    {% elif project.deadline_d_day == 0 %}
+                      마감 D-DAY
+                    {% else %}
+                      마감
+                    {% endif %}
+                  </p>
+                {% endif %}
               </section>
             </article>
           </a>
