@@ -1,0 +1,263 @@
+/* 헤더 */
+.header-menu {
+  display: flex;
+  margin-right: auto;
+  margin-left: 60px;
+  align-items: center;
+  gap: 40px;
+}
+
+.header-menu a {
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  font-weight: 400;
+  cursor: pointer;
+  white-space: nowrap;
+
+  line-height: 40px;
+  border-bottom: 3px solid transparent;
+}
+
+.header-menu a:hover {
+  color: var(--color-primary);
+  font-weight: bold;
+  border-bottom: 3px solid var(--color-primary);
+  letter-spacing: 0.2px;
+}
+
+.header-menu a::after {
+  content: attr(data-label);
+  display: block;
+  height: 0;
+  visibility: hidden;
+  font-weight: bold;
+}
+
+.found {
+  width: 87.55px;
+}
+
+.header-profile {
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--color-primary);
+  border-radius: 50%;
+  background-color: var(--color-primary-light);
+
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.header-profile a {
+  color: var(--color-primary-dark);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+main {
+  display: flex;
+  margin: 1.31rem 0rem 0rem 19.12rem;
+}
+
+/* 목록으로 버튼 */
+.back-btn,
+.select-desc {
+  color: var(--color-text-disabled);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  margin: 0px;
+}
+
+.back-btn {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-right: auto;
+  gap: 3px;
+
+  .ellipse {
+    width: 8px;
+    height: 8px;
+    background-color: aquamarine;
+    border-radius: 50%;
+  }
+}
+
+.back-btn:hover {
+  color: #374151;
+
+  .ellipse {
+    display: block;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+/* 매칭률, 마감일, 조회수 */
+.project-status {
+  display: flex;
+  justify-content: space-between;
+}
+
+.status-detail {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.matching-rate,
+.matching-rate.low {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 14px;
+  border-radius: 20px;
+
+  font-size: 0.8125rem;
+  font-weight: 700;
+  gap: 3px;
+}
+
+.matching-rate {
+  background-color: var(--color-error-bg);
+  color: var(--color-error);
+}
+
+.matching-rate.low,
+.matching-rate.low p {
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text-secondary);
+}
+
+.due-date {
+  color: var(--color-text-disabled);
+  font-size: 0.6875rem;
+  font-weight: 400;
+}
+
+/* 상세페이지 메인 */
+.project-main {
+  min-width: 740px;
+  max-width: 740px;
+}
+
+.detail-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 2.13rem;
+  border-bottom: 1px solid var(--color-bg-guide);
+}
+
+.project-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.project-title {
+  color: var(--color-text-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.project-type-wrap {
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+
+.detail-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  padding: 2.13rem 0rem;
+}
+
+.detail-main section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.62rem;
+}
+
+.detail-main section > h3 {
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.detail-main section > p,
+section > ul {
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+
+.detail-overview > p {
+  width: 30rem;
+  word-break: keep-all;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.69rem;
+  padding-left: 5px;
+  list-style: none;
+}
+
+ul li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+ul li::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: currentColor;
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
+.project-term {
+  display: flex;
+  gap: 1rem;
+}
+
+.project-term div {
+  display: flex;
+  flex-direction: column;
+  width: 10.625rem;
+  height: 5rem;
+  padding: 0.81rem;
+  background-color: var(--color-bg-default);
+  border: 1px solid var(--color-border-light);
+  border-radius: 10px;
+  gap: 0.62rem;
+}
+
+.project-term h3 {
+  color: var(--color-text-muted);
+  font-size: 0.6875rem;
+  font-weight: 400;
+}
+
+.project-term p {
+  color: var(--color-text-primary);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.skill-gap-wrap {
+  display: flex;
+  flex-direction: column;
+  
+}
