@@ -174,7 +174,16 @@
 
         <button type="submit" class="apply-btn btn-hover">지원하기</button>
 
-        <button class="attach-btn openModalBtn">+</button>
+        <button class="attach-btn openModalBtn" aria-label="이력서 첨부">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M12 5v14M5 12h14"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
         <small class="attach-text">이력서 첨부하기</small>
 
         <div id="modal" class="modal-overlay hidden">
@@ -184,7 +193,9 @@
               <button class="modal-close closeModalBtn">&times;</button>
             </div>
 
-            <small class="attach-desc">이력서, 자기소개서, 포트폴리오 파일을 첨부해주세요</small>
+            <small class="attach-desc"
+              >이력서, 자기소개서, 포트폴리오 파일을 첨부해주세요</small
+            >
 
             <div class="attach-box">
               <input
