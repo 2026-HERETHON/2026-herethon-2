@@ -1,0 +1,139 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 0px;
+}
+
+header {
+  position: static;
+  top: 0;
+}
+
+.onboarding-main {
+  width: 431.2px;
+  margin: 30px;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.result-wrap {
+  place-items: center;
+  margin-bottom: 25px;
+}
+
+.result-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 52px;
+  height: 52px;
+  background-color: var(--color-primary-light);
+  border: 1px solid var(--color-primary);
+  border-radius: 50%;
+
+  margin: 1.25rem 0rem;
+}
+
+.result-box img {
+  width: 24px;
+  height: 24px;
+}
+
+h2 {
+  color: var(--color-text-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.56rem;
+}
+
+small {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.hidden-skill-text {
+  color: #000;
+  font-size: 0.825rem;
+  font-weight: 600;
+}
+
+article {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hidden-skill,
+.matching-skill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 280px;
+  height: 60px;
+  padding: 1.5rem;
+  font-size: 0.875rem;
+
+  border-radius: 15px;
+  border: none;
+}
+
+.match-skill {
+  font-weight: 700;
+}
+.hidden-skill {
+  font-weight: 400;
+  color: var(--color-text-disabled);
+  background-color: var(--color-bg-subtle);
+}
+
+.matching-skill {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: var(--color-success);
+  width: 330px;
+  height: 60px;
+
+  background-color: var(--color-success-bg);
+  border: 1px solid var(--color-success);
+}
+
+.ellipse {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 15px;
+  height: 15px;
+  margin-right: auto;
+}
+
+.change-arrow {
+  width: 50px;
+  height: 50px;
+  margin: 0px 16px;
+  color: var(--color-primary);
+}
+.next-btn {
+  white-space: nowrap;
+  width: 431.2px;
+  height: 3.125rem;
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+  border: 1px solid var(--color-primary);
+  border-radius: 10px;
+  margin-top: 6rem;
+}
