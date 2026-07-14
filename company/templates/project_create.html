@@ -50,10 +50,13 @@
     <!-- 공고 등록 영역 -->
     <main class="project_create">
       <form method="post" id="project-create-form">
-        <!-- TPL: 모든 input의 name, value 값은 임의로 작성함. 연동 시 점검 필수 ! -->
+        <!-- TPL: 모든 폼 input의 name, value 값은 임의로 작성함. 연동 시 점검 필수 !
+        항목별 확인 사항 작성 예) 'TPL: 항목명 type, name, value'-->
+        <!-- TPL: 모든 폼 항목의 전달 타입 체크 필요 -->
         <!-- 좌측 메인 폼 영역 -->
         <section class="project-form-left">
           <!-- 기업명 -->
+          <!-- TPL: 기업명 type, name -->
           <div class="form-group">
             <label for="company-name" class="form-label-1">기업명</label>
             <input
@@ -67,6 +70,7 @@
           </div>
 
           <!-- 프로젝트명 -->
+          <!-- TPL: 프로젝트명 type, name -->
           <div class="form-group">
             <label for="project-name" class="form-label-1"
               >새 프로젝트 공고 등록</label
@@ -82,6 +86,7 @@
           </div>
 
           <!-- 상세 내용 -->
+          <!-- TPL: 상세 내용 type, name -->
           <div class="form-group">
             <label for="project-detail" class="form-label-2">상세 내용</label>
             <textarea
@@ -94,6 +99,7 @@
           </div>
 
           <!-- 직무 유형 (단일 선택) -->
+          <!-- TPL: 직무 유형 type, name, value -->
           <div class="form-group">
             <label class="form-label-2">직무유형 선택</label>
             <div class="option-btn-group">
@@ -120,6 +126,7 @@
           </div>
 
           <!-- 근무 형태 (단일 선택) -->
+          <!-- TPL: 근무 형태 type, name, value -->
           <div class="form-group">
             <label class="form-label-2">근무 형태 선택</label>
             <div class="option-btn-group">
@@ -159,6 +166,7 @@
           </div>
 
           <!-- 가용 시간 (단일 선택) -->
+          <!-- TPL: 가용 시간 type, name, value -->
           <div class="form-group">
             <label class="form-label-2">가용 시간 (주 0시간)</label>
             <div class="option-btn-group">
@@ -194,6 +202,7 @@
           </div>
 
           <!-- 코어 타임 (복수 선택) -->
+          <!-- TPL: 코어 타임 type, name, value -->
           <div class="form-group">
             <label class="form-label-2"
               >코어타임 (소통 선호 시간대)<span class="form-label-des"
@@ -230,6 +239,7 @@
           </div>
 
           <!-- 업무 규모 (복수 선택) -->
+          <!-- TPL: 업무 규모 type, name, value -->
           <div class="form-group">
             <label class="form-label-2"
               >업무 규모
@@ -257,6 +267,7 @@
           </div>
 
           <!-- 경력 연차 -->
+          <!-- TPL: 경력 연차 type, name, value -->
           <div class="form-group">
             <label class="form-label-2">경력 연차</label>
             <div class="option-btn-group">
@@ -300,6 +311,8 @@
           </div>
 
           <!-- 우대 스킬 (선택 사항 + 복수 선택) -->
+          <!-- TPL: 우대 스킬 그룹 data-job-id -->
+          <!-- TPL: 우대 스킬 type, name, value -->
           <div class="form-group">
             <label class="form-label-2"
               >우대 스킬
@@ -311,7 +324,7 @@
 
             <div id="preferred-skill-wrapper">
               <!-- TPL: 직무(job_id)별로 우대 스킬 그룹 목록 (div.skill-btn-group) 반복 -->
-              <!-- TPL: data-job-id 값 -> 실제 job.id로 교체 필요 -->
+              <!-- TPL: data-job-id 값 -> 실제 job.id로 교체 필요 (직무 유형의 value와 동일한 값) -->
               <!-- 콘텐츠 기획_우대 스킬 목록 (더미 데이터 job.id:1)-->
               <div
                 class="skill-btn-group"
@@ -349,6 +362,8 @@
           </div>
 
           <!-- 보유 스킬 (필수 사항 + 복수 선택) -->
+          <!-- TPL: 보유 스킬 그룹 data-job-id -->
+          <!-- TPL: 보유 스킬 type, name, value -->
           <div class="form-group">
             <label class="form-label-2"
               >보유 스킬
@@ -405,6 +420,7 @@
         <!-- 우측 사이드바 영역 -->
         <section class="project-form-right">
           <!-- 모집 인원 -->
+          <!-- TPL: 모집 인원 type, name -->
           <div class="form-group">
             <label for="recruit-count" class="form-label-3">모집 인원</label>
             <input
@@ -419,6 +435,7 @@
           </div>
 
           <!-- 보수 금액 -->
+          <!-- TPL: 보수 금액 type, name -->
           <div class="form-group">
             <label for="pay-amount" class="form-label-3">보수 금액</label>
             <input
@@ -433,6 +450,7 @@
           </div>
 
           <!-- 모집 마감일 -->
+          <!-- TPL: 모집 마감일 type, name -->
           <div class="form-group">
             <label for="deadline-date" class="form-label-3">모집 마감일</label>
             <input
@@ -446,6 +464,7 @@
           </div>
 
           <!-- 프로젝트 기간 -->
+          <!-- TPL: 프로젝트 기간 type, name -->
           <div class="form-group">
             <label for="project-period" class="form-label-3"
               >프로젝트 기간</label
@@ -461,15 +480,18 @@
           </div>
 
           <!-- 추가 사항 (선택 사항) -->
+          <!-- TPL: 추가 사항 type, name -->
           <div class="form-card" id="additional-info">
             <p class="card-title">추가 사항</p>
             <textarea
               class="form-textarea"
+              name="additional_info"
               placeholder="추가적인 상세 업무/우대사항이 있다면 적어주세요"
             ></textarea>
           </div>
 
           <!-- 숨은 능력 등록 -->
+          <!-- TPL: 숨은 능력 및 매칭 가중치 type, name, value -->
           <div class="form-card" id="hidden-ability">
             <!-- 숨은 능력 모달에서 추가 시 hidden input에 저장 -->
             <!-- 숨은 능력 리스트 -->
