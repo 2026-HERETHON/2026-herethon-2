@@ -57,3 +57,53 @@ function resetSkillChecksExcept(jobId) {
     }
   });
 }
+
+// 체크박스 그룹에 1개 이상 체크 유효성 검사 함수
+function hasAtLeastOneChecked(name) {
+  return document.querySelectorAll(`input[name="${name}"]:checked`).length > 0;
+}
+
+// 필수 항목 유효성 검사
+function validateForm() {
+  // 텍스트 입력 항목 id 목록
+  const textFieldIds = [
+    "company-name", // 기업명
+    "project-name", // 프로젝트명
+    "project-detail", // 상세 내용
+    "recruit-count", // 모집 인원
+    "pay-amount", // 보수 금액
+    "deadline-date", // 마감일
+    "project-period", // 프로젝트 기간
+  ];
+
+  // 빈 텍스트 항목이 없을 경우 true
+  const textFilled = textFieldIds.every(
+    (id) => document.getElementById(id).value.trim() !== "",
+  );
+
+  // 모든 라디오 버튼이 체크일 경우 true
+  const radioFilled = [
+    // 라디오 버튼 항목 name 목록
+    // TPL: HTML 코드에서 라디오 input의 name 변경 시 아래에 수정 필요 !
+    "job_category", // 직무 유형
+    "work_style", // 근무 형태
+    "weekly_hours", // 가용 시간
+    "career_years", // 경력 연차
+  ].every((name) => document.querySelector(`input[name="${name}"]:checked`));
+
+  // 모든 체크박스가 1개 이상 체크일 경우 true
+  const checkboxFilled = [
+    // 체크박스 항목 name 목록
+    // TPL: HTML 코드에서 체크박스 input의 name 변경 시 아래에 수정 필요 !
+    "core_times", // 코어 타임
+    "preferred_scales", // 업무 규모
+    "skill_required", // 보유 스킬
+  ].every((name) => hasAtLeastOneChecked(name));
+
+  // 공고 추가 버튼 활성화 유효성 검사
+  submitBtn.disabled = !(textFilled && radioFilled && checkboxFilled);
+}
+
+// 항목 입력 및 선택 시 유효성 검사 진행
+form.addEventListener("input", validateForm);
+form.addEventListener("change", validateForm);
