@@ -184,12 +184,31 @@
               <button class="modal-close closeModalBtn">&times;</button>
             </div>
 
-            <small>이력서, 자기소개서, 포트폴리오 파일을 첨부해주세요</small>
+            <small class="attach-desc">이력서, 자기소개서, 포트폴리오 파일을 첨부해주세요</small>
 
             <div class="attach-box">
+              <input
+                type="file"
+                id="fileInput"
+                multiple
+                accept=".pdf,.ppt,.pptx,.jpg,.jpeg,.png"
+                hidden
+              />
               <div class="plus-icon">+</div>
               <p>파일을 드래그하거나 클릭해서 업로드</p>
               <small>PDF · PPT · JPG · PNG (최대 10MB)</small>
+            </div>
+            <ul id="fileList"></ul>
+
+            <div class="plus-file hidden">
+              <input
+                type="file"
+                id="fileInput"
+                multiple
+                accept=".pdf,.ppt,.pptx,.jpg,.jpeg,.png"
+                hidden
+              />
+              + 파일 추가
             </div>
             <small class="attach-count">첨부 파일 (0/5)</small>
             <div class="btn-wrap">

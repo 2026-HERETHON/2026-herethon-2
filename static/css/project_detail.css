@@ -95,10 +95,6 @@ main {
   }
 }
 
-.hidden {
-  display: none;
-}
-
 /* 매칭률, 마감일, 조회수 */
 .project-status {
   display: flex;
@@ -424,9 +420,11 @@ section > ul {
 }
 
 .modal-content small {
+  display: flex;
   font-size: 12px;
   font-weight: 400;
   color: var(--color-text-muted);
+  margin-bottom: 15px;
 }
 
 .attach-box {
@@ -444,6 +442,8 @@ section > ul {
   border: 2px dashed var(--color-border-input);
   margin: 15px 0px;
   gap: 10px;
+
+  cursor: pointer;
 }
 
 .plus-icon {
@@ -506,6 +506,54 @@ section > ul {
   width: 100%;
   padding-bottom: 10px;
   border-bottom: 1px solid var(--color-border-line);
+}
+
+#fileList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#fileList li {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: var(--color-bg-page);
+  border: 1px solid var(--color-bg-guide);
+  border-radius: 10px;
+  padding: 10px;
+
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+#fileList button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 100;
+  color: var(--color-text-muted);
+}
+
+.plus-file {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  margin: 20px 0px;
+
+  font-weight: 700;
+  font-size: 12px;
+
+  color: var(--color-primary);
+  border-radius: 12px;
+  border: 2px dashed var(--color-border-input);
+  cursor: pointer;
 }
 
 .hidden {
