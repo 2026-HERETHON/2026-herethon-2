@@ -17,9 +17,6 @@ const allowedExtensions = [".pdf", ".ppt", ".pptx", ".jpg", ".jpeg", ".png"];
 
 let files = []; // 첨부된 파일들 저장
 
-const hasFiles = files.length > 0;
-const isFull = files.length >= MAX_FILES;
-
 function openModal() {
   if (!modal) return;
 
@@ -94,6 +91,13 @@ function getExtension(filename) {
   return filename.slice(lastDotIndex).toLowerCase();
 }
 
+function formatFileSize(bytes) {
+  if (bytes < 1024 * 1024) {
+    return `${Math.round(bytes / 1024)}KB`;
+  }
+  return `${(bytes / (1024 * 1024)).toFixed(1)}MB`;
+}
+
 function isDuplicateFile(newFile) {
   return files.some((file) => {
     return (
@@ -163,8 +167,25 @@ function renderFileList() {
   files.forEach((file, index) => {
     const item = document.createElement("li");
 
+    //파일 아이콘
+    const icon = document.createElement("span");
+    icon.className = "file-icon";
+    icon.dataset.ext = getExtension(file.name).slice(1);
+
+    // 파일명 + 메타정보 묶음
+    const fileInfo = document.createElement("div");
+    fileInfo.className = "file-info";
+
     const filename = document.createElement("span");
+    filename.className = "file-name";
     filename.textContent = file.name;
+
+    const fileMeta = document.createElement("small");
+    fileMeta.className = "file-meta";
+    fileMeta.textContent = `${formatFileSize(file.size)} · 업로드 완료`;
+
+    fileInfo.appendChild(filename);
+    fileInfo.appendChild(fileMeta);
 
     const removeButton = document.createElement("button");
     removeButton.type = "button";
@@ -175,7 +196,8 @@ function renderFileList() {
       removeFile(index);
     });
 
-    item.appendChild(filename);
+    item.appendChild(icon);
+    item.appendChild(fileInfo);
     item.appendChild(removeButton);
     fileList.appendChild(item);
   });
