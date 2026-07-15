@@ -13,15 +13,28 @@
     <!-- 헤더 영역 -->
     <header>
       <div class="header-logo">
-        <img class="header-logo-img" src="{% static 'img/logo.svg' %}" alt="logo" />
+        <img
+          class="header-logo-img"
+          src="{% static 'img/logo.svg' %}"
+          alt="logo"
+        />
         <div class="header-logo-text">
           <span class="logo-desc">당신의 두 번째 커리어 브릿지</span>
-          <span class="logo-brand"><span class="RE">RE</span><span class="colon">:</span>Bridge</span>
+          <span class="logo-brand"
+            ><span class="RE">RE</span><span class="colon">:</span>Bridge</span
+          >
         </div>
       </div>
       <div class="header-menu">
-        <a href="{% url 'worker:project_list' %}" data-label="프로젝트 찾기" class="found">프로젝트 찾기</a>
-        <a href="{% url 'mypage:dashboard' %}" data-label="마이페이지">마이페이지</a>
+        <a
+          href="{% url 'worker:project_list' %}"
+          data-label="프로젝트 찾기"
+          class="found"
+          >프로젝트 찾기</a
+        >
+        <a href="{% url 'mypage:dashboard' %}" data-label="마이페이지"
+          >마이페이지</a
+        >
       </div>
       <div class="header-profile">
         <a>{{ user.name|slice:":1" }}</a>
@@ -34,9 +47,9 @@
       <div class="user-card">
         <div class="user-profile-img">
           {% if user.profile_image_url %}
-            <img src="{{ user.profile_image_url }}" alt="user-profile" />
+          <img src="{{ user.profile_image_url }}" alt="user-profile" />
           {% else %}
-            <img src="{% static 'img/user.svg' %}" alt="user-profile" />
+          <img src="{% static 'img/user.svg' %}" alt="user-profile" />
           {% endif %}
         </div>
 
@@ -59,10 +72,18 @@
 
       <!-- 탭 네비게이션 -->
       <nav class="tab-nav">
-        <button class="tab-btn active" data-tab="profile" data-label="프로필">프로필</button>
-        <button class="tab-btn" data-tab="apply" data-label="지원현황">지원현황</button>
-        <button class="tab-btn" data-tab="offer" data-label="리턴십 제안">리턴십 제안</button>
-        <button class="tab-btn" data-tab="condition" data-label="근무 조건">근무 조건</button>
+        <button class="tab-btn active" data-tab="profile" data-label="프로필">
+          프로필
+        </button>
+        <button class="tab-btn" data-tab="apply" data-label="지원현황">
+          지원현황
+        </button>
+        <button class="tab-btn" data-tab="offer" data-label="리턴십 제안">
+          리턴십 제안
+        </button>
+        <button class="tab-btn" data-tab="condition" data-label="근무 조건">
+          근무 조건
+        </button>
       </nav>
 
       <!-- 프로필 탭 -->
@@ -71,6 +92,7 @@
         <div class="group-box career-group">
           <p class="subtitle">주요 성과 키워드</p>
           <p class="text career-item">
+            <!-- prettier-ignore -->
             {{ worker_profile.achievement_keywords|default:"등록된 성과 키워드가 없습니다" }}
           </p>
         </div>
@@ -81,9 +103,9 @@
             <p class="subtitle">보유 스킬</p>
             <div class="item-list">
               {% for ws in worker_skills %}
-                <span class="item">{{ ws.skill.name }}</span>
+              <span class="item">{{ ws.skill.name }}</span>
               {% empty %}
-                <p class="text empty-item-msg">등록된 스킬이 없습니다</p>
+              <p class="text empty-item-msg">등록된 스킬이 없습니다</p>
               {% endfor %}
             </div>
           </div>
@@ -92,9 +114,9 @@
             <p class="subtitle">숨은 능력</p>
             <div class="item-list">
               {% for ha in hidden_activities %}
-                <span class="item">{{ ha.hidden_ability.name }}</span>
+              <span class="item">{{ ha.hidden_ability.name }}</span>
               {% empty %}
-                <p class="text empty-item-msg">등록된 숨은 능력이 없습니다</p>
+              <p class="text empty-item-msg">등록된 숨은 능력이 없습니다</p>
               {% endfor %}
             </div>
           </div>
@@ -114,17 +136,29 @@
                 <span>{{ project.get_weekly_hours_display }}</span> ·
                 <span>보수 금액 {{ project.compensation_amount }}원</span> ·
                 <span>
-                  {% for skill in project.preferred_skills_list %}{{ skill.name }}{% if not forloop.last %}, {% endif %}{% empty %}우대 스킬 없음{% endfor %}
+                  {% for skill in project.preferred_skills_list %}{{ skill.name
+                  }}{% if not forloop.last %}, {% endif %}{% empty %}우대 스킬
+                  없음{% endfor %}
                 </span>
               </p>
             </div>
             <div class="matching-rate-item {{ project.match_class }}">
               {% if project.match_class == 'heart' %}
-                <img class="matching-state-img" src="{% static 'img/heart-filled.svg' %}" alt="matching-state" />
+              <img
+                class="matching-state-img"
+                src="{% static 'img/heart-filled.svg' %}"
+                alt="matching-state"
+              />
               {% else %}
-                <img class="matching-state-img" src="{% static 'img/good-one.svg' %}" alt="matching-state" />
+              <img
+                class="matching-state-img"
+                src="{% static 'img/good-one.svg' %}"
+                alt="matching-state"
+              />
               {% endif %}
-              <span class="matching-rate {{ project.match_class }}">{{ project.match_score }}%</span>
+              <span class="matching-rate {{ project.match_class }}"
+                >{{ project.match_score }}%</span
+              >
             </div>
           </article>
           {% empty %}
@@ -146,17 +180,29 @@
                 <span>{{ project.get_weekly_hours_display }}</span> ·
                 <span>보수 금액 {{ project.compensation_amount }}원</span> ·
                 <span>
-                  {% for skill in project.preferred_skills_list %}{{ skill.name }}{% if not forloop.last %}, {% endif %}{% empty %}우대 스킬 없음{% endfor %}
+                  {% for skill in project.preferred_skills_list %}{{ skill.name
+                  }}{% if not forloop.last %}, {% endif %}{% empty %}우대 스킬
+                  없음{% endfor %}
                 </span>
               </p>
             </div>
             <div class="matching-rate-item {{ project.match_class }}">
               {% if project.match_class == 'heart' %}
-                <img class="matching-state-img" src="{% static 'img/heart-filled.svg' %}" alt="matching-state" />
+              <img
+                class="matching-state-img"
+                src="{% static 'img/heart-filled.svg' %}"
+                alt="matching-state"
+              />
               {% else %}
-                <img class="matching-state-img" src="{% static 'img/good-one.svg' %}" alt="matching-state" />
+              <img
+                class="matching-state-img"
+                src="{% static 'img/good-one.svg' %}"
+                alt="matching-state"
+              />
               {% endif %}
-              <span class="matching-rate {{ project.match_class }}">{{ project.match_score }}%</span>
+              <span class="matching-rate {{ project.match_class }}"
+                >{{ project.match_score }}%</span
+              >
             </div>
           </article>
           {% empty %}
@@ -173,7 +219,9 @@
         {% for app in applications %}
         <article class="group-box application-card">
           <div class="application-left">
-            <p class="project-title application-title">{{ app.project.title }}</p>
+            <p class="project-title application-title">
+              {{ app.project.title }}
+            </p>
             <p class="text application-des">
               <span>{{ app.project.company_profile.company_name }}</span> ·
               <span>{{ app.project.job_category.name }}</span> ·
@@ -181,34 +229,51 @@
               <span>{{ app.project.get_weekly_hours_display }}</span> ·
               <span>보수 금액 {{ app.project.compensation_amount }}원</span> ·
               <span>
-                {% for skill in app.project.preferred_skills_list %}{{ skill.name }}{% if not forloop.last %}, {% endif %}{% empty %}우대 스킬 없음{% endfor %}
+                {% for skill in app.project.preferred_skills_list %}{{
+                skill.name }}{% if not forloop.last %}, {% endif %}{% empty
+                %}우대 스킬 없음{% endfor %}
               </span>
             </p>
-            <p class="text application">지원일 <span>{{ app.applied_at|date:"Y.m.d" }}</span></p>
+            <p class="text application">
+              지원일 <span>{{ app.applied_at|date:"Y.m.d" }}</span>
+            </p>
           </div>
 
           <div class="application-right">
             <div class="matching-rate-item {{ app.project.match_class }}">
               {% if app.project.match_class == 'heart' %}
-                <img class="matching-state-img" src="{% static 'img/heart-filled.svg' %}" alt="matching-state" />
+              <img
+                class="matching-state-img"
+                src="{% static 'img/heart-filled.svg' %}"
+                alt="matching-state"
+              />
               {% else %}
-                <img class="matching-state-img" src="{% static 'img/good-one.svg' %}" alt="matching-state" />
+              <img
+                class="matching-state-img"
+                src="{% static 'img/good-one.svg' %}"
+                alt="matching-state"
+              />
               {% endif %}
-              <span class="matching-rate {{ app.project.match_class }}">{{ app.project.match_score }}%</span>
+              <span class="matching-rate {{ app.project.match_class }}"
+                >{{ app.project.match_score }}%</span
+              >
             </div>
 
             {% if app.status == 'PENDING' %}
-              <div class="application-status pending">심사중</div>
+            <div class="application-status pending">심사중</div>
             {% elif app.status == 'ACCEPTED' %}
-              <div class="application-status accepted">합격</div>
+            <div class="application-status accepted">합격</div>
             {% elif app.status == 'REJECTED' %}
-              <div class="application-status rejected">불합격</div>
-            {% endif %}
-
-            {% if app.status == 'PENDING' %}
-            <form method="post" action="{% url 'mypage:cancel_application' app.id %}">
+            <div class="application-status rejected">불합격</div>
+            {% endif %} {% if app.status == 'PENDING' %}
+            <form
+              method="post"
+              action="{% url 'mypage:cancel_application' app.id %}"
+            >
               {% csrf_token %}
-              <button type="submit" class="btn-cancel-application">지원 취소</button>
+              <button type="submit" class="btn-cancel-application">
+                지원 취소
+              </button>
             </form>
             {% endif %}
           </div>
@@ -226,7 +291,11 @@
           <p class="caption">함께한 기업이 정규직 전환을 제안했습니다</p>
 
           {% for offer in pending_offers %}
-          <form method="post" action="{% url 'mypage:respond_returnship' offer.id %}" class="offer-form">
+          <form
+            method="post"
+            action="{% url 'mypage:respond_returnship' offer.id %}"
+            class="offer-form"
+          >
             {% csrf_token %}
             <div class="group-box offer-item">
               <span class="offer-badge">NEW 제안</span>
@@ -235,8 +304,12 @@
                   <img src="{% static 'img/bag.svg' %}" alt="company" />
                 </div>
                 <div class="offer-company-info">
-                  <p class="offer-company-name">{{ offer.application.project.company_profile.company_name }}</p>
-                  <p class="text offer-reason">관련 프로젝트: {{ offer.application.project.title }}</p>
+                  <p class="offer-company-name">
+                    {{ offer.application.project.company_profile.company_name }}
+                  </p>
+                  <p class="text offer-reason">
+                    관련 프로젝트: {{ offer.application.project.title }}
+                  </p>
                 </div>
               </div>
               <div class="offer-detail">
@@ -246,13 +319,29 @@
                 </p>
                 <p class="offer-detail-row">
                   <span class="offer-detail-label">제안 메시지</span>
-                  <span class="offer-detail-value offer-content">"{{ offer.content }}"</span>
+                  <span class="offer-detail-value offer-content"
+                    >"{{ offer.content }}"</span
+                  >
                 </p>
               </div>
             </div>
             <div class="offer-actions">
-              <button type="submit" name="action" value="reject" class="offer-btn btn-reject">거절하기</button>
-              <button type="submit" name="action" value="accept" class="offer-btn btn-accept">수락하기</button>
+              <button
+                type="submit"
+                name="action"
+                value="reject"
+                class="offer-btn btn-reject"
+              >
+                거절하기
+              </button>
+              <button
+                type="submit"
+                name="action"
+                value="accept"
+                class="offer-btn btn-accept"
+              >
+                수락하기
+              </button>
             </div>
           </form>
           {% empty %}
@@ -266,16 +355,18 @@
           {% for offer in past_offers %}
           <article class="group-box past-offer-card">
             <div>
-              <p class="past-offer-company">{{ offer.application.project.company_profile.company_name }}</p>
+              <p class="past-offer-company">
+                {{ offer.application.project.company_profile.company_name }}
+              </p>
               <p class="past-offer-detail">
                 <span>{{ offer.application.project.title }}</span> ·
                 <span>{{ offer.title }}</span>
               </p>
             </div>
             {% if offer.status == 'ACCEPTED' %}
-              <div class="offer-status accept">수락 완료</div>
+            <div class="offer-status accept">수락 완료</div>
             {% elif offer.status == 'REJECTED' %}
-              <div class="offer-status reject">수락 거절</div>
+            <div class="offer-status reject">수락 거절</div>
             {% endif %}
           </article>
           {% empty %}
@@ -287,23 +378,29 @@
       <!-- 근무 조건 탭 -->
       <div class="tab-content" id="tab-condition">
         <p class="title">근무 조건 수정</p>
-        <p class="caption">희망 직무·보유 스킬·근무 형태를 수정하면 매칭 정확도가 올라가요</p>
+        <p class="caption">
+          희망 직무·보유 스킬·근무 형태를 수정하면 매칭 정확도가 올라가요
+        </p>
 
-        <form method="post" action="{% url 'mypage:work_conditions' %}" class="group-box condition-form">
+        <form
+          method="post"
+          action="{% url 'mypage:work_conditions' %}"
+          class="group-box condition-form"
+        >
           {% csrf_token %}
 
           <!-- 희망 직무 (단일 선택) -->
           <div class="form-row">
             <p class="form-label">희망 직무</p>
-            <div class="form-field">
-              <select class="form-field form-select" name="job_category">
-                {% for jc in job_categories %}
-                  <option value="{{ jc.id }}" {% if jc.id == worker_profile.job_category_id %}selected{% endif %}>
-                    {{ jc.name }}
-                  </option>
-                {% endfor %}
-              </select>
-            </div>
+            <select class="form-field form-select" name="job_category">
+              {% for jc in job_categories %}
+              <!-- prettier-ignore -->
+              <option value="{{ jc.id }}" 
+                {% if jc.id == worker_profile.job_category_id %}selected{% endif %}>
+                  {{ jc.name }}
+                </option>
+              {% endfor %}
+            </select>
           </div>
 
           <!-- 보유 스킬 -->
@@ -311,46 +408,53 @@
             <p class="form-label">보유 스킬</p>
             <div class="form-field">
               <div class="tag-list" id="skill-tag-list">
+                <!-- prettier-ignore -->
                 {% for skill in skills %}
                   {% if skill.id in selected_skill_ids %}
-                  <span class="tag-item">
-                    {{ skill.name }}
-                    <input type="checkbox" name="skills" value="{{ skill.id }}" checked style="display:none;">
-                    <button type="button" class="btn-tag-remove">✕</button>
-                  </span>
-                  {% endif %}
-                {% endfor %}
+                <span class="tag-item">
+                  {{ skill.name }}
+                  <input
+                    type="checkbox"
+                    name="skills"
+                    value="{{ skill.id }}"
+                    checked
+                    style="display: none"
+                  />
+                  <button type="button" class="btn-tag-remove">✕</button>
+                </span>
+                {% endif %} {% endfor %}
               </div>
-              <button type="button" class="btn-add" id="open-skill-modal">+</button>
+              <button type="button" class="btn-add" id="open-skill-modal">
+                +
+              </button>
             </div>
           </div>
 
           <!-- 근무 형태 (단일 선택) -->
           <div class="form-row">
             <p class="form-label">근무 형태</p>
-            <div class="form-field">
-              <select class="form-field form-select" name="preferred_work_style">
-                {% for value, label in work_style_choices %}
-                  <option value="{{ value }}" {% if value == worker_profile.preferred_work_style %}selected{% endif %}>
-                    {{ label }}
-                  </option>
-                {% endfor %}
-              </select>
-            </div>
+
+            <select class="form-field form-select" name="preferred_work_style">
+              {% for value, label in work_style_choices %}
+              <!-- prettier-ignore -->
+              <option value="{{ value }}" {% if value == worker_profile.preferred_work_style %}selected{% endif %}>
+                {{ label }}
+              </option>
+              {% endfor %}
+            </select>
           </div>
 
-           <!-- 참여 상태 (워밍업/실무) -->
+          <!-- 참여 상태 (워밍업/실무) -->
           <div class="form-row">
             <p class="form-label">참여 상태</p>
-            <div class="form-field">
-              <select class="form-field form-select" name="application_type">
-                {% for value, label in application_type_choices %}
-                  <option value="{{ value }}" {% if value == worker_profile.application_type %}selected{% endif %}>
-                    {{ label }}
-                  </option>
-                {% endfor %}
-              </select>
-            </div>
+            <select class="form-field form-select" name="application_type">
+              {% for value, label in application_type_choices %}
+              <!-- prettier-ignore -->
+              <option value="{{ value }}" {% if value == worker_profile.application_type %}selected{% endif %}>
+                {{ label }}
+              </option>
+              {% endfor %}
+            </select>
           </div>
 
           <button type="submit" class="btn-submit">저장하기</button>
@@ -366,21 +470,35 @@
 
             <div class="modal-body">
               <div class="unselected-tag-list" id="skill-unselected-list">
+                <!-- prettier-ignore -->
                 {% for skill in skills %}
                   {% if skill.id not in selected_skill_ids %}
-                  <button type="button" class="unselected-tag" data-value="{{ skill.id }}">
-                    {{ skill.name }} +
-                  </button>
-                  {% endif %}
-                {% endfor %}
+                <button
+                  type="button"
+                  class="unselected-tag"
+                  data-value="{{ skill.id }}"
+                >
+                  {{ skill.name }} +
+                </button>
+                {% endif %} {% endfor %}
               </div>
-              <p class="empty-message" id="skill-empty-message" style="display: none">
+              <p
+                class="empty-message"
+                id="skill-empty-message"
+                style="display: none"
+              >
                 추가할 수 있는 스킬이 없어요
               </p>
             </div>
 
             <div class="modal-footer">
-              <button type="button" class="btn-close-modal" id="done-skill-modal">저장</button>
+              <button
+                type="button"
+                class="btn-close-modal"
+                id="done-skill-modal"
+              >
+                저장
+              </button>
             </div>
           </div>
         </div>
