@@ -259,7 +259,8 @@ section > ul {
   display: flex;
   flex-direction: column;
   width: 20rem;
-  height: 17.375rem;
+  min-height: 17.375rem;
+  height: auto;
 
   background-color: var(--color-bg-default);
   border: 1px solid var(--color-border-light);
@@ -305,8 +306,16 @@ section > ul {
 
 .skill-gap-section ul {
   display: flex;
-  width: fit-content;
+  flex-wrap: wrap;
+  width: 100%;
   gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.skill-gap-section ul:empty {
+  display: none;
 }
 
 .get-skill li,
@@ -367,6 +376,12 @@ section > ul {
   margin-bottom: 0.44rem;
 
   color: var(--color-bg-default);
+}
+
+.apply-btn:disabled {
+  background-color: var(--color-bg-guide);
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
 }
 
 .attach-text {
