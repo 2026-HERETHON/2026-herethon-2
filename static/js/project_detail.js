@@ -8,20 +8,17 @@ const fileInput = document.getElementById("fileInput");
 const fileList = document.getElementById("fileList");
 const attachCount = document.querySelector(".attach-count");
 const plusFile = document.querySelector(".plus-file");
+const submitFileBtn = document.querySelector(".btn-submit");
 
 const MAX_FILES = 5;
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
 
-const allowedExtensions = [
-  ".pdf",
-  ".ppt",
-  ".pptx",
-  ".jpg",
-  ".jpeg",
-  ".png",
-];
+const allowedExtensions = [".pdf", ".ppt", ".pptx", ".jpg", ".jpeg", ".png"];
 
 let files = []; // 첨부된 파일들 저장
+
+const hasFiles = files.length > 0;
+const isFull = files.length >= MAX_FILES;
 
 function openModal() {
   if (!modal) return;
@@ -52,11 +49,7 @@ modal?.addEventListener("click", (event) => {
 });
 
 document.addEventListener("keydown", (event) => {
-  if (
-    event.key === "Escape" &&
-    modal &&
-    !modal.classList.contains("hidden")
-  ) {
+  if (event.key === "Escape" && modal && !modal.classList.contains("hidden")) {
     closeModal();
   }
 });
@@ -176,10 +169,7 @@ function renderFileList() {
     const removeButton = document.createElement("button");
     removeButton.type = "button";
     removeButton.textContent = "×";
-    removeButton.setAttribute(
-      "aria-label",
-      `${file.name} 삭제`
-    );
+    removeButton.setAttribute("aria-label", `${file.name} 삭제`);
 
     removeButton.addEventListener("click", () => {
       removeFile(index);
@@ -195,9 +185,11 @@ function renderFileList() {
   if (files.length > 0) {
     attachBox?.classList.add("hidden");
     plusFile?.classList.remove("hidden");
+    submitFileBtn?.classList.add("attached");
   } else {
     attachBox?.classList.remove("hidden");
     plusFile?.classList.add("hidden");
+    submitFileBtn?.classList.remove("attached");
   }
 
   if (files.length >= MAX_FILES) {
