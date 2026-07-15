@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>프로젝트 관리하기</title>
+    <link rel="stylesheet" href="../../static/css/colorpalette.css" />
+    <link rel="stylesheet" href="../../static/css/global.css" />
+    <link rel="stylesheet" href="../../static/css/project_manage_common.css" />
+    <link rel="stylesheet" href="../../static/css/project_manage.css" />
+  </head>
+  <body>
+    <!-- 헤더 영역 -->
+    <header>
+      <div class="header-logo">
+        <img
+          class="header-logo-img"
+          src="../../static/img/logo.svg"
+          alt="logo"
+        />
+        <div class="header-logo-text">
+          <span class="logo-desc">당신의 두 번째 커리어 브릿지</span>
+          <span class="logo-brand"
+            ><span class="RE">RE</span><span class="colon">:</span>Bridge</span
+          >
+        </div>
+      </div>
+      <div class="header-profile">
+        <!-- TPL:  기업 프로필 이름 -->
+        <a>주</a>
+      </div>
+    </header>
+
+    <!-- 왼쪽 사이드바 -->
+    <nav class="sidebar-nav">
+      <!-- TPL: href 실제 url 패턴으로 변경 필요 -->
+      <!-- TPL: 현재 active 클래스 하드 코딩함. 연동 시 현재 페이지의 active 판단 로직으로 교체 필요  -->
+      <a
+        href="project_create.html"
+        class="nav-menu active"
+        data-label="공고 등록"
+      >
+        공고 등록
+      </a>
+      <a href="#" class="nav-menu" data-label="프로젝트 관리하기">
+        프로젝트 관리하기
+      </a>
+      <a href="#" class="nav-menu" data-label="기업 정보"> 기업 정보 </a>
+    </nav>
+
+    <!-- 프로젝트 관리하기 영역 -->
+    <div class="project-manage">
+      <!-- 탭 메뉴 영역 -->
+      <div class="nav-group">
+        <nav class="tab-nav">
+          <a href="?tab=recruiting" class="nav-tab active" data-tab="recruiting"
+            >모집 중인 프로젝트</a
+          >
+          <a href="?tab=progress" class="nav-tab" data-tab="progress"
+            >진행 중인 프로젝트</a
+          >
+          <a href="?tab=completed" class="nav-tab" data-tab="completed"
+            >완료된 프로젝트</a
+          >
+        </nav>
+
+        <div class="divider"></div>
+      </div>
+
+      <!-- 메인 프로젝트 관리하기 영역 -->
+      <main class="project-manage-main"></main>
+    </div>
+  </body>
+</html>
