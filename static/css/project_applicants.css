@@ -232,13 +232,13 @@
 }
 
 .applicant-accept-btn:hover,
-.applicant-accept-btn.active {
+.applicant-accept-btn:active {
   color: #fff;
   background-color: #10b981;
 }
 
 .applicant-reject-btn:hover,
-.applicant-reject-btn.active {
+.applicant-reject-btn:active {
   color: #fff;
   background-color: #dc2626;
 }
