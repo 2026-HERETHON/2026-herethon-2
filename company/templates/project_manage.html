@@ -38,7 +38,11 @@
       <a href="project_create.html" class="nav-menu" data-label="공고 등록">
         공고 등록
       </a>
-      <a href="#" class="nav-menu active" data-label="프로젝트 관리하기">
+      <a
+        href="project_manage.html"
+        class="nav-menu active"
+        data-label="프로젝트 관리하기"
+      >
         프로젝트 관리하기
       </a>
       <a href="#" class="nav-menu" data-label="기업 정보"> 기업 정보 </a>
@@ -64,7 +68,88 @@
       </div>
 
       <!-- 메인 프로젝트 관리하기 영역 -->
-      <main class="project-manage-main"></main>
+      <main class="project-manage-main">
+        <!-- 모집중 탭 -->
+        <section class="tab-content" id="tab-recruiting" style="display: flex">
+          <div class="tab-header">
+            <p class="title">모집 중인 프로젝트</p>
+            <p class="caption">
+              마감일이 지나면 자동으로 '선발중' 상태로 전환돼요
+            </p>
+          </div>
+
+          <div class="tab-body">
+            <!-- 모집 중인 프로젝트 리스트 -->
+            <div class="recruiting-project-list">
+              <!-- TPL: 모집 중 프로젝트 카드 아이템 article 반복-->
+              <!-- TPL: 프로젝트 상태(모집중/선발중)에 따라 프로젝트 설명(project-des), 버튼 스타일(applicant-btn, start-project-btn) 변경 -->
+              <!-- TPL: 현재 더미 데이터에서는 모집중 OPEN, 선발중 SELECTING 클래스로 설정 -->
+              <article class="recruiting-project-card OPEN">
+                <div class="recruiting-project-des">
+                  <!-- TPL: 프로젝트 상태 -->
+                  <p class="project-status">모집중</p>
+                  <!-- TPL: 프로젝트명 -->
+                  <p class="project-title">온라인 커뮤니티 운영 및 회원 응대</p>
+                  <!-- TPL: 프로젝트 정보 -->
+                  <p class="project-info">
+                    (주)맘스토리 · 커뮤니티운영 · 재택 · 주 8시간 · 보수 금액
+                    20,000원 · 커뮤니티 운영, 고객 응대
+                  </p>
+                  <!-- TPL: 프로젝트 설명 -->
+                  <p class="project-des">지원자 2명 · 마감까지 D-3</p>
+                </div>
+
+                <div class="recruiting-project-btns">
+                  <a class="applicant-btn">지원자 확인하기</a>
+                  <a class="start-project-btn">프로젝트 시작하기</a>
+                </div>
+              </article>
+
+              <article class="recruiting-project-card SELECTING">
+                <div class="recruiting-project-des">
+                  <p class="project-status">선발중</p>
+                  <p class="project-title">온라인 커뮤니티 운영 및 회원 응대</p>
+                  <p class="project-info">
+                    (주)맘스토리 · 커뮤니티운영 · 재택 · 주 8시간 · 보수 금액
+                    20,000원 · 커뮤니티 운영, 고객 응대
+                  </p>
+                  <p class="project-des">
+                    마감 완료 · 지원자 4명 중 선발이 필요해요
+                  </p>
+                </div>
+
+                <div class="recruiting-project-btns">
+                  <a class="applicant-btn">지원자 확인하기</a>
+                  <a class="start-project-btn">프로젝트 시작하기</a>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <!-- 프로젝트 시작하기 설명 -->
+          <div class="tab-footer">
+            <p>
+              💡 모집 마감일이 지나기 전에는 '프로젝트 시작하기' 버튼이 보이지
+              않아요. 마감 후 '선발중' 상태로 바뀌고, 지원자를 수락하면 시작할
+              수 있어요.
+            </p>
+          </div>
+        </section>
+
+        <!-- 진행중 탭 -->
+        <div
+          class="tab-content"
+          id="tab-recruiting"
+          style="display: none"
+        ></div>
+
+        <!-- 완료 탭 -->
+        <div
+          class="tab-content"
+          id="tab-recruiting"
+          style="display: none"
+        ></div>
+      </main>
     </div>
   </body>
 </html>
