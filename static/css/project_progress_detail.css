@@ -1,0 +1,418 @@
+/* 공통 요소 (색상, 사이즈 등 개별 설정) */
+.title {
+  color: #1f2937;
+  font-family: Inter;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+/* 메인 프로젝트 상세 보기 영역  */
+.project-detail-main {
+  padding: 1.06rem 7.75rem 1.06rem 3.06rem;
+}
+
+.back {
+  color: #6b7280;
+  font-family: Inter;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.header-group {
+  margin-top: 1.37rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.project-status {
+  width: 5.125rem;
+  height: 1.75rem;
+  background-color: #fffbeb;
+  border-radius: 9999px;
+
+  color: #b45309;
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.6875rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.project-title {
+  color: #1f2937;
+  font-family: Inter;
+  font-size: 1.375rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  margin-top: 0.75rem;
+}
+
+.project-info {
+  color: #6b7280;
+  font-family: Inter;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  margin-top: 0.44rem;
+}
+
+.header-right {
+  height: 2.9375rem;
+  display: flex;
+  align-items: flex-end;
+}
+
+.header-right button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  width: 5rem;
+  height: 2.25rem;
+  border-radius: 0.5rem;
+  background-color: #fff;
+
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.project-edit-btn {
+  border: 1px solid #d1d5db;
+  color: #4b5563;
+  margin-right: 0.63rem;
+}
+
+.project-delete-btn {
+  border: 1px solid #fca5a5;
+  color: #ef4444;
+  margin-right: 1rem;
+}
+
+.project-close-btn {
+  width: 11.6875rem;
+  height: 2.9375rem;
+  background-color: #fff;
+  border: 1px solid #ef4444;
+  border-radius: 0.625rem;
+
+  color: #ef4444;
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.project-detail-main .divider {
+  width: 100%;
+  margin: 0;
+  padding-left: 0.19rem;
+
+  height: 0;
+  border-bottom: 1px solid #e5e7eb;
+  margin-top: 3.19rem;
+}
+
+.detail-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2.88rem;
+  margin-top: 1.81rem;
+  margin-left: -0.38rem;
+}
+
+.project-group {
+  width: 40.875rem;
+  padding: 1.5rem 19.88rem 1.56rem 2.06rem;
+
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.875rem;
+}
+
+.project-des {
+  color: #4b5563;
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  margin-top: 0.94rem;
+}
+
+.subtitle {
+  color: #1f2937;
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  margin-top: 1.69rem;
+  margin-bottom: 0.37rem;
+}
+
+.work-condition-text {
+  color: #6b7280;
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.work-condition-text.date {
+  margin-top: 0.25rem;
+}
+
+.participant-group {
+  width: 20.4375rem;
+}
+
+.participant-card {
+  padding: 1.19rem 0.88rem 0.62rem;
+
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.875rem;
+  margin-top: 0.94rem;
+}
+
+.card-top {
+  display: flex;
+  gap: 0.88rem;
+  align-items: flex-start;
+}
+
+.participant-profile {
+  width: 2.9375rem;
+  height: 2.875rem;
+  background-color: #fff;
+  border: 1px solid #3b82f6;
+  border-radius: 50%;
+
+  color: #1e40af;
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.participant-detail {
+  padding-top: 0.12rem;
+}
+
+.participant-name {
+  color: #1f2937;
+  font-family: Inter;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.participant-des {
+  color: #6b7280;
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.card-middle {
+  color: #9ca3af;
+  font-family: Inter;
+  font-size: 0.6875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  margin-top: 1.25rem;
+  margin-left: 1.19rem;
+}
+
+.send-msg-btn {
+  width: 8.75rem;
+  height: 1.875rem;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5625rem;
+
+  color: #4b5563;
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.6875rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.75rem;
+  margin-left: 1.19rem;
+}
+
+.detail-footer {
+  margin-top: 1.88rem;
+  margin-left: -0.38rem;
+}
+
+.update-list {
+  margin-top: 0.94rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.update-card {
+  padding: 1.19rem 2.06rem 1.44rem;
+
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.875rem;
+}
+
+.update-card .subtitle {
+  margin: 0;
+}
+
+.update-date {
+  color: #9ca3af;
+  font-family: Inter;
+  font-size: 0.6875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+/* 공고 삭제 모달 */
+.modal-overlay {
+  position: fixed;
+  inset: 0; /* top:0, right:0, bottom:0, left:0 축약 */
+  background-color: rgba(0, 0, 0, 0.4);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 1000;
+}
+
+.modal-box {
+  background-color: #fff;
+  border-radius: 1rem;
+  width: 25.125rem;
+  height: 17.0625rem;
+  padding: 1.88rem 2.75rem 2.81rem;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.warning-icon {
+  width: 3.25rem;
+  height: 3.25rem;
+  background-color: #fee2e2;
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.warning-icon img {
+  width: 1.5rem;
+  height: 1.5rem;
+  aspect-ratio: 1/1;
+}
+
+.modal-title {
+  color: #1f2937;
+  text-align: center;
+  font-family: Inter;
+  font-size: 1.0625rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  margin-top: 0.63rem;
+}
+
+.modal-caption {
+  color: #6b7280;
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  margin: 0.5rem 2.75rem 0;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+
+.modal-footer button {
+  flex: 1;
+  height: 2.875rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.5rem;
+
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+#delete-cancel-btn {
+  color: #4b5563;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+}
+
+#delete-btn {
+  color: #fff;
+  background-color: #ef4444;
+}
