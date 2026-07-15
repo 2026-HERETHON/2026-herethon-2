@@ -1,4 +1,3 @@
-```html
 {% load static %}
 
 <!doctype html>
@@ -34,10 +33,7 @@
     </header>
 
     <main class="onboarding-main">
-      <a
-        class="back-btn"
-        href="{% url 'worker:onboarding_step2' %}"
-      >
+      <a class="back-btn" href="{% url 'worker:onboarding_step2' %}">
         ← 이전
         <span class="ellipse hidden"></span>
       </a>
@@ -51,19 +47,11 @@
 
       <small class="step-tatus">3/4단계</small>
 
-      <h3 class="step1-desc">
-        일하실 수 있는 조건을 알려주세요
-      </h3>
+      <h3 class="step1-desc">일하실 수 있는 조건을 알려주세요</h3>
 
-      <p class="select-desc">
-        매칭률 계산에 가장 중요한 정보예요
-      </p>
+      <p class="select-desc">매칭률 계산에 가장 중요한 정보예요</p>
 
-      <form
-        method="post"
-        id="step3-form"
-        class="step3-form"
-      >
+      <form method="post" id="step3-form" class="step3-form">
         {% csrf_token %}
 
         <!-- 주간 가용 시간 -->
@@ -71,71 +59,69 @@
 
         <div class="weeklys-wrap">
           {% for value, label in weekly_hours_choices %}
-            <input
-              type="radio"
-              name="weekly_hours"
-              id="weekly_{{ value }}"
-              value="{{ value }}"
-              {% if selected_weekly_hours == value %}
-                checked
-              {% endif %}
-            />
+          <input
+            type="radio"
+            name="weekly_hours"
+            id="weekly_{{ value }}"
+            value="{{ value }}"
+            {%
+            if
+            selected_weekly_hours=""
+            ="value"
+            %}
+            checked
+            {%
+            endif
+            %}
+          />
 
-            <label
-              for="weekly_{{ value }}"
-              class="btn-hover"
-            >
-              {{ label }}
-            </label>
+          <label for="weekly_{{ value }}" class="btn-hover">
+            {{ label }}
+          </label>
           {% endfor %}
         </div>
 
         {% if errors.weekly_hours %}
-          <p class="form-error">
-            {{ errors.weekly_hours }}
-          </p>
+        <p class="form-error">{{ errors.weekly_hours }}</p>
         {% endif %}
 
         <!-- 코어타임 -->
         <h2>
           코어타임 (실시간 소통이 편한 시간대)
-          <small class="multiple">
-            복수 선택이 가능해요
-          </small>
+          <small class="multiple"> 복수 선택이 가능해요 </small>
         </h2>
 
         <div class="cores-wrap">
           {% for slot in time_slots %}
-            <input
-              type="checkbox"
-              name="core_times"
-              id="time_{{ slot.id }}"
-              value="{{ slot.id }}"
-              {% if slot.id in selected_core_times %}
-                checked
-              {% endif %}
-            />
+          <input
+            type="checkbox"
+            name="core_times"
+            id="time_{{ slot.id }}"
+            value="{{ slot.id }}"
+            {%
+            if
+            slot.id
+            in
+            selected_core_times
+            %}
+            checked
+            {%
+            endif
+            %}
+          />
 
-            <label
-              for="time_{{ slot.id }}"
-              class="btn-hover"
-            >
-              <span>{{ slot.display_name }}</span>
+          <label for="time_{{ slot.id }}" class="btn-hover">
+            <span>{{ slot.display_name }}</span>
 
-              {% if slot.time_range %}
-                {{ slot.time_range }}
-              {% endif %}
-            </label>
+            {% if slot.time_range %} {{ slot.time_range }} {% endif %}
+          </label>
           {% empty %}
-            <p class="empty-message">
-              선택 가능한 시간대가 없습니다.
-            </p>
+          <p class="empty-message">선택 가능한 시간대가 없습니다.</p>
           {% endfor %}
         </div>
 
         <p class="can-times">
-          가능한 시간대를 모두 선택해주세요
-          (예: 아이 등원 후 + 재우고 난 뒤)
+          가능한 시간대를 모두 선택해주세요 (예: 아이 등원 후 + 재우고 난 뒤)
         </p>
 
         <!-- 선호 근무 형태 -->
@@ -143,56 +129,56 @@
 
         <div class="preferred-work">
           {% for value, label in work_style_choices %}
-            <input
-              type="radio"
-              name="preferred_work_style"
-              id="work_{{ value }}"
-              value="{{ value }}"
-              {% if selected_work_style == value %}
-                checked
-              {% endif %}
-            />
+          <input
+            type="radio"
+            name="preferred_work_style"
+            id="work_{{ value }}"
+            value="{{ value }}"
+            {%
+            if
+            selected_work_style=""
+            ="value"
+            %}
+            checked
+            {%
+            endif
+            %}
+          />
 
-            <label
-              for="work_{{ value }}"
-              class="btn-hover"
-            >
-              {{ label }}
-            </label>
+          <label for="work_{{ value }}" class="btn-hover"> {{ label }} </label>
           {% endfor %}
         </div>
 
         {% if errors.preferred_work_style %}
-          <p class="form-error">
-            {{ errors.preferred_work_style }}
-          </p>
+        <p class="form-error">{{ errors.preferred_work_style }}</p>
         {% endif %}
 
         <!-- 선호하는 업무 규모 -->
-        <h2>선호하는 업무 규모</h2>
-
-        <small class="multiple">
-          복수 선택이 가능해요
-        </small>
+        <h2>
+          선호하는 업무 규모
+          <small class="multiple"> 복수 선택이 가능해요 </small>
+        </h2>
 
         <div class="preferred-scales">
           {% for value, label in scale_choices %}
-            <input
-              type="checkbox"
-              name="preferred_scales"
-              id="scale_{{ value }}"
-              value="{{ value }}"
-              {% if value in selected_scales %}
-                checked
-              {% endif %}
-            />
+          <input
+            type="checkbox"
+            name="preferred_scales"
+            id="scale_{{ value }}"
+            value="{{ value }}"
+            {%
+            if
+            value
+            in
+            selected_scales
+            %}
+            checked
+            {%
+            endif
+            %}
+          />
 
-            <label
-              for="scale_{{ value }}"
-              class="btn-hover"
-            >
-              {{ label }}
-            </label>
+          <label for="scale_{{ value }}" class="btn-hover"> {{ label }} </label>
           {% endfor %}
         </div>
 
@@ -211,38 +197,33 @@
 
     <script>
       const weeklyInputs = document.querySelectorAll(
-        'input[name="weekly_hours"]'
+        'input[name="weekly_hours"]',
       );
 
       const workStyleInputs = document.querySelectorAll(
-        'input[name="preferred_work_style"]'
+        'input[name="preferred_work_style"]',
       );
 
-      const nextButton = document.getElementById(
-        'step3-next-btn'
-      );
+      const nextButton = document.getElementById("step3-next-btn");
 
       function updateStep3Button() {
         const selectedWeeklyHours = document.querySelector(
-          'input[name="weekly_hours"]:checked'
+          'input[name="weekly_hours"]:checked',
         );
 
         const selectedWorkStyle = document.querySelector(
-          'input[name="preferred_work_style"]:checked'
+          'input[name="preferred_work_style"]:checked',
         );
 
-        nextButton.disabled = !(
-          selectedWeeklyHours &&
-          selectedWorkStyle
-        );
+        nextButton.disabled = !(selectedWeeklyHours && selectedWorkStyle);
       }
 
       weeklyInputs.forEach((input) => {
-        input.addEventListener('change', updateStep3Button);
+        input.addEventListener("change", updateStep3Button);
       });
 
       workStyleInputs.forEach((input) => {
-        input.addEventListener('change', updateStep3Button);
+        input.addEventListener("change", updateStep3Button);
       });
 
       updateStep3Button();
