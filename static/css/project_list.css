@@ -210,7 +210,6 @@ fieldset {
   font-weight: 400;
   cursor: pointer;
   white-space: nowrap;
-
   line-height: 40px;
   border-bottom: 3px solid transparent;
 }
@@ -231,17 +230,11 @@ fieldset {
   width: 88.72px;
 }
 
-.bar-sort a:hover {
+.bar-sort a:hover,
+.bar-sort a.active {
   color: var(--color-primary);
-  font-weight: bold;
-  border-bottom-color: 3px solid var(--color-primary);
-  letter-spacing: 0.2px;
-}
-
-.active {
-  color: var(--color-primary);
-  font-weight: bold;
-  border-bottom-color: 3px solid var(--color-primary);
+  font-weight: 700;
+  border-bottom: 3px solid var(--color-primary);
   letter-spacing: 0.2px;
 }
 
@@ -274,15 +267,15 @@ fieldset {
   width: 100%;
   box-sizing: border-box;
   transition:
-    transform 0.15s ease,
     border-color 0.15s ease,
-    box-shadow 0.15s ease;
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
 }
 
 .project-card-link:hover .project-card {
-  transform: translateY(-2px);
   border-color: var(--color-primary);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background-color: var(--color-primary-light);
 }
 
 .project-card-link:focus-visible {
@@ -384,3 +377,20 @@ span {
 a {
   text-decoration: none;
 }
+
+.warmup-due-date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+
+  margin: 0;
+
+  font-size: 0.775rem;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+
+

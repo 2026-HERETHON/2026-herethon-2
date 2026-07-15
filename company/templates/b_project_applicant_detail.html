@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>지원자 프로필</title>
+</head>
+<body>
+    <h1>지원자 프로필 - {{ worker_profile.user.name }}</h1>
+
+    {% if messages %}
+        <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    <p>{{ worker_profile.user.email }}</p>
+    <p>{{ worker_profile.job_category.name }}</p>
+    <p>{{ worker_profile.get_career_years_display }}</p>
+    <p>{{ worker_profile.get_weekly_hours_display }}</p>
+
+    <h3>보유 스킬</h3>
+    <ul>
+        {% for worker_skill in worker_profile.worker_skills.all %}
+            <li>{{ worker_skill.skill.name }}</li>
+        {% empty %}
+            <li>등록된 스킬이 없어요.</li>
+        {% endfor %}
+    </ul>
+    <!-- 경력사항(성과키워드), 근무형태, 숨은능력, 진행중플젝, 완료된플젝 띄워주기 + 첨부파일 -->
+
+    <hr>
+
+    {% if can_decide and application.status == 'PENDING' %}
+        <form method="post" action="{% url 'company:application_decide' project.id application.id %}">
+            {% csrf_token %}
+            <button type="submit" name="decision" value="accept">수락</button>
+            <button type="submit" name="decision" value="reject">거절</button>
+        </form>
+    {% else %}
+        <p style="color:#888;">모집중 상태에서는 수락/거절이 불가능해요.</p>
+    {% endif %}
+
+    <a href="{% url 'company:project_applicants' project.id %}">← 지원자 목록으로</a>
+</body>
+</html>

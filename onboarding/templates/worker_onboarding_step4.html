@@ -1,118 +1,190 @@
+{% load static %}
+
 <!doctype html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../../static/css/colorpalette.css" />
-    <link rel="stylesheet" href="../../static/css/global.css" />
-    <link rel="stylesheet" href="../../static/css/worker_onboarding.css" />
-    <title>worker onboarding step1</title>
+
+    <link rel="stylesheet" href="{% static 'css/colorpalette.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/global.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/worker_onboarding.css' %}" />
+
+    <title>worker onboarding step4</title>
   </head>
+
   <body>
     <header>
       <div class="header-logo">
         <img
           class="header-logo-img"
-          src="../../static/img/logo.svg"
-          alt="logo"
+          src="{% static 'img/logo.svg' %}"
+          alt="RE:Bridge 로고"
         />
+
         <div class="header-logo-text">
           <span class="logo-desc">당신의 두 번째 커리어 브릿지</span>
-          <span class="logo-brand"
-            ><span class="RE">RE</span><span class="colon">:</span>Bridge</span
-          >
+
+          <span class="logo-brand">
+            <span class="RE">RE</span><span class="colon">:</span>Bridge
+          </span>
         </div>
       </div>
     </header>
+
     <main class="onboarding-main">
       <a
         class="back-btn"
-        href="../../onboarding/templates/worker_onboarding_step3.html"
-        >← 이전
-        <div class="ellipse hidden"></div
-      ></a>
+        href="{% url 'worker:onboarding_step3' %}"
+      >
+        ← 이전
+        <span class="ellipse hidden"></span>
+      </a>
 
-      <!--스텝 1~4 순서대로 active 누적 적용-->
       <div class="step-bar">
         <span class="step active"></span>
         <span class="step active"></span>
         <span class="step active"></span>
         <span class="step active"></span>
       </div>
-      <small class="step-tatus">4/4단계</small>
-      <h3 class="step1-desc">마지막이에요! 지금 상황을 알려주세요</h3>
-      <p class="select-desc">꼭 맞는 난이도의 프로젝트를 추천해드릴게요</p>
 
-      <form method="post" id="step4-form" class="step4-form">
-        <!--TPL: 업무 지원하기 -->
+      <small class="step-tatus">4/4단계</small>
+
+      <h3 class="step1-desc">
+        마지막이에요! 지금 상황을 알려주세요
+      </h3>
+
+      <p class="select-desc">
+        꼭 맞는 난이도의 프로젝트를 추천해드릴게요
+      </p>
+
+      <form
+        method="post"
+        id="step4-form"
+        class="step4-form"
+      >
+        {% csrf_token %}
+
+        <!-- 업무 지원 형태 -->
         <h2>업무 지원하기</h2>
+
         <div class="application-type">
-          <input type="radio" name="application_type" id="application_warm" />
-          <label for="application_warm" class="btn-hover"
-            >워밍업 프로젝트로 시작하기
-            <span
-              >실무에 들어가기 전에<br />
-              업무 지식을 사전 체크하고 싶어요</span
+          {% for value, label in application_type_choices %}
+            <input
+              type="radio"
+              name="application_type"
+              id="application_{{ value }}"
+              value="{{ value }}"
+              {% if selected_application_type == value %}
+                checked
+              {% endif %}
+            />
+
+            <label
+              for="application_{{ value }}"
+              class="btn-hover"
             >
-          </label>
-          <input type="radio" name="application_type" id="application_actual" />
-          <label for="application_actual" class="btn-hover"
-            >실무 프로젝트 지원하기
-            <span
-              >바로 실무형 고난도 업무에<br />
-              도전하고 싶어요</span
-            >
-          </label>
+              {{ label }}
+
+              {% if value == "WARMUP" %}
+                <span>
+                  실무에 들어가기 전에<br />
+                  업무 지식을 사전 체크하고 싶어요
+                </span>
+              {% elif value == "REAL" %}
+                <span>
+                  바로 실무형 고난도 업무에<br />
+                  도전하고 싶어요
+                </span>
+              {% endif %}
+            </label>
+          {% endfor %}
         </div>
 
-        <!--TPL: 현재 고민 -->
+        {% if errors.application_type %}
+          <p class="form-error">
+            {{ errors.application_type }}
+          </p>
+        {% endif %}
+
+        <!-- 현재 고민 -->
         <h2>
           현재 가장 큰 고민은?
-          <small class="multiple">복수 선택이 가능해요</small>
+          <small class="multiple">
+            복수 선택이 가능해요
+          </small>
         </h2>
 
         <div class="concerns-wrap">
-          <input type="checkbox" name="concerns" id="concern_1" />
-          <label for="concern_1" class="btn-hover">최신 트렌드 지식 부족</label>
-          <input type="checkbox" name="concerns" id="concern_2" />
-          <label for="concern_2" class="btn-hover"
-            >커뮤니케이션 자신감 저하</label
-          >
-          <input type="checkbox" name="concerns" id="concern_3" /><label
-            for="concern_3"
-            class="btn-hover"
-            >체력적인 부담</label
-          >
-          <input type="checkbox" name="concerns" id="concern_4" /><label
-            for="concern_4"
-            class="btn-hover"
-            >가사 병행의 어려움</label
-          >
-          <input type="checkbox" name="concerns" id="concern_5" /><label
-            for="concern_5"
-            class="btn-hover"
-            >경력 공백에 대한 시선</label
-          >
+          {% for value, label in concern_choices %}
+            <input
+              type="checkbox"
+              name="concerns"
+              id="concern_{{ value }}"
+              value="{{ value }}"
+              {% if value in selected_concerns %}
+                checked
+              {% endif %}
+            />
+
+            <label
+              for="concern_{{ value }}"
+              class="btn-hover"
+            >
+              {{ label }}
+            </label>
+          {% empty %}
+            <p class="empty-message">
+              선택 가능한 고민 항목이 없습니다.
+            </p>
+          {% endfor %}
         </div>
+
         <p class="can-times">
-          💡 이 정보는 프로젝트 난이도 추천에만 사용되고, 기업에게는 공개되지
-          않아요.
+          💡 이 정보는 프로젝트 난이도 추천에만 사용되고,
+          기업에게는 공개되지 않아요.
         </p>
 
-        <!--TPL: 온보딩 step4로 이동-->
         <div class="btn-wrap">
           <button
             type="submit"
-            id="step3-next-btn"
+            id="step4-submit-btn"
             class="next-btn btn-hover"
             disabled
           >
-            다음
+            결과 확인하기
           </button>
         </div>
       </form>
     </main>
-  </body>
 
-  <script src="../../static/js/w_onboarding.js"></script>
+    <script>
+      const applicationTypeInputs = document.querySelectorAll(
+        'input[name="application_type"]'
+      );
+
+      const submitButton = document.getElementById(
+        'step4-submit-btn'
+      );
+
+      function updateStep4Button() {
+        const selectedApplicationType =
+          document.querySelector(
+            'input[name="application_type"]:checked'
+          );
+
+        submitButton.disabled = !selectedApplicationType;
+      }
+
+      applicationTypeInputs.forEach((input) => {
+        input.addEventListener(
+          'change',
+          updateStep4Button
+        );
+      });
+
+      updateStep4Button();
+    </script>
+  </body>
 </html>
+
