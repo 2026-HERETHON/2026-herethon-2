@@ -241,21 +241,30 @@
           </div>
 
           <div class="application-right">
-            <!-- TPL: 매칭률 상태 클래스명 80% 이상: heart / 이하: good -->
-            <div class="matching-rate-item heart">
-              <!-- TPL: (매칭률 상태/80 이상이면 하트, 그 외 따봉) -->
-              <img
-                class="matching-state-img"
-                src="../../static/img/heart-filled.svg"
-                alt="matching-state"
-              />
-              <!-- TPL: (매칭률) -->
+            <div class="matching-group">
               <!-- TPL: 매칭률 상태 클래스명 80% 이상: heart / 이하: good -->
-              <span class="matching-rate heart">92%</span>
+              <div class="matching-rate-item heart">
+                <!-- TPL: (매칭률 상태/80 이상이면 하트, 그 외 따봉) -->
+                <img
+                  class="matching-state-img"
+                  src="../../static/img/heart-filled.svg"
+                  alt="matching-state"
+                />
+                <!-- TPL: (매칭률) -->
+                <!-- TPL: 매칭률 상태 클래스명 80% 이상: heart / 이하: good -->
+                <span class="matching-rate heart">92%</span>
+              </div>
+
+              <!-- TPL: application.status (지원 상태) -->
+              <!-- TPL: 지원 상태에 따라 클래스명 accepted, pending, rejected -->
+              <div class="application-status pending">심사중</div>
             </div>
-            <!-- TPL: application.status (지원 상태) -->
-            <!-- TPL: 지원 상태에 따라 클래스명 accepted, pending, rejected -->
-            <div class="application-status pending">심사중</div>
+
+            <form method="post">
+              <button type="submit" class="btn-cancel-application">
+                지원 취소
+              </button>
+            </form>
           </div>
         </article>
 

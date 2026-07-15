@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>지원자 목록</title>
+</head>
+<body>
+    <h1>{{ project.title }} - 지원자 목록</h1>
+    <p>프로젝트 상태: {{ project.get_status_display }}</p>
+
+    {% if messages %}
+        <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if not can_decide %}
+        <p style="color:#888;">
+            모집중 상태에서는 지원자 수락/거절이 불가능해요.
+            마감일이 지나 선발중 상태가 되면 가능해집니다.
+        </p>
+    {% endif %}
+
+    <ul>
+        {% for application in applications %}
+            <li style="margin-bottom:10px;">
+                <a href="{% url 'company:project_applicant_detail' project.id application.id %}">
+                    {{ application.worker_profile.user.name }}
+                </a>
+                · {{ application.worker_profile.job_category.name }}
+                · {{ application.worker_profile.get_career_years_display }} 경력
+                · {{ application.worker_profile.get_weekly_hours_display }} 가능
+                <!-- 프로필 이미지, 매칭률 추가해야 됨-->
+
+                {% if can_decide and application.status == 'PENDING' %}
+                    <form method="post"
+                          action="{% url 'company:application_decide' project.id application.id %}"
+                          style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" name="decision" value="accept">수락</button>
+                        <button type="submit" name="decision" value="reject">거절</button>
+                    </form>
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>아직 지원자가 없어요.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'company:project_manage' %}">← 목록으로</a>
+</body>
+</html>

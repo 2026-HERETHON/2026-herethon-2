@@ -1,125 +1,169 @@
+{% load static %}
+
 <!doctype html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../../static/css/colorpalette.css" />
-    <link rel="stylesheet" href="../../static/css/global.css" />
-    <link rel="stylesheet" href="../../static/css/worker_onboarding.css" />
+
+    <link rel="stylesheet" href="{% static 'css/colorpalette.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/global.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/worker_onboarding.css' %}" />
+
     <title>worker onboarding step2</title>
   </head>
+
   <body>
     <header>
       <div class="header-logo">
         <img
           class="header-logo-img"
-          src="../../static/img/logo.svg"
-          alt="logo"
+          src="{% static 'img/logo.svg' %}"
+          alt="RE:Bridge 로고"
         />
+
         <div class="header-logo-text">
           <span class="logo-desc">당신의 두 번째 커리어 브릿지</span>
-          <span class="logo-brand"
-            ><span class="RE">RE</span><span class="colon">:</span>Bridge</span
-          >
+
+          <span class="logo-brand">
+            <span class="RE">RE</span><span class="colon">:</span>Bridge
+          </span>
         </div>
       </div>
     </header>
+
     <main class="onboarding-main">
       <a
         class="back-btn"
-        href="../../onboarding/templates/worker_onboarding_step1.html"
-        >← 이전
-        <div class="ellipse hidden"></div
-      ></a>
+        href="{% url 'worker:onboarding_step1' %}"
+      >
+        ← 이전
+        <span class="ellipse hidden"></span>
+      </a>
 
-      <!--스텝 1~4 순서대로 active 누적 적용-->
       <div class="step-bar">
         <span class="step active"></span>
         <span class="step active"></span>
         <span class="step"></span>
         <span class="step"></span>
       </div>
+
       <small class="step-tatus">2/4단계</small>
-      <h3 class="step1-desc">보유하신 스킬을 선택해주세요</h3>
-      <p class="select-desc">선택하신 직무를 기반으로 추천 스킬을 보여드려요</p>
 
-      <form method="post" id="step2-form" class="step2-form">
-        <!--TPL: 보유 스킬 -->
+      <h3 class="step1-desc">
+        보유하신 스킬을 선택해주세요
+      </h3>
+
+      <p class="select-desc">
+        선택하신 직무를 기반으로 추천 스킬을 보여드려요
+      </p>
+
+      <form
+        method="post"
+        id="step2-form"
+        class="step2-form"
+      >
+        {% csrf_token %}
+
+        <!-- 보유 스킬 -->
         <h2>보유 스킬</h2>
+
         <div class="skills-wrap">
-          <input type="checkbox" name="skills" id="skill_excel" />
-          <label for="skill_excel" class="btn-hover">엑셀</label>
-          <input type="checkbox" name="skills" id="skill_ppt" />
-          <label for="skill_ppt" class="btn-hover">파워포인트</label>
-          <input type="checkbox" name="skills" id="skill_sns" /><label
-            for="skill_sns"
-            class="btn-hover"
-            >SNS 콘텐츠</label
-          >
-          <input type="checkbox" name="skills" id="skill_copy" /><label
-            for="skill_copy"
-            class="btn-hover"
-            >카피라이팅</label
-          >
-          <input type="checkbox" name="skills" id="skill_data" /><label
-            for="skill_data"
-            class="btn-hover"
-            >데이터 분석</label
-          >
-          <input type="checkbox" name="skills" id="skill_slack" />
-          <label for="skill_slack" class="btn-hover">Slack</label>
+          {% for js in skills %}
+            <input
+              type="checkbox"
+              name="skills"
+              id="skill_{{ js.skill.id }}"
+              value="{{ js.skill.id }}"
+              {% if js.skill.id in selected_skills %}
+                checked
+              {% endif %}
+            />
 
-          <input type="checkbox" name="skills" id="skill_notion" />
-          <label for="skill_notion" class="btn-hover">Notion</label>
-
-          <input type="checkbox" name="skills" id="skill_jira" />
-          <label for="skill_jira" class="btn-hover">Jira</label>
-
-          <input type="checkbox" name="skills" id="skill_zoom" />
-          <label for="skill_zoom" class="btn-hover">Zoom</label>
+            <label
+              for="skill_{{ js.skill.id }}"
+              class="btn-hover"
+            >
+              {{ js.skill.name }}
+            </label>
+          {% empty %}
+            <p class="empty-message">
+              해당 직무에 연결된 스킬이 없어요.
+            </p>
+          {% endfor %}
         </div>
+        {% if errors.skills %}
+          <p class="form-error">
+            {{ errors.skills }}
+          </p>
+        {% endif %}
 
-        <!--TPL: 경력 연차 -->
+        <!-- 경력 연차 -->
         <h2>경력 연차</h2>
+
         <div class="years-wrap">
-          <input type="radio" name="career_years" id="career_1" />
-          <label for="career_1" class="btn-hover">1~3년</label>
-          <input type="radio" name="career_years" id="career_3" />
-          <label for="career_3" class="btn-hover">3~5년</label>
-          <input type="radio" name="career_years" id="career_5" /><label
-            for="career_5"
-            class="btn-hover"
-            >5~7년</label
-          >
-          <input type="radio" name="career_years" id="career_7" /><label
-            for="career_7"
-            class="btn-hover"
-            >7년 이상</label
-          >
+          {% for value, label in career_choices %}
+            <input
+              type="radio"
+              name="career_years"
+              id="career_{{ value }}"
+              value="{{ value }}"
+              {% if selected_career == value %}
+                checked
+              {% endif %}
+            />
+
+            <label
+              for="career_{{ value }}"
+              class="btn-hover"
+            >
+              {{ label }}
+            </label>
+          {% endfor %}
         </div>
 
-        <!--TPL: 주요 성과 키워드 -->
+        {% if errors.career_years %}
+          <p class="form-error">
+            {{ errors.career_years }}
+          </p>
+        {% endif %}
+
+        <!-- 주요 성과 키워드 -->
         <h2>주요 성과 키워드</h2>
 
         <input
           type="text"
           class="achievement-keywords"
           name="achievement_keywords"
+          value="{{ achievement_keywords }}"
+          maxlength="500"
           placeholder="예: 팀 프로젝트 리딩, 매출 20% 증가 기여"
         />
 
-        <!--TPL: 숨은 경력 -->
+        <!-- 숨은 경력 -->
         <h2>경력 공백기 동안 했던 활동이 있나요?</h2>
 
-        <input
-          type="text"
-          class="gap-activities"
-          maxlength="100"
-          name="gap_activities"
-          placeholder="예: 맘카페 운영, 공동구매, 학교 행사 기획"
-        />
+        <div class="gap-input-wrap">
+          <input
+            type="text"
+            class="gap-activities"
+            name="gap_activities"
+            value="{{ gap_activities }}"
+            maxlength="500"
+            placeholder="예: 맘카페 운영, 공동구매, 학교 행사 기획"
+          />
 
-        <!--TPL: 온보딩 step3으로 이동-->
+          <p class="input-help">
+            여러 활동은 쉼표(,)로 구분해주세요.
+          </p>
+        </div>
+
+        {% if gap_error %}
+          <p class="form-error">
+            {{ gap_error }}
+          </p>
+        {% endif %}
+
         <button
           type="submit"
           id="step2-next-btn"
@@ -130,7 +174,42 @@
         </button>
       </form>
     </main>
-  </body>
 
-  <script src="../../static/js/w_onboarding.js"></script>
+    <script>
+      const skillInputs = document.querySelectorAll(
+        'input[name="skills"]'
+      );
+
+      const careerInputs = document.querySelectorAll(
+        'input[name="career_years"]'
+      );
+
+      const nextButton = document.getElementById(
+        'step2-next-btn'
+      );
+
+      function updateStep2Button() {
+        const selectedSkill = document.querySelector(
+          'input[name="skills"]:checked'
+        );
+
+        const selectedCareer = document.querySelector(
+          'input[name="career_years"]:checked'
+        );
+
+        nextButton.disabled = !(selectedSkill && selectedCareer);
+      }
+
+      skillInputs.forEach((input) => {
+        input.addEventListener('change', updateStep2Button);
+      });
+
+      careerInputs.forEach((input) => {
+        input.addEventListener('change', updateStep2Button);
+      });
+
+      updateStep2Button();
+    </script>
+  </body>
 </html>
+

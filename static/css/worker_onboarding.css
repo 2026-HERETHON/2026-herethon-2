@@ -148,6 +148,23 @@ header {
   font-weight: 700;
 }
 
+.gap-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.gap-input-wrap .gap-activities {
+  margin: 0;
+}
+
+.gap-input-wrap .input-help {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.3;
+  color: #999;
+}
+
 .step2-form label {
   font-size: 0.8125rem;
   font-weight: 400;
@@ -384,5 +401,28 @@ input:checked + .btn-hover {
 
 .concerns-wrap label {
   color: var(--color-text-secondary);
+  font-weight: 400;
+}
+
+.next-btn:disabled {
+  background-color: #d9d9d9;
+  border-color: #d9d9d9;
+  color: #8f8f8f;
+  cursor: not-allowed;
+}
+
+.next-btn:disabled:hover {
+  background-color: #d9d9d9;
+  border-color: #d9d9d9;
+  color: #8f8f8f;
+  transform: none;
+  box-shadow: none;
+}
+
+.form-error {
+  margin: 4px 0 8px;
+  color: #e53935;
+  font-size: 0.75rem;
+  line-height: 1.4;
   font-weight: 400;
 }
