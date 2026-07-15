@@ -1,7 +1,8 @@
-const openBtn = document.querySelector(".openModalBtn");
-const closeBtn = document.querySelectorAll(".closeModalBtn");
+const openButtons = document.querySelectorAll(".openModalBtn");
+const closeButtons = document.querySelectorAll(".closeModalBtn");
 const modal = document.getElementById("modal");
 
+const applicationForm = document.getElementById("application-form");
 const attachBox = document.querySelector(".attach-box");
 const fileInput = document.getElementById("fileInput");
 const fileList = document.getElementById("fileList");
@@ -10,57 +11,105 @@ const plusFile = document.querySelector(".plus-file");
 
 const MAX_FILES = 5;
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
+
+const allowedExtensions = [
+  ".pdf",
+  ".ppt",
+  ".pptx",
+  ".jpg",
+  ".jpeg",
+  ".png",
+];
+
 let files = []; // 첨부된 파일들 저장
 
-//추가하기 버튼 클릭 시 모달 열림
-openBtn.addEventListener("click", () => {
+function openModal() {
+  if (!modal) return;
+
   modal.classList.remove("hidden");
+  document.body.classList.add("modal-open");
+}
+
+function closeModal() {
+  if (!modal) return;
+
+  modal.classList.add("hidden");
+  document.body.classList.remove("modal-open");
+}
+
+openButtons.forEach((button) => {
+  button.addEventListener("click", openModal);
 });
 
-// x버튼, 취소버튼 누르면 모달 닫힘
-closeBtn.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    modal.classList.add("hidden");
-  });
+closeButtons.forEach((button) => {
+  button.addEventListener("click", closeModal);
 });
 
-// 배경(오버레이) 클릭하면 닫기
-modal.addEventListener("click", (e) => {
-  if (e.target === modal) {
-    modal.classList.add("hidden");
+modal?.addEventListener("click", (event) => {
+  if (event.target === modal) {
+    closeModal();
   }
 });
 
-// 클릭하면 파일 선택창 열기
-attachBox.addEventListener("click", () => {
-  fileInput.click();
+document.addEventListener("keydown", (event) => {
+  if (
+    event.key === "Escape" &&
+    modal &&
+    !modal.classList.contains("hidden")
+  ) {
+    closeModal();
+  }
 });
 
-plusFile.addEventListener("click", () => {
-  fileInput.click();
+attachBox?.addEventListener("click", () => {
+  fileInput?.click();
 });
 
-// 파일 선택창에서 파일 고르면
-fileInput.addEventListener("change", () => {
-  addFiles(fileInput.files);
+plusFile?.addEventListener("click", () => {
+  fileInput?.click();
+});
+
+fileInput?.addEventListener("change", () => {
+  addFiles(Array.from(fileInput.files));
   fileInput.value = ""; // 같은 파일 다시 선택할 수 있게 초기화
 });
 
 // 드래그 앤 드롭
-attachBox.addEventListener("dragover", (e) => {
-  e.preventDefault(); // 이거 없으면 drop 이벤트가 안 먹음
+attachBox?.addEventListener("dragover", (event) => {
+  event.preventDefault(); // 이거 없으면 drop 이벤트가 안 먹음
   attachBox.classList.add("drag-over");
 });
 
-attachBox.addEventListener("dragleave", () => {
+attachBox?.addEventListener("dragleave", () => {
   attachBox.classList.remove("drag-over");
 });
 
-attachBox.addEventListener("drop", (e) => {
-  e.preventDefault(); // 브라우저가 파일을 새 탭으로 열어버리는 것 방지
+attachBox?.addEventListener("drop", (event) => {
+  event.preventDefault(); // 브라우저가 파일을 새 탭으로 열어버리는 것 방지
   attachBox.classList.remove("drag-over");
-  addFiles(e.dataTransfer.files);
+
+  addFiles(Array.from(event.dataTransfer.files));
 });
+
+function getExtension(filename) {
+  const lastDotIndex = filename.lastIndexOf(".");
+
+  if (lastDotIndex === -1) {
+    return "";
+  }
+
+  return filename.slice(lastDotIndex).toLowerCase();
+}
+
+function isDuplicateFile(newFile) {
+  return files.some((file) => {
+    return (
+      file.name === newFile.name &&
+      file.size === newFile.size &&
+      file.lastModified === newFile.lastModified
+    );
+  });
+}
 
 // 파일 추가 (검증 포함)
 function addFiles(newFiles) {
@@ -69,36 +118,99 @@ function addFiles(newFiles) {
       alert("파일은 최대 5개까지 첨부할 수 있어요");
       break;
     }
-    if (file.size > MAX_SIZE) {
-      alert(`${file.name}은(는) 10MB를 초과해요`);
+
+    const extension = getExtension(file.name);
+
+    if (!allowedExtensions.includes(extension)) {
+      alert(`${file.name}: 지원하지 않는 파일 형식이에요`);
       continue;
     }
+
+    if (file.size > MAX_SIZE) {
+      alert(`${file.name}: 파일 크기는 10MB 이하여야 해요`);
+      continue;
+    }
+
+    if (isDuplicateFile(file)) {
+      alert(`${file.name}: 이미 첨부한 파일이에요`);
+      continue;
+    }
+
     files.push(file);
   }
+
+  syncFileInput();
   renderFileList();
+}
+
+function removeFile(index) {
+  files.splice(index, 1);
+  syncFileInput();
+  renderFileList();
+}
+
+function syncFileInput() {
+  if (!fileInput) return;
+
+  const dataTransfer = new DataTransfer();
+
+  files.forEach((file) => {
+    dataTransfer.items.add(file);
+  });
+
+  fileInput.files = dataTransfer.files;
 }
 
 // 파일 목록 그리기
 function renderFileList() {
-  fileList.innerHTML = "";
-  files.forEach((file, i) => {
-    const li = document.createElement("li");
-    li.textContent = file.name;
+  if (!fileList || !attachCount) return;
 
-    const removeBtn = document.createElement("button");
-    removeBtn.textContent = "×";
-    removeBtn.addEventListener("click", () => {
-      files.splice(i, 1);
-      renderFileList();
+  fileList.innerHTML = "";
+
+  files.forEach((file, index) => {
+    const item = document.createElement("li");
+
+    const filename = document.createElement("span");
+    filename.textContent = file.name;
+
+    const removeButton = document.createElement("button");
+    removeButton.type = "button";
+    removeButton.textContent = "×";
+    removeButton.setAttribute(
+      "aria-label",
+      `${file.name} 삭제`
+    );
+
+    removeButton.addEventListener("click", () => {
+      removeFile(index);
     });
 
-    li.appendChild(removeBtn);
-    fileList.appendChild(li);
+    item.appendChild(filename);
+    item.appendChild(removeButton);
+    fileList.appendChild(item);
   });
-  attachCount.textContent = `첨부 파일 (${files.length}/5)`;
+
+  attachCount.textContent = `첨부 파일 (${files.length}/${MAX_FILES})`;
 
   if (files.length > 0) {
-    attachBox.classList.add("hidden");
-    plusFile.classList.remove("hidden");
+    attachBox?.classList.add("hidden");
+    plusFile?.classList.remove("hidden");
+  } else {
+    attachBox?.classList.remove("hidden");
+    plusFile?.classList.add("hidden");
+  }
+
+  if (files.length >= MAX_FILES) {
+    plusFile?.classList.add("hidden");
   }
 }
+
+applicationForm?.addEventListener("submit", (event) => {
+  if (files.length > MAX_FILES) {
+    event.preventDefault();
+    alert("파일은 최대 5개까지 첨부할 수 있어요");
+    return;
+  }
+
+  syncFileInput();
+});

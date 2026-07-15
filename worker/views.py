@@ -556,38 +556,117 @@ def project_detail(request, project_id):
         id=project_id,
     )
 
-    project.view_count = F('view_count') + 1
-    project.save(update_fields=['view_count'])
-    project.refresh_from_db()
+    # 조회 수 증가
+    Project.objects.filter(pk=project.pk).update(
+        view_count=F('view_count') + 1
+    )
+    project.refresh_from_db(fields=['view_count'])
 
-    project.preferred_skills_list = [
-        project_skill.skill
-        for project_skill in project.project_skills.all()
-        if project_skill.priority == ProjectSkill.Priority.PREFERRED
-    ]
+    project_skills = list(project.project_skills.all())
 
     project.required_skills_list = [
         project_skill.skill
-        for project_skill in project.project_skills.all()
+        for project_skill in project_skills
         if project_skill.priority == ProjectSkill.Priority.NORMAL
     ]
 
-    if project.project_type == Project.ProjectType.REAL and worker_profile:
+    project.preferred_skills_list = [
+        project_skill.skill
+        for project_skill in project_skills
+        if project_skill.priority == ProjectSkill.Priority.PREFERRED
+    ]
+
+    # 워커가 보유한 스킬 ID
+    worker_skill_ids = {
+        worker_skill.skill_id
+        for worker_skill in worker_profile.worker_skills.all()
+    } if worker_profile else set()
+
+    # 필수/우대 스킬을 합쳐서 스킬 갭 분석
+    skill_gap_items = []
+
+    for project_skill in project_skills:
+        skill_gap_items.append({
+            'skill': project_skill.skill,
+            'is_owned': project_skill.skill_id in worker_skill_ids,
+            'is_required': (
+                project_skill.priority
+                == ProjectSkill.Priority.NORMAL
+            ),
+        })
+
+    # 워커가 보유한 숨은 능력 ID
+    worker_hidden_ability_ids = {
+        activity.hidden_ability_id
+        for activity in worker_profile.hidden_activities.all()
+        if activity.hidden_ability_id
+    } if worker_profile else set()
+
+    # 프로젝트가 요구하는 숨은 능력
+    hidden_gap_items = []
+
+    for project_hidden in project.hidden_abilities.all():
+        hidden_ability = project_hidden.hidden_ability
+
+        hidden_gap_items.append({
+            'ability': hidden_ability,
+            'is_owned': (
+                hidden_ability.id in worker_hidden_ability_ids
+            ),
+        })
+
+    owned_skill_count = sum(
+        1 for item in skill_gap_items
+        if item['is_owned']
+    )
+
+    missing_skill_count = (
+        len(skill_gap_items) - owned_skill_count
+    )
+
+    owned_hidden_count = sum(
+        1 for item in hidden_gap_items
+        if item['is_owned']
+    )
+
+    missing_hidden_count = (
+        len(hidden_gap_items) - owned_hidden_count
+    )
+
+    total_owned_count = (
+        owned_skill_count + owned_hidden_count
+    )
+
+    total_missing_count = (
+        missing_skill_count + missing_hidden_count
+    )
+
+    # 매칭률
+    if (
+        project.project_type == Project.ProjectType.REAL
+        and worker_profile
+    ):
         ranked_projects = rank_projects_for_worker(
             worker_profile,
             [project],
         )
+
         project.match_score = (
             ranked_projects[0].match_score
-            if ranked_projects else 0
+            if ranked_projects
+            else 0
         )
+
     elif project.project_type == Project.ProjectType.WARMUP:
         project.match_score = 100
+
     else:
         project.match_score = 0
 
     today = timezone.localdate()
-    project.deadline_d_day = (project.deadline - today).days
+    project.deadline_d_day = (
+        project.deadline - today
+    ).days
 
     existing_application = Application.objects.filter(
         project=project,
@@ -602,12 +681,17 @@ def project_detail(request, project_id):
 
     return render(
         request,
-        'b_project_detail.html',
+        'project_detail.html',
         {
             'project': project,
             'worker_profile': worker_profile,
             'existing_application': existing_application,
             'can_apply': can_apply,
+
+            'skill_gap_items': skill_gap_items,
+            'hidden_gap_items': hidden_gap_items,
+            'total_owned_count': total_owned_count,
+            'total_missing_count': total_missing_count,
         },
     )
 
