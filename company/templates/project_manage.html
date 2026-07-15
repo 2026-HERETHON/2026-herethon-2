@@ -221,6 +221,86 @@
             </div>
           </div>
         </section>
+
+        <!-- 완료 탭 -->
+        <section class="tab-content" id="tab-completed" style="display: flex">
+          <div class="tab-header">
+            <p class="title">완료된 프로젝트</p>
+            <p class="caption">
+              완료한 프로젝트를 클릭해 참여 인원을 확인하세요
+            </p>
+          </div>
+
+          <div class="tab-body">
+            <!-- 완료된 프로젝트 리스트 -->
+            <div class="completed-project-list">
+              <!-- TPL: 완료 프로젝트 카드 아이템 article 반복-->
+              <article class="completed-project-card">
+                <!-- 프로젝트 상세 설명 -->
+                <div class="completed-project-detail">
+                  <!-- TPL: 프로젝트명 -->
+                  <p class="project-title">
+                    커머스 앱 상세페이지 UX 기획 및 문구 교정
+                  </p>
+                  <!-- TPL: 프로젝트 정보 -->
+                  <p class="project-info">
+                    콘텐츠 기획 · 재택 · 주 12시간 · 보수 금액 23,000원 ·
+                    2026.05.02 ~ 2026.06.15
+                  </p>
+                </div>
+
+                <!-- 프로젝트 상태(완료 고정) -->
+                <div class="project-status">완료</div>
+              </article>
+
+              <article class="completed-project-card">
+                <div class="completed-project-detail">
+                  <!-- TPL: 프로젝트명 -->
+                  <p class="project-title">
+                    커머스 앱 상세페이지 UX 기획 및 문구 교정
+                  </p>
+                  <!-- TPL: 프로젝트 정보 -->
+                  <p class="project-info">
+                    콘텐츠 기획 · 재택 · 주 12시간 · 보수 금액 23,000원 ·
+                    2026.05.02 ~ 2026.06.15
+                  </p>
+                </div>
+
+                <div class="project-status">완료</div>
+              </article>
+            </div>
+
+            <div class="divider"></div>
+            <p class="title">완료된 프로젝트 참여 인원</p>
+
+            <!-- 완료된 프로젝트 참여 인원 리스트 -->
+            <div class="participant-list">
+              <!-- TPL: 완료 프로젝트 참여자 article 반복-->
+              <article class="participant-card">
+                <!-- TPL: 참여자 프로필 -->
+                <div class="participant-profile">김</div>
+
+                <div class="participant-detail">
+                  <!-- TPL: 참여자 이름 -->
+                  <p class="participant-name-second">김리브</p>
+                  <!-- TPL: 참여자 설명 -->
+                  <p class="participant-des">커머스 상세페이지 UX 기획 완료</p>
+                </div>
+
+                <button class="opnn-returnship-btn">리턴십 제안하기</button>
+              </article>
+
+              <article class="participant-card">
+                <div class="participant-profile">박</div>
+                <div class="participant-detail">
+                  <p class="participant-name-second">박하늘</p>
+                  <p class="participant-des">커머스 상세페이지 UX 기획 완료</p>
+                </div>
+                <button class="opnn-returnship-btn">리턴십 제안하기</button>
+              </article>
+            </div>
+          </div>
+        </section>
       </main>
     </div>
   </body>
