@@ -88,6 +88,13 @@
   margin: 1.94rem 1.63rem;
 }
 
+.user-profile-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
 .user-info {
   flex: 1;
 }
@@ -286,6 +293,15 @@
   font-size: 0.6875rem;
 }
 
+.empty-item-msg {
+  font-size: 0.8125rem;
+  margin-bottom: 1rem;
+}
+
+#tab-profile .empty-item-msg {
+  transform: translateX(0.32rem);
+}
+
 .skills {
   display: flex;
   gap: 0.38rem;
@@ -318,10 +334,14 @@
 
 .subtitle-project {
   transform: translateX(0.38rem);
+  margin-bottom: 0.5rem;
+}
+
+.past-offer .subtitle {
+  margin-bottom: 0.5rem;
 }
 
 .project-card {
-  margin-top: 0.5rem;
   padding: 0.69rem 0.91rem 1.19rem 0.75rem;
 
   display: flex;

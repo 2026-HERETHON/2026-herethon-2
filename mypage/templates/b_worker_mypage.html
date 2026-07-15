@@ -71,7 +71,7 @@
         <div class="group-box career-group">
           <p class="subtitle">주요 성과 키워드</p>
           <p class="text career-item">
-            {{ worker_profile.achievement_keywords|default:"등록된 성과 키워드가 없습니다." }}
+            {{ worker_profile.achievement_keywords|default:"등록된 성과 키워드가 없습니다" }}
           </p>
         </div>
 
@@ -83,7 +83,7 @@
               {% for ws in worker_skills %}
                 <span class="item">{{ ws.skill.name }}</span>
               {% empty %}
-                <p class="text">등록된 스킬이 없습니다.</p>
+                <p class="text empty-item-msg">등록된 스킬이 없습니다</p>
               {% endfor %}
             </div>
           </div>
@@ -94,7 +94,7 @@
               {% for ha in hidden_activities %}
                 <span class="item">{{ ha.hidden_ability.name }}</span>
               {% empty %}
-                <p class="text">등록된 숨은 능력이 없습니다.</p>
+                <p class="text empty-item-msg">등록된 숨은 능력이 없습니다</p>
               {% endfor %}
             </div>
           </div>
@@ -128,7 +128,7 @@
             </div>
           </article>
           {% empty %}
-          <p class="text">진행 중인 프로젝트가 없습니다.</p>
+          <p class="text empty-item-msg">진행 중인 프로젝트가 없습니다</p>
           {% endfor %}
         </section>
 
@@ -160,7 +160,7 @@
             </div>
           </article>
           {% empty %}
-          <p class="text">완료된 프로젝트가 없습니다.</p>
+          <p class="text empty-item-msg">완료된 프로젝트가 없습니다</p>
           {% endfor %}
         </section>
       </div>
@@ -214,7 +214,7 @@
           </div>
         </article>
         {% empty %}
-        <p class="text">지원한 프로젝트가 없습니다.</p>
+        <p class="text empty-item-msg">지원한 프로젝트가 없습니다</p>
         {% endfor %}
       </div>
 
@@ -256,7 +256,7 @@
             </div>
           </form>
           {% empty %}
-          <p class="text">받은 리턴십 제안이 없습니다.</p>
+          <p class="text empty-item-msg">받은 리턴십 제안이 없습니다.</p>
           {% endfor %}
         </section>
 
@@ -279,7 +279,7 @@
             {% endif %}
           </article>
           {% empty %}
-          <p class="text">지난 제안 내역이 없습니다.</p>
+          <p class="text empty-item-msg">지난 제안 내역이 없습니다.</p>
           {% endfor %}
         </section>
       </div>
