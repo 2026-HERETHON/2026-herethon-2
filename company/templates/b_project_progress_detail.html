@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>프로젝트 상세</title>
+</head>
+<body>
+    <a href="{% url 'company:project_manage' %}?tab=progress">← 목록으로</a>
+
+    {% if messages %}
+        <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    <p>[{{ project.get_status_display }}]</p>
+    <h1>{{ project.title }}</h1>
+    <p>
+        {{ project.job_category.name }} ·
+        {{ project.get_work_style_display }} ·
+        주 {{ project.get_weekly_hours_display }} ·
+        시급 {{ project.compensation_amount }}원 ·
+        {{ project.started_at|date:'Y.m.d' }} 시작
+    </p>
+
+    <div>
+        <a href="{% url 'company:project_edit' project.id %}">
+            <button type="button">수정</button>
+        </a>
+        <form method="post" action="{% url 'company:project_complete' project.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" onclick="return confirm('프로젝트를 마감(완료)하시겠어요?')">
+                프로젝트 마감하기
+            </button>
+        </form>
+    </div>
+
+    <hr>
+
+    <h3>프로젝트 개요</h3>
+    <p>{{ project.description|linebreaksbr }}</p>
+
+    <h3>근무 조건</h3>
+    <p>
+        {{ project.get_work_style_display }} ·
+        주 {{ project.get_weekly_hours_display }} ·
+        시급 {{ project.compensation_amount }}원
+    </p>
+</body>
+</html>

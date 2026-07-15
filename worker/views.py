@@ -54,7 +54,7 @@ def onboarding_step1(request):
     if request.method == 'POST':
         job_category_id = request.POST.get('job_category')
         if not job_category_id:
-            return render(request, 'b_worker_onboarding_step1.html', {
+            return render(request, 'worker_onboarding_step1.html', {
                 'job_categories': JobCategory.objects.all(),
                 'error': '직무를 선택해주세요.',
                 'selected_id': None,
@@ -63,7 +63,7 @@ def onboarding_step1(request):
         request.session['onboarding_job_category_id'] = int(job_category_id)
         return redirect('worker:onboarding_step2')
 
-    return render(request, 'b_worker_onboarding_step1.html', {
+    return render(request, 'worker_onboarding_step1.html', {
         'job_categories': JobCategory.objects.all(),
         'selected_id': request.session.get('onboarding_job_category_id'),
     })
@@ -86,6 +86,10 @@ def onboarding_step2(request):
         gap_text     = request.POST.get('gap_activities', '').strip()
 
         errors = {}
+
+        if not skill_ids:
+            errors['skills'] = '보유 스킬을 1개 이상 선택해주세요.'
+
         if not career_years:
             errors['career_years'] = '경력 연차를 선택해주세요.'
 
@@ -93,7 +97,7 @@ def onboarding_step2(request):
             skills = JobSkill.objects.filter(
                 job_category_id=job_category_id
             ).select_related('skill')
-            return render(request, 'b_worker_onboarding_step2.html', {
+            return render(request, 'worker_onboarding_step2.html', {
                 'skills': skills,
                 'career_choices': WorkerProfile.CareerYears.choices,
                 'selected_skills': list(map(int, skill_ids)),
@@ -119,7 +123,7 @@ def onboarding_step2(request):
 
     gap_error = request.session.pop('onboarding_gap_error', None)
 
-    return render(request, 'b_worker_onboarding_step2.html', {
+    return render(request, 'worker_onboarding_step2.html', {
         'skills': skills,
         'career_choices': WorkerProfile.CareerYears.choices,
         'selected_skills': request.session.get('onboarding_skill_ids', []),
@@ -131,6 +135,24 @@ def onboarding_step2(request):
     })
 
 
+def _get_time_slots_for_display():
+    time_slots = list(TimeSlot.objects.all())
+
+    for slot in time_slots:
+        full_name = slot.name.strip()
+
+        if '(' in full_name and full_name.endswith(')'):
+            display_name, time_range = full_name.rsplit('(', 1)
+
+            slot.display_name = display_name.strip()
+            slot.time_range = time_range.rstrip(')').strip()
+        else:
+            slot.display_name = full_name
+            slot.time_range = ''
+
+    return time_slots
+
+
 @role_required('WORKER')
 def onboarding_step3(request):
     if request.user.onboarding_completed:
@@ -138,56 +160,139 @@ def onboarding_step3(request):
 
     if not request.session.get('onboarding_job_category_id'):
         return redirect('worker:onboarding_step1')
+
     if not request.session.get('onboarding_career_years'):
         return redirect('worker:onboarding_step2')
 
+    time_slots = _get_time_slots_for_display()
+
     if request.method == 'POST':
-        weekly_hours = request.POST.get('weekly_hours', '').strip()
-        preferred_work_style = request.POST.get('preferred_work_style', '').strip()
+        weekly_hours = request.POST.get(
+            'weekly_hours',
+            '',
+        ).strip()
+
+        preferred_work_style = request.POST.get(
+            'preferred_work_style',
+            '',
+        ).strip()
+
         core_time_ids = request.POST.getlist('core_times')
         preferred_scales = request.POST.getlist('preferred_scales')
 
+        selected_core_times = [
+            int(time_id)
+            for time_id in core_time_ids
+            if time_id.isdigit()
+        ]
+
         errors = {}
+
         if not weekly_hours:
-            errors['weekly_hours'] = '주간 가용 시간을 선택해주세요.'
+            errors['weekly_hours'] = (
+                '주간 가용 시간을 선택해주세요.'
+            )
+
         if not preferred_work_style:
-            errors['preferred_work_style'] = '선호 근무 형태를 선택해주세요.'
+            errors['preferred_work_style'] = (
+                '선호 근무 형태를 선택해주세요.'
+            )
 
         if errors:
-            return render(request, 'b_worker_onboarding_step3.html', {
-                'weekly_hours_choices': WorkerProfile.WeeklyHours.choices,
-                'work_style_choices': WorkerProfile.WorkStyle.choices,
-                'time_slots': TimeSlot.objects.all(),
-                'scale_choices': WorkerPreferredScale.ScaleType.choices,
-                'selected_weekly_hours': weekly_hours,
-                'selected_work_style': preferred_work_style,
-                'selected_core_times': [int(time_id) for time_id in core_time_ids],
-                'selected_scales': preferred_scales,
-                'errors': errors,
-            })
+            return render(
+                request,
+                'worker_onboarding_step3.html',
+                {
+                    'weekly_hours_choices':
+                        WorkerProfile.WeeklyHours.choices,
 
-        request.session['onboarding_weekly_hours'] = weekly_hours
-        request.session['onboarding_preferred_work_style'] = preferred_work_style
-        request.session['onboarding_core_time_ids'] = [
-            int(time_id) for time_id in core_time_ids
-        ]
-        request.session['onboarding_preferred_scales'] = preferred_scales
+                    'work_style_choices':
+                        WorkerProfile.WorkStyle.choices,
+
+                    'time_slots':
+                        time_slots,
+
+                    'scale_choices':
+                        WorkerPreferredScale.ScaleType.choices,
+
+                    'selected_weekly_hours':
+                        weekly_hours,
+
+                    'selected_work_style':
+                        preferred_work_style,
+
+                    'selected_core_times':
+                        selected_core_times,
+
+                    'selected_scales':
+                        preferred_scales,
+
+                    'errors':
+                        errors,
+                },
+            )
+
+        request.session[
+            'onboarding_weekly_hours'
+        ] = weekly_hours
+
+        request.session[
+            'onboarding_preferred_work_style'
+        ] = preferred_work_style
+
+        request.session[
+            'onboarding_core_time_ids'
+        ] = selected_core_times
+
+        request.session[
+            'onboarding_preferred_scales'
+        ] = preferred_scales
 
         return redirect('worker:onboarding_step4')
 
-    return render(request, 'b_worker_onboarding_step3.html', {
-        'weekly_hours_choices': WorkerProfile.WeeklyHours.choices,
-        'work_style_choices': WorkerProfile.WorkStyle.choices,
-        'time_slots': TimeSlot.objects.all(),
-        'scale_choices': WorkerPreferredScale.ScaleType.choices,
-        'selected_weekly_hours': request.session.get('onboarding_weekly_hours', ''),
-        'selected_work_style': request.session.get(
-            'onboarding_preferred_work_style', ''
-        ),
-        'selected_core_times': request.session.get('onboarding_core_time_ids', []),
-        'selected_scales': request.session.get('onboarding_preferred_scales', []),
-        'errors': {},
-    })
+    return render(
+        request,
+        'worker_onboarding_step3.html',
+        {
+            'weekly_hours_choices':
+                WorkerProfile.WeeklyHours.choices,
+
+            'work_style_choices':
+                WorkerProfile.WorkStyle.choices,
+
+            'time_slots':
+                time_slots,
+
+            'scale_choices':
+                WorkerPreferredScale.ScaleType.choices,
+
+            'selected_weekly_hours':
+                request.session.get(
+                    'onboarding_weekly_hours',
+                    '',
+                ),
+
+            'selected_work_style':
+                request.session.get(
+                    'onboarding_preferred_work_style',
+                    '',
+                ),
+
+            'selected_core_times':
+                request.session.get(
+                    'onboarding_core_time_ids',
+                    [],
+                ),
+
+            'selected_scales':
+                request.session.get(
+                    'onboarding_preferred_scales',
+                    [],
+                ),
+
+            'errors': {},
+        },
+    )
 
 
 @role_required('WORKER')
@@ -214,7 +319,7 @@ def onboarding_step4(request):
             errors['application_type'] = '업무 지원 방식을 선택해주세요.'
 
         if errors:
-            return render(request, 'b_worker_onboarding_step4.html', {
+            return render(request, 'worker_onboarding_step4.html', {
                 'application_type_choices': WorkerProfile.ApplicationType.choices,
                 'concern_choices': WorkerConcern.ConcernType.choices,
                 'selected_application_type': application_type,
@@ -299,7 +404,7 @@ def onboarding_step4(request):
 
         return redirect('worker:hidden_ability_result')
 
-    return render(request, 'b_worker_onboarding_step4.html', {
+    return render(request, 'worker_onboarding_step4.html', {
         'application_type_choices': WorkerProfile.ApplicationType.choices,
         'concern_choices': WorkerConcern.ConcernType.choices,
         'selected_application_type': '',
@@ -569,7 +674,7 @@ def hidden_ability_result(request):
             grouped_activities[ability_name] = []
         grouped_activities[ability_name].append(activity.activity_text)
 
-    return render(request, 'b_worker_onboarding_result_hidden.html', {
+    return render(request, 'worker_onboarding_result_hidden.html', {
         'worker_profile': worker_profile,
         'hidden_abilities': hidden_abilities,
         'activities': activities,
@@ -583,48 +688,87 @@ def hidden_ability_result(request):
 def match_top3_result(request):
     worker_profile = _get_prefetched_worker_profile(request.user)
 
-    projects_qs = Project.objects.filter(
-        status=Project.Status.OPEN,
-    ).select_related('company_profile', 'job_category').prefetch_related(
-        'project_skills__skill',
-        'core_times__time_slot',
-        'preferred_scales',
-        'hidden_abilities__hidden_ability',
-    ).order_by('-id')
+    projects_qs = (
+        Project.objects.filter(
+            status=Project.Status.OPEN,
+        )
+        .select_related(
+            'company_profile',
+            'job_category',
+        )
+        .prefetch_related(
+            'project_skills__skill',
+            'core_times__time_slot',
+            'preferred_scales',
+            'hidden_abilities__hidden_ability',
+        )
+        .order_by('-id')
+    )
 
-    if worker_profile and worker_profile.application_type == WorkerProfile.ApplicationType.WARMUP:
-        top_projects = list(projects_qs.filter(project_type=Project.ProjectType.WARMUP)[:3])
-        for project in top_projects:
-            project.match_score = 100
-            project.preferred_skills_list = [
-                project_skill.skill
-                for project_skill in project.project_skills.all()
-                if project_skill.priority == 'PREFERRED'
-            ]
-        best_match_score = 100 if top_projects else 0
-        high_match_count = len(top_projects)
-        is_warmup_mode = True
+    is_warmup_mode = (
+        worker_profile
+        and worker_profile.application_type
+        == WorkerProfile.ApplicationType.WARMUP
+    )
+
+    if is_warmup_mode:
+        top_projects = list(
+            projects_qs.filter(
+                project_type=Project.ProjectType.WARMUP,
+            )[:3]
+        )
+
+        best_match_score = 0
+        high_match_count = 0
+
     else:
-        ranked_projects = rank_projects_for_worker(
-            worker_profile,
-            list(projects_qs.filter(project_type=Project.ProjectType.REAL)),
-        ) if worker_profile else list(projects_qs.filter(project_type=Project.ProjectType.REAL))
-        for project in ranked_projects:
-            project.preferred_skills_list = [
-                project_skill.skill
-                for project_skill in project.project_skills.all()
-                if project_skill.priority == 'PREFERRED'
-            ]
+        real_projects = list(
+            projects_qs.filter(
+                project_type=Project.ProjectType.REAL,
+            )
+        )
+
+        if worker_profile:
+            ranked_projects = rank_projects_for_worker(
+                worker_profile,
+                real_projects,
+            )
+        else:
+            ranked_projects = real_projects
 
         top_projects = ranked_projects[:3]
-        best_match_score = top_projects[0].match_score if top_projects else 0
-        high_match_count = sum(1 for project in ranked_projects if getattr(project, 'match_score', 0) >= 80)
-        is_warmup_mode = False
 
-    return render(request, 'b_worker_onboarding_result_match.html', {
-        'worker_profile': worker_profile,
-        'top_projects': top_projects,
-        'best_match_score': best_match_score,
-        'high_match_count': high_match_count,
-        'is_warmup_mode': is_warmup_mode,
-    })
+        best_match_score = (
+            getattr(top_projects[0], 'match_score', 0)
+            if top_projects
+            else 0
+        )
+
+        high_match_count = sum(
+            1
+            for project in ranked_projects
+            if getattr(project, 'match_score', 0) >= 80
+        )
+
+    for project in top_projects:
+        project.required_skills_list = [
+            project_skill.skill
+            for project_skill in project.project_skills.all()
+            if (
+                project_skill.priority
+                == ProjectSkill.Priority.NORMAL
+            )
+        ]
+
+    return render(
+        request,
+        'worker_onboarding_result_match.html',
+        {
+            'worker_profile': worker_profile,
+            'top_projects': top_projects,
+            'best_match_score': best_match_score,
+            'high_match_count': high_match_count,
+            'is_warmup_mode': is_warmup_mode,
+        },
+    )
+

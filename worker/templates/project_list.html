@@ -99,17 +99,48 @@
         <div class="project-title-bar">
           <div class="bar-left">
             <h4>프로젝트 찾기</h4>
-            <span
-              >총 <span>{{ project_count }}</span>건의 프로젝트 · 나와 잘 맞는 순으로 정렬되어
-              있어요</span
-            >
+            <span>
+              총 <span>{{ project_count }}</span>건의 프로젝트 ·
+              {% if view_type == 'warmup' %}
+                워밍업 프로젝트를 모아보고 있어요
+              {% elif current_sort == 'deadline' %}
+                마감이 가까운 순으로 정렬되어 있어요
+              {% elif current_sort == 'latest' %}
+                최근 등록된 순으로 정렬되어 있어요
+              {% else %}
+                나와 잘 맞는 순으로 정렬되어 있어요
+              {% endif %}
+            </span>
           </div>
 
           <div class="bar-sort">
-            <a class="sort1" href="?type=real&sort=matching">매칭률순</a>
-            <a class="sort2" href="?type=real&sort=deadline">마감임박순</a>
-            <a class="sort3" href="?type=real&sort=latest">최신순</a>
-            <a class="sort4" href="?type=warmup">워밍업 모아보기</a>
+            <a
+              class="sort1 {% if view_type == 'real' and current_sort == 'matching' %}active{% endif %}"
+              href="?type=real&sort=matching"
+            >
+              매칭률순
+            </a>
+
+            <a
+              class="sort2 {% if view_type == 'real' and current_sort == 'deadline' %}active{% endif %}"
+              href="?type=real&sort=deadline"
+            >
+              마감임박순
+            </a>
+
+            <a
+              class="sort3 {% if view_type == 'real' and current_sort == 'latest' %}active{% endif %}"
+              href="?type=real&sort=latest"
+            >
+              최신순
+            </a>
+
+            <a
+              class="sort4 {% if view_type == 'warmup' %}active{% endif %}"
+              href="?type=warmup"
+            >
+              워밍업 모아보기
+            </a>
           </div>
         </div>
 
@@ -147,23 +178,36 @@
 
               <!--프로젝트 상태(카드의 오른쪽 영역)-->
               <section class="project-status">
-                <div class="matching-rate {% if project.match_score|default:0 < 80 %}low{% endif %}">
-                  {% if project.match_score|default:0 >= 80 %}
-                  <img src="{% static 'img/heart-filled.svg' %}" />
-                  {% else %}
-                  <img src="{% static 'img/good-one.svg' %}" />
-                  {% endif %}
-                  <p>{{ project.match_score|default:0 }}%</p>
-                </div>
-                <p class="due-date">
-                  {% if project.deadline_d_day > 0 %}
-                  마감 D-{{ project.deadline_d_day }}
-                  {% elif project.deadline_d_day == 0 %}
-                  마감 D-DAY
-                  {% else %}
-                  마감
-                  {% endif %}
-                </p>
+                {% if view_type == 'warmup' %}
+                  <p class="due-date warmup-due-date">
+                    {% if project.deadline_d_day > 0 %}
+                      마감 D-{{ project.deadline_d_day }}
+                    {% elif project.deadline_d_day == 0 %}
+                      마감 D-DAY
+                    {% else %}
+                      마감
+                    {% endif %}
+                  </p>
+                {% else %}
+                  <div class="matching-rate {% if project.match_score|default:0 < 80 %}low{% endif %}">
+                    {% if project.match_score|default:0 >= 80 %}
+                      <img src="{% static 'img/heart-filled.svg' %}" />
+                    {% else %}
+                      <img src="{% static 'img/good-one.svg' %}" />
+                    {% endif %}
+                    <p>{{ project.match_score|default:0 }}%</p>
+                  </div>
+
+                  <p class="due-date">
+                    {% if project.deadline_d_day > 0 %}
+                      마감 D-{{ project.deadline_d_day }}
+                    {% elif project.deadline_d_day == 0 %}
+                      마감 D-DAY
+                    {% else %}
+                      마감
+                    {% endif %}
+                  </p>
+                {% endif %}
               </section>
             </article>
           </a>

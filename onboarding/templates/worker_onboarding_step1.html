@@ -1,69 +1,124 @@
+{% load static %}
+
 <!doctype html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../../static/css/colorpalette.css" />
-    <link rel="stylesheet" href="../../static/css/global.css" />
-    <link rel="stylesheet" href="../../static/css/worker_onboarding.css" />
+
+    <link rel="stylesheet" href="{% static 'css/colorpalette.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/global.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/worker_onboarding.css' %}" />
+
     <title>worker onboarding step1</title>
   </head>
+
   <body>
     <header>
       <div class="header-logo">
         <img
           class="header-logo-img"
-          src="../../static/img/logo.svg"
-          alt="logo"
+          src="{% static 'img/logo.svg' %}"
+          alt="RE:Bridge 로고"
         />
+
         <div class="header-logo-text">
           <span class="logo-desc">당신의 두 번째 커리어 브릿지</span>
-          <span class="logo-brand"
-            ><span class="RE">RE</span><span class="colon">:</span>Bridge</span
-          >
+
+          <span class="logo-brand">
+            <span class="RE">RE</span><span class="colon">:</span>Bridge
+          </span>
         </div>
       </div>
     </header>
-    <main class="onboarding-main">
-      <a class="back-btn" href="../../accounts/templates/login.html"
-        >← 이전
-        <div class="ellipse hidden"></div
-      ></a>
 
-      <!--스텝 1~4 순서대로 active 누적 적용-->
+    <main class="onboarding-main">
+      <button
+        type="button"
+        class="back-btn"
+        onclick="history.back()"
+      >
+        ← 이전
+        <span class="ellipse hidden"></span>
+      </button>
+
       <div class="step-bar">
         <span class="step active"></span>
         <span class="step"></span>
         <span class="step"></span>
         <span class="step"></span>
       </div>
-      <small class="step-tatus">1/4단계</small>
-      <h3 class="step1-desc">희망하시는 직무를 선택해주세요</h3>
-      <p class="select-desc">중복 선택 가능해요</p>
 
-      <!--TPL: job_category.name 직무선택-->
-      <form method="post">
+      <small class="step-tatus">1/4단계</small>
+
+      <h1 class="step1-desc">
+        희망하시는 직무를 선택해주세요
+      </h1>
+
+      <p class="select-desc">단일 선택 가능해요</p>
+
+      <form method="post" id="step1-form">
+        {% csrf_token %}
+
+        {% if error %}
+          <p class="form-error">{{ error }}</p>
+        {% endif %}
+
         <div class="career-wrap">
-          <input type="radio" name="job_type" id="content" />
-          <label for="content" class="btn-hover">콘텐츠 기획</label>
-          <input type="radio" name="job_type" id="data" />
-          <label for="data" class="btn-hover">데이터 분석</label>
-          <input type="radio" name="job_type" id="design" /><label
-            for="design"
-            class="btn-hover"
-            >디자인</label
-          >
-          <input type="radio" name="job_type" id="develop" /><label
-            for="develop"
-            class="btn-hover"
-            >개발</label
-          >
+          {% for job in job_categories %}
+            <input
+              type="radio"
+              name="job_category"
+              id="job_{{ job.id }}"
+              value="{{ job.id }}"
+              {% if selected_id|stringformat:"s" == job.id|stringformat:"s" %}
+                checked
+              {% endif %}
+            />
+
+            <label
+              for="job_{{ job.id }}"
+              class="btn-hover"
+            >
+              {{ job.name }}
+            </label>
+          {% empty %}
+            <p class="empty-message">
+              선택 가능한 직무가 없습니다.
+            </p>
+          {% endfor %}
         </div>
-        <!--TPL: 온보딩 step2로 이동-->
-        <button type="submit" class="next-btn btn-hover">다음</button>
+
+        <button
+          type="submit"
+          id="next-btn"
+          class="next-btn btn-hover"
+          disabled
+        >
+          다음
+        </button>
       </form>
     </main>
-  </body>
 
-  <script src="../../static/js/w_onboarding.js"></script>
+    <script>
+      const jobCategoryRadios = document.querySelectorAll(
+        'input[name="job_category"]'
+      );
+      const nextButton = document.getElementById('next-btn');
+
+      function updateNextButton() {
+        const selectedJob = document.querySelector(
+          'input[name="job_category"]:checked'
+        );
+
+        nextButton.disabled = !selectedJob;
+      }
+
+      jobCategoryRadios.forEach((radio) => {
+        radio.addEventListener('change', updateNextButton);
+      });
+
+      updateNextButton();
+    </script>
+  </body>
 </html>

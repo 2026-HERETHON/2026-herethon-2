@@ -81,9 +81,12 @@ def mypage_dashboard(request):
     context['skills'] = Skill.objects.all()
     context['work_style_choices'] = WorkerProfile.WorkStyle.choices
     context['selected_skill_ids'] = list(
-        worker_profile.worker_skills.values_list('skill_id', flat=True)
-    )
-
+        worker_profile.worker_skills.values_list('skill_id', flat=True))
+    
+    #워밍업추가
+    context['work_style_choices'] = WorkerProfile.WorkStyle.choices
+    context['application_type_choices'] = WorkerProfile.ApplicationType.choices
+    
     return render(request, 'b_worker_mypage.html', context)
 
 
@@ -128,18 +131,26 @@ def respond_returnship(request, returnship_id):
 
 @login_required
 @require_POST
-def work_conditions(request):
-    """근무 조건 수정하기"""
+def work_conditions(request): #근무 조건 수정
+   
     worker_profile = request.user.worker_profile
 
     job_category_id = request.POST.get('job_category')
     skill_ids = request.POST.getlist('skills')
     preferred_work_style = request.POST.get('preferred_work_style')
+    application_type = request.POST.get('application_type')
 
     worker_profile.job_category_id = job_category_id
     worker_profile.preferred_work_style = preferred_work_style
-    worker_profile.save(update_fields=['job_category', 'preferred_work_style'])
+    
+    if application_type in {
+        WorkerProfile.ApplicationType.WARMUP,
+        WorkerProfile.ApplicationType.REAL,
+    }:
+        worker_profile.application_type = application_type
 
+    worker_profile.save(update_fields=['job_category', 'preferred_work_style', 'application_type'])
+    
     # 스킬-삭제 후 재등록
     WorkerSkill.objects.filter(worker_profile=worker_profile).delete()
     WorkerSkill.objects.bulk_create([
