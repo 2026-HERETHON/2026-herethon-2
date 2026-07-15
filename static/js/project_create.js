@@ -1,240 +1,481 @@
-// 변수
 const form = document.getElementById("project-create-form");
-const submitBtn = document.querySelector(".create-project-btn");
+const submitButton = document.querySelector(".create-project-btn");
 
-const preferredGuide = document.getElementById("preferred-skill-guide");
-const requiredGuide = document.getElementById("required-skill-guide");
+const requiredGuide = document.getElementById(
+  "required-skill-guide",
+);
+const preferredGuide = document.getElementById(
+  "preferred-skill-guide",
+);
 
-const hiddenAbilityBtn = document.getElementById("hidden-ability-open-btn");
-const hiddenAbilitiesInput = document.getElementById("hidden-abilities-input");
-const weightInput = document.getElementById("hidden-ability-weight-input");
+const requiredWrapper = document.getElementById(
+  "required-skill-wrapper",
+);
+const preferredWrapper = document.getElementById(
+  "preferred-skill-wrapper",
+);
+
+const hiddenAbilityButton = document.getElementById(
+  "hidden-ability-open-btn",
+);
+const hiddenAbilitiesInput = document.getElementById(
+  "hidden-abilities-input",
+);
 
 const modalOverlay = document.querySelector(".modal-overlay");
+const modalBody = document.querySelector(".modal-body");
+const modalCloseButton = document.querySelector(
+  ".modal-close-btn",
+);
+const hiddenAbilityAddButton = document.querySelector(
+  ".hidden-ability-add-btn",
+);
 
-// 선택한 숨은 능력 목록
-let selectedHiddenAbilities = [];
+const skillsByJob = window.skillsByJob || {};
+const hiddenAbilitiesByJob =
+  window.hiddenAbilitiesByJob || {};
 
-// 직무 선택 시 스킬 그룹 토글 (생성x, 표시/숨김 전환)
-// TPL: 직무 유형 input name 값 job_category로 작성. 연동하면서 HTML 수정 시 아래 코드 수정 필요
-document.querySelectorAll('input[name="job_category"]').forEach((radio) => {
-  radio.addEventListener("change", () => {
-    const jobId = radio.value;
+const staticImages = window.staticImages || {};
 
-    document
-      .querySelectorAll("#preferred-skill-wrapper .skill-btn-group")
-      .forEach((group) => {
-        group.style.display = group.dataset.jobId === jobId ? "flex" : "none";
-      });
-    document
-      .querySelectorAll("#required-skill-wrapper .skill-btn-group")
-      .forEach((group) => {
-        group.style.display = group.dataset.jobId === jobId ? "flex" : "none";
-      });
+let selectedJobId = null;
+let selectedJobName = "";
 
-    // 안내 메세지 숨김 처리
-    preferredGuide.style.display = "none";
-    requiredGuide.style.display = "none";
+let selectedRequiredSkills = new Set(
+  (window.initialRequiredSkills || []).map(String),
+);
 
-    // 숨은 능력 추가하기 버튼 활성화
-    hiddenAbilityBtn.disabled = false;
+let selectedPreferredSkills = new Set(
+  (window.initialPreferredSkills || []).map(String),
+);
 
-    // 직무 변경 시 숨은 능력 선택 및 다른 직무 스킬 체크값 초기화
-    resetSkillChecksExcept(jobId);
-    selectedHiddenAbilities = [];
-    hiddenAbilitiesInput.value = "[]";
-    weightInput.value = "";
+let selectedHiddenAbilities = new Set(
+  (window.initialHiddenAbilities || []).map(String),
+);
 
-    validateForm();
+/* 직무 선택 */
+document
+  .querySelectorAll('input[name="job_category"]')
+  .forEach((radio) => {
+    radio.addEventListener("change", () => {
+      selectedJobId = String(radio.value);
+
+      selectedJobName =
+        radio.dataset.jobName ||
+        radio.closest("label")?.textContent.trim() ||
+        "";
+
+      // 직무 변경 시 기존 선택값 초기화
+      selectedRequiredSkills.clear();
+      selectedPreferredSkills.clear();
+      selectedHiddenAbilities.clear();
+
+      syncHiddenAbilitiesInput();
+
+      // 숨은 능력 버튼 문구도 초기화
+      hiddenAbilityButton.textContent = "추가하기";
+
+      renderRequiredSkills();
+      renderPreferredSkills();
+
+      requiredGuide.style.display = "none";
+      hiddenAbilityButton.disabled = false;
+
+      validateForm();
+    });
   });
-});
 
-// 직무 변경 시 현재 선택한 직무 외의 스킬 체크값 초기화
-function resetSkillChecksExcept(jobId) {
-  document.querySelectorAll(".skill-btn-group").forEach((group) => {
-    if (group.dataset.jobId !== jobId) {
-      group
-        .querySelectorAll('input[type="checkbox"]')
-        .forEach((cb) => (cb.checked = false));
-    }
+/* 필수 스킬 출력 */
+function renderRequiredSkills() {
+  requiredWrapper.innerHTML = "";
+
+  if (!selectedJobId) {
+    requiredGuide.style.display = "block";
+    return;
+  }
+
+  requiredGuide.style.display = "none";
+
+  const skills =
+    skillsByJob[String(selectedJobId)] || [];
+
+  if (skills.length === 0) {
+    requiredGuide.textContent =
+      "해당 직무에 등록된 스킬이 없습니다.";
+    requiredGuide.style.display = "block";
+    return;
+  }
+
+  const group = document.createElement("div");
+  group.className = "skill-btn-group";
+  group.style.display = "flex";
+
+  skills.forEach((skill) => {
+    const skillId = String(skill.id);
+
+    const label = document.createElement("label");
+    label.className = "skill-btn";
+
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.name = "skill_required";
+    input.value = skillId;
+    input.checked =
+      selectedRequiredSkills.has(skillId);
+
+    input.addEventListener("change", () => {
+      if (input.checked) {
+        selectedRequiredSkills.add(skillId);
+      } else {
+        selectedRequiredSkills.delete(skillId);
+
+        // 필수에서 해제하면 우대에서도 제거
+        selectedPreferredSkills.delete(skillId);
+      }
+
+      renderPreferredSkills();
+      validateForm();
+    });
+
+    label.appendChild(input);
+    label.appendChild(
+      document.createTextNode(skill.name),
+    );
+
+    group.appendChild(label);
   });
+
+  requiredWrapper.appendChild(group);
 }
 
-// 체크박스 그룹에 1개 이상 체크 유효성 검사 함수
-function hasAtLeastOneChecked(name) {
-  return document.querySelectorAll(`input[name="${name}"]:checked`).length > 0;
-}
+/* 필수 스킬 중 우대로 지정할 항목 */
+function renderPreferredSkills() {
+  preferredWrapper.innerHTML = "";
 
-// 필수 항목 유효성 검사
-function validateForm() {
-  // 텍스트 입력 항목 id 목록
-  const textFieldIds = [
-    "company-name", // 기업명
-    "project-name", // 프로젝트명
-    "project-detail", // 상세 내용
-    "recruit-count", // 모집 인원
-    "pay-amount", // 보수 금액
-    "deadline-date", // 마감일
-    "project-period", // 프로젝트 기간
-  ];
+  if (!selectedJobId) {
+    preferredGuide.textContent =
+      "직무를 먼저 선택해주세요.";
+    preferredGuide.style.display = "block";
+    return;
+  }
 
-  // 빈 텍스트 항목이 없을 경우 true
-  const textFilled = textFieldIds.every(
-    (id) => document.getElementById(id).value.trim() !== "",
+  if (selectedRequiredSkills.size === 0) {
+    preferredGuide.textContent =
+      "필수 스킬을 먼저 선택해주세요.";
+    preferredGuide.style.display = "block";
+    return;
+  }
+
+  preferredGuide.style.display = "none";
+
+  const skills =
+    skillsByJob[String(selectedJobId)] || [];
+
+  const selectedSkills = skills.filter((skill) =>
+    selectedRequiredSkills.has(String(skill.id)),
   );
 
-  // 모든 라디오 버튼이 체크일 경우 true
-  const radioFilled = [
-    // 라디오 버튼 항목 name 목록
-    // TPL: HTML 코드에서 라디오 input의 name 변경 시 아래에 수정 필요 !
-    "job_category", // 직무 유형
-    "work_style", // 근무 형태
-    "weekly_hours", // 가용 시간
-    "career_years", // 경력 연차
-  ].every((name) => document.querySelector(`input[name="${name}"]:checked`));
+  const group = document.createElement("div");
+  group.className = "skill-btn-group";
+  group.style.display = "flex";
 
-  // 모든 체크박스가 1개 이상 체크일 경우 true
-  const checkboxFilled = [
-    // 체크박스 항목 name 목록
-    // TPL: HTML 코드에서 체크박스 input의 name 변경 시 아래에 수정 필요 !
-    "core_times", // 코어 타임
-    "preferred_scales", // 업무 규모
-    "skill_required", // 보유 스킬
-  ].every((name) => hasAtLeastOneChecked(name));
+  selectedSkills.forEach((skill) => {
+    const skillId = String(skill.id);
 
-  // 공고 추가 버튼 활성화 유효성 검사
-  submitBtn.disabled = !(textFilled && radioFilled && checkboxFilled);
+    const label = document.createElement("label");
+    label.className = "skill-btn";
+
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.name = "skill_preferred";
+    input.value = skillId;
+    input.checked =
+      selectedPreferredSkills.has(skillId);
+
+    input.addEventListener("change", () => {
+      if (input.checked) {
+        selectedPreferredSkills.add(skillId);
+      } else {
+        selectedPreferredSkills.delete(skillId);
+      }
+    });
+
+    label.appendChild(input);
+    label.appendChild(
+      document.createTextNode(skill.name),
+    );
+
+    group.appendChild(label);
+  });
+
+  preferredWrapper.appendChild(group);
 }
 
-// 항목 입력 및 선택 시 유효성 검사 진행
-form.addEventListener("input", validateForm);
-form.addEventListener("change", validateForm);
+/* 숨은 능력 모달 */
+hiddenAbilityButton?.addEventListener("click", () => {
+  if (!selectedJobId) return;
 
-// 숨은 능력 모달 열기 (직무별 리스트 토글 + 타이틀 갱신 + 선택값 복원)
-hiddenAbilityBtn.addEventListener("click", () => {
-  // 1. 직무별 타이틀 갱신
-  const selectedRadio = document.querySelector(
-    // TPL: HTML에서 직무 유형 input name 수정 시 아래 name 변경 필요
+  const checkedJob = document.querySelector(
     'input[name="job_category"]:checked',
   );
-  if (!selectedRadio) return;
 
-  const jobId = selectedRadio.value;
-  const jobLabel = selectedRadio.closest("label").textContent.trim();
+  if (!checkedJob) return;
+
+  selectedJobName =
+    checkedJob.dataset.jobName ||
+    checkedJob.closest("label")?.textContent.trim() ||
+    "";
 
   document.querySelector(".modal-title").textContent =
-    `숨은 능력 매칭 항목 추가_${jobLabel}`;
+    `숨은 능력 매칭 항목 추가_${selectedJobName}`;
+
   document.querySelector(".modal-caption").textContent =
-    `${jobLabel} 직무와 관련된 숨은 능력을 선택하면 매칭 가중치에 반영돼요`;
+    `${selectedJobName} 직무와 관련된 숨은 능력을 선택하면 매칭에 반영돼요`;
 
-  // 2. 선택한 직무에 따른 숨은 능력 리스트 표시/숨김
-  document.querySelectorAll(".hidden-ability-list").forEach((list) => {
-    list.style.display = list.dataset.jobId === jobId ? "flex" : "none";
-  });
-
-  // 3. 숨은 능력 선택값 복원
-  const activeList = document.querySelector(
-    `.hidden-ability-list[data-job-id="${jobId}"]`,
-  );
-
-  if (activeList) {
-    activeList.querySelectorAll(".checkbox").forEach((btn) => {
-      // 이미 선택된 항목인 경우 isChecked true
-      const isChecked = selectedHiddenAbilities.includes(btn.dataset.key);
-      btn.dataset.checked = String(isChecked);
-
-      // 버튼 선택 상태에 따라 체크박스 이미지 교체
-      btn.querySelector("img").src = isChecked
-        ? btn
-            .querySelector("img")
-            .src.replace("checkbox-blank", "checkbox-checked")
-        : btn
-            .querySelector("img")
-            .src.replace("checkbox-checked", "checkbox-blank");
-    });
-  }
-
-  // 4. 매칭 가중치 선택값 복원
-  // TPL: 숨은 능력 팝업의 매칭 가중치 input name 변경 시 아래 코드 수정 필요
-  document
-    .querySelectorAll('input[name="matching_weight"]')
-    .forEach((r) => (r.checked = false));
-
-  if (weightInput.value) {
-    const radio = document.querySelector(
-      `input[name="matching_weight"][value="${weightInput.value}"]`,
-    );
-    if (radio) radio.checked = true;
-  }
+  renderHiddenAbilities();
 
   modalOverlay.style.display = "flex";
-  validateModalButton();
 });
 
-document.querySelector(".modal-close-btn").addEventListener("click", () => {
+function renderHiddenAbilities() {
+  modalBody.innerHTML = "";
+
+  const abilities =
+    hiddenAbilitiesByJob[String(selectedJobId)] || [];
+
+  const originalActivities =
+    originalActivitiesByJob[selectedJobName] || [];
+
+  const list = document.createElement("div");
+  list.className = "hidden-ability-list";
+  list.style.display = "flex";
+
+  if (abilities.length === 0) {
+    const emptyMessage = document.createElement("p");
+    emptyMessage.className = "skill-guide-msg";
+    emptyMessage.textContent =
+      "해당 직무에 등록된 숨은 능력이 없습니다.";
+
+    modalBody.appendChild(emptyMessage);
+    validateModalButton();
+    return;
+  }
+
+  abilities.forEach((ability, index) => {
+    const abilityId = String(ability.id);
+    const isChecked =
+      selectedHiddenAbilities.has(abilityId);
+
+    const originalText =
+      originalActivities[index] ||
+      "관련 활동 경험";
+
+    const item = document.createElement("div");
+    item.className = "hidden-ability-item";
+
+    // 체크박스 버튼
+    const checkboxButton =
+      document.createElement("button");
+
+    checkboxButton.type = "button";
+    checkboxButton.className = "checkbox";
+    checkboxButton.dataset.key = abilityId;
+    checkboxButton.dataset.checked = String(isChecked);
+
+    const checkboxImage =
+      document.createElement("img");
+
+    checkboxImage.src = isChecked
+      ? staticImages.checkboxChecked
+      : staticImages.checkboxBlank;
+
+    checkboxImage.alt = "checkbox";
+
+    checkboxButton.appendChild(checkboxImage);
+
+    // 변환 전 활동
+    const originalAbility =
+      document.createElement("div");
+
+    originalAbility.className =
+      "hidden-ability-text original";
+
+    originalAbility.textContent = originalText;
+
+    // 화살표
+    const rightArrow =
+      document.createElement("img");
+
+    rightArrow.className = "right-arrow-img";
+    rightArrow.src = staticImages.rightArrow;
+    rightArrow.alt = "숨은 능력 변환";
+
+    // 변환된 숨은 능력
+    const translatedAbility =
+      document.createElement("div");
+
+    translatedAbility.className =
+      "hidden-ability-text translated";
+
+    const greenIcon =
+      document.createElement("img");
+
+    greenIcon.className = "green-icon";
+    greenIcon.src = staticImages.greenEllipse;
+    greenIcon.alt = "";
+
+    const translatedText =
+      document.createElement("span");
+
+    translatedText.className =
+      "translated-text";
+
+    translatedText.textContent = ability.name;
+
+    translatedAbility.appendChild(greenIcon);
+    translatedAbility.appendChild(translatedText);
+
+    checkboxButton.addEventListener("click", () => {
+      if (selectedHiddenAbilities.has(abilityId)) {
+        selectedHiddenAbilities.delete(abilityId);
+      } else {
+        selectedHiddenAbilities.add(abilityId);
+      }
+
+      renderHiddenAbilities();
+    });
+
+    item.appendChild(checkboxButton);
+    item.appendChild(originalAbility);
+    item.appendChild(rightArrow);
+    item.appendChild(translatedAbility);
+
+    list.appendChild(item);
+  });
+
+  modalBody.appendChild(list);
+  validateModalButton();
+}
+
+function validateModalButton() {
+  if (!hiddenAbilityAddButton) return;
+
+  hiddenAbilityAddButton.disabled =
+    selectedHiddenAbilities.size === 0;
+}
+
+modalCloseButton?.addEventListener("click", () => {
   modalOverlay.style.display = "none";
 });
 
-// 모달 내 체크박스 토글
-document.querySelector(".modal-body").addEventListener("click", (e) => {
-  const btn = e.target.closest(".checkbox");
-  if (!btn) return;
-
-  const isChecked = btn.dataset.checked === "true";
-  btn.dataset.checked = String(!isChecked);
-
-  const img = btn.querySelector("img");
-  img.src = !isChecked
-    ? img.src.replace("checkbox-blank", "checkbox-checked")
-    : img.src.replace("checkbox-checked", "checkbox-blank");
-
-  validateModalButton();
+modalOverlay?.addEventListener("click", (event) => {
+  if (event.target === modalOverlay) {
+    modalOverlay.style.display = "none";
+  }
 });
 
-const addBtn = document.querySelector(".hidden-ability-add-btn");
+hiddenAbilityAddButton?.addEventListener(
+  "click",
+  () => {
+    syncHiddenAbilitiesInput();
+    modalOverlay.style.display = "none";
 
-// 추가하기 버튼 활성화 조건 검사
-function validateModalButton() {
-  const weightChecked = !!document.querySelector(
-    'input[name="matching_weight"]:checked',
+    hiddenAbilityButton.textContent =
+      selectedHiddenAbilities.size > 0
+        ? `${selectedHiddenAbilities.size}개 추가됨`
+        : "추가하기";
+  },
+);
+
+function syncHiddenAbilitiesInput() {
+  hiddenAbilitiesInput.value = JSON.stringify(
+    [...selectedHiddenAbilities],
   );
-
-  const activeList = document.querySelector(
-    '.hidden-ability-list[style*="display: flex"]',
-  );
-  const abilityChecked = activeList
-    ? activeList.querySelectorAll('.checkbox[data-checked="true"]').length > 0
-    : false;
-
-  addBtn.disabled = !(weightChecked && abilityChecked);
 }
 
-// 매칭 가중치 라디오
-document.querySelectorAll('input[name="matching_weight"]').forEach((radio) => {
-  radio.addEventListener("change", validateModalButton);
+/* 필수 항목 검사 */
+function hasCheckedInput(name) {
+  return Boolean(
+    document.querySelector(
+      `input[name="${name}"]:checked`,
+    ),
+  );
+}
+
+function validateForm() {
+  const requiredTextIds = [
+    "project-name",
+    "project-detail",
+    "recruit-count",
+    "pay-amount",
+    "deadline-date",
+    "project-period",
+  ];
+
+  const textFilled = requiredTextIds.every((id) => {
+    const element = document.getElementById(id);
+
+    return (
+      element &&
+      String(element.value).trim() !== ""
+    );
+  });
+
+  const radioFilled = [
+    "job_category",
+    "work_style",
+    "weekly_hours",
+    "career_years",
+  ].every(hasCheckedInput);
+
+  const checkboxFilled = [
+    "core_times",
+    "preferred_scales",
+    "skill_required",
+  ].every(hasCheckedInput);
+
+  submitButton.disabled = !(
+    textFilled &&
+    radioFilled &&
+    checkboxFilled
+  );
+}
+
+form?.addEventListener("input", validateForm);
+form?.addEventListener("change", validateForm);
+
+form?.addEventListener("submit", () => {
+  syncHiddenAbilitiesInput();
 });
 
-// 숨은 능력 모달의 추가하기 버튼
-document
-  .querySelector(".hidden-ability-add-btn")
-  .addEventListener("click", () => {
-    const weightRadio = document.querySelector(
-      'input[name="matching_weight"]:checked',
-    );
+/* POST 오류 후 선택값 복원 */
+function initializeForm() {
+  const checkedJob = document.querySelector(
+    'input[name="job_category"]:checked',
+  );
 
-    // 선택된 직무의 숨은 능력 리스트
-    const activeList = document.querySelector(
-      '.hidden-ability-list[style*="display: flex"]',
-    );
+  if (checkedJob) {
+    selectedJobId = String(checkedJob.value);
 
-    // 선택된 숨은 능력의 data-key 리스트
-    const checkedKeys = [
-      ...activeList.querySelectorAll('.checkbox[data-checked="true"]'),
-    ].map((btn) => btn.dataset.key);
+    selectedJobName =
+      checkedJob.dataset.jobName ||
+      checkedJob.closest("label")?.textContent.trim() ||
+      "";
 
-    selectedHiddenAbilities = checkedKeys;
-    // TPL: 백에서 숨은 능력, 매칭 가중치 받는 형태로 수정
-    hiddenAbilitiesInput.value = JSON.stringify(checkedKeys);
-    weightInput.value = weightRadio.value;
+    requiredGuide.style.display = "none";
+    hiddenAbilityButton.disabled = false;
 
-    modalOverlay.style.display = "none";
-  });
+    renderRequiredSkills();
+    renderPreferredSkills();
+  }
+
+  syncHiddenAbilitiesInput();
+
+  if (selectedHiddenAbilities.size > 0) {
+    hiddenAbilityButton.textContent =
+      `${selectedHiddenAbilities.size}개 추가됨`;
+  }
+
+  validateForm();
+}
+
+initializeForm();

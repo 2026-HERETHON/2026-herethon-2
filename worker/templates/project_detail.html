@@ -1,74 +1,147 @@
+{% load static %}
+
 <!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <title>RE:Bridge</title>
-    <link rel="stylesheet" href="../../static/css/colorpalette.css" />
-    <link rel="stylesheet" href="../../static/css/global.css" />
-    <link rel="stylesheet" href="../../static/css/project_detail.css" />
+    <title>{{ project.title }} | RE:Bridge</title>
+
+    <link rel="stylesheet" href="{% static 'css/colorpalette.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/global.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/project_detail.css' %}" />
   </head>
+
   <body>
-    <!-- 헤더 영역 -->
     <header>
       <div class="header-logo">
         <img
           class="header-logo-img"
-          src="../../static/img/logo.svg"
-          alt="logo"
+          src="{% static 'img/logo.svg' %}"
+          alt="RE:Bridge 로고"
         />
+
         <div class="header-logo-text">
-          <span class="logo-desc">당신의 두 번째 커리어 브릿지</span>
-          <span class="logo-brand"
-            ><span class="RE">RE</span><span class="colon">:</span>Bridge</span
-          >
+          <span class="logo-desc">
+            당신의 두 번째 커리어 브릿지
+          </span>
+
+          <span class="logo-brand">
+            <span class="RE">RE</span><span class="colon">:</span>Bridge
+          </span>
         </div>
       </div>
+
       <div class="header-menu">
-        <a data-label="프로젝트 찾기" class="found">프로젝트 찾기</a>
-        <a data-label="마이페이지">마이페이지</a>
+        <a
+          href="{% url 'worker:project_list' %}"
+          data-label="프로젝트 찾기"
+          class="found"
+        >
+          프로젝트 찾기
+        </a>
+
+        <a
+          href="{% url 'mypage:dashboard' %}"
+          data-label="마이페이지"
+        >
+          마이페이지
+        </a>
       </div>
+
       <div class="header-profile">
-        <a>양</a>
+        <a>
+          {{ request.user.name|default:request.user.username|slice:":1" }}
+        </a>
       </div>
     </header>
 
+    {% if messages %}
+      <div class="message-wrap">
+        {% for message in messages %}
+          <p class="message {{ message.tags }}">
+            {{ message }}
+          </p>
+        {% endfor %}
+      </div>
+    {% endif %}
+
     <main>
-      <!-- 프로젝트 상세화면  -->
       <div class="project-main">
         <div class="detail-header">
-          <a class="back-btn" href="../../worker/templates/project_list.html"
-            >← 목록으로
-            <div class="ellipse hidden"></div
-          ></a>
+          <a
+            class="back-btn"
+            href="{% url 'worker:project_list' %}"
+          >
+            ← 목록으로
+            <span class="ellipse hidden"></span>
+          </a>
 
           <section class="project-status">
-            <div class="matching-rate">
-              <img src="../../static/img/heart-filled.svg" />
-              <!--TPL: (매칭률) -->
-              <p>92%</p>
-            </div>
+            {% if project.project_type == project.ProjectType.WARMUP %}
+              <div class="matching-rate warmup-rate">
+                <p>워밍업</p>
+              </div>
+            {% else %}
+              <div
+                class="
+                  matching-rate
+                  {% if project.match_score < 70 %}low{% endif %}
+                "
+              >
+                {% if project.match_score >= 70 %}
+                  <img
+                    src="{% static 'img/heart-filled.svg' %}"
+                    alt="매칭률"
+                  />
+                {% else %}
+                  <img
+                    src="{% static 'img/good-one.svg' %}"
+                    alt="매칭률"
+                  />
+                {% endif %}
+
+                <p>{{ project.match_score }}%</p>
+              </div>
+            {% endif %}
+
             <div class="status-detail">
-              <p class="due-date">마감 D-5</p>
-              <p class="due-date">· 조회 128</p>
+              <p class="due-date">
+                {% if project.deadline_d_day > 0 %}
+                  마감 D-{{ project.deadline_d_day }}
+                {% elif project.deadline_d_day == 0 %}
+                  마감 D-DAY
+                {% else %}
+                  마감
+                {% endif %}
+              </p>
+
+              <p class="due-date">
+                · 조회 {{ project.view_count }}
+              </p>
             </div>
           </section>
 
           <section class="project-info">
-            <!--TPL: 프로젝트명 -->
             <p class="project-title">
-              커머스 앱 상세페이지 UX기획 및 문구 교정
+              {{ project.title }}
             </p>
 
-            <!--프로젝트 정보 요약(카드의 왼쪽 영역)-->
             <div class="project-type-wrap">
-              <!--TPL: 기업명 -->
-              <span class="type-company">(주)브릿지커머스 · </span>
+              <span class="type-company">
+                {{ project.company_profile.company_name }} ·
+              </span>
 
-              <!--TPL: 직무명 -->
-              <span class="type-career">콘텐츠기획 · </span>
+              <span class="type-career">
+                {{ project.job_category.name }} ·
+              </span>
 
-              <!--TPL: 근무형태 -->
-              <span class="type-work">재택</span>
+              <span class="type-work">
+                {{ project.get_work_style_display }} ·
+              </span>
+
+              <span class="type-career-years">
+                경력 {{ project.get_career_years_display }} 선호
+              </span>
             </div>
           </section>
         </div>
@@ -76,160 +149,295 @@
         <div class="detail-main">
           <section class="detail-overview">
             <h3>프로젝트 개요</h3>
-            <!-- TPL: 프로젝트 개요  -->
+
             <p>
-              자사 커머스 앱의 상품 상세페이지 UX 구조를 개선하고, 소비자
-              친화적인 문구로 다듬는 작업입니다. 기존 화면 분석과 카피 교정까지
-              포함됩니다. 주 2회 정기 미팅(온라인) 진행 예정이에요.
+              {{ project.description|linebreaksbr }}
             </p>
           </section>
+
           <section>
-            <!-- TPL: 필수 조건  -->
             <h3>필수 조건</h3>
+
             <ul class="dot-list">
-              <li>엑셀 기본 활용 가능</li>
-              <li>콘텐츠 기획 또는 카피라이팅 경험 1년 이상</li>
-              <li>주 10시간 이상 작업 가능</li>
+              {% for skill in project.required_skills_list %}
+                <li>{{ skill.name }}</li>
+              {% empty %}
+                <li>등록된 필수 조건이 없습니다.</li>
+              {% endfor %}
             </ul>
           </section>
+
           <section>
-            <!-- TPL: 우대 조건  -->
             <h3>우대 조건</h3>
+
             <ul class="dot-list">
-              <li>Figma 사용 경험</li>
+              {% for skill in project.preferred_skills_list %}
+                <li>{{ skill.name }}</li>
+              {% empty %}
+                <li>등록된 우대 조건이 없습니다.</li>
+              {% endfor %}
             </ul>
           </section>
+
           <section>
-            <!-- TPL: 근무 조건  -->
+            <h3>코어타임</h3>
+
+            <ul class="dot-list">
+              {% for core_time in project.core_times.all %}
+                <li>{{ core_time.time_slot.name }}</li>
+              {% empty %}
+                <li>협의 가능</li>
+              {% endfor %}
+            </ul>
+          </section>
+
+          <section>
             <h3>근무 조건</h3>
+
             <div class="project-term">
               <div>
-                <!-- TPL: 근무 기간(규모)  -->
-                <h3>규모</h3>
-                <p>3주 프로젝트</p>
+                <h3>프로젝트 기간</h3>
+
+                <p>
+                  {{ project.duration|default:"미정" }}
+                </p>
               </div>
+
               <div>
-                <!-- TPL: 근무형태  -->
                 <h3>근무형태</h3>
-                <p>재택</p>
+
+                <p>
+                  {{ project.get_work_style_display }}
+                </p>
               </div>
+
               <div>
-                <!-- TPL: 가용시간  -->
                 <h3>가용시간</h3>
-                <p>주 15시간</p>
+
+                <p>
+                  {{ project.get_weekly_hours_display }}
+                </p>
               </div>
+
               <div>
-                <!-- TPL: 보수  -->
                 <h3>보수</h3>
-                <p>시급 25,000원</p>
+
+                <p>
+                  시급 {{ project.compensation_amount }}원
+                </p>
               </div>
             </div>
           </section>
         </div>
       </div>
 
-      <!-- 오른쪽 지원탭 -->
       <nav>
         <article class="skill-gap-wrap">
           <h2>스킬 갭 분석</h2>
-          <small>기업이 요구하는 조건과 비교했어요</small>
+
+          <small>
+            기업이 요구하는 조건과 비교했어요
+          </small>
 
           <section class="skill-gap-section">
-            <h3>보유 스킬</h3>
-            <!-- TPL: 보유스킬  -->
+            <h3>요구 스킬</h3>
+
             <ul class="get-skill">
-              <li><img src="../../static/img/ellipse-green.svg" />엑셀</li>
-              <li>
-                <img src="../../static/img/ellipse-green.svg" />파워포인트
-              </li>
+              {% for item in skill_gap_items %}
+                {% if item.is_owned %}
+                  <li>
+                    <img src="{% static 'img/ellipse-green.svg' %}" alt="" />
+                    {{ item.skill.name }}
+                  </li>
+                {% endif %}
+              {% endfor %}
             </ul>
-            <!-- TPL: 미보유 스킬  -->
+
             <ul class="none-skill">
-              <li><img src="../../static/img/ellipse-gray.svg" />Figma</li>
-              <li>
-                <img src="../../static/img/ellipse-gray.svg" />데이터 분석
-              </li>
+              {% for item in skill_gap_items %}
+                {% if not item.is_owned %}
+                  <li>
+                    <img src="{% static 'img/ellipse-gray.svg' %}" alt="" />
+                    {{ item.skill.name }}
+                  </li>
+                {% endif %}
+              {% endfor %}
             </ul>
           </section>
 
           <section class="skill-gap-section">
             <h3>숨은 능력</h3>
-            <!-- TPL: 숨은 능력 중 보유 스킬 -->
+
             <ul class="get-skill">
-              <li>
-                <img src="../../static/img/ellipse-green.svg" />커뮤니티 매니징
-              </li>
+              {% for item in hidden_gap_items %}
+                {% if item.is_owned %}
+                  <li>
+                    <img src="{% static 'img/ellipse-green.svg' %}" alt="" />
+                    {{ item.ability.name }}
+                  </li>
+                {% endif %}
+              {% endfor %}
             </ul>
-            <!-- TPL: 숨은 능력 중 미보유 스킬  -->
+
             <ul class="none-skill">
-              <li><img src="../../static/img/ellipse-gray.svg" />SNS 마케팅</li>
+              {% for item in hidden_gap_items %}
+                {% if not item.is_owned %}
+                  <li>
+                    <img src="{% static 'img/ellipse-gray.svg' %}" alt="" />
+                    {{ item.ability.name }}
+                  </li>
+                {% endif %}
+              {% endfor %}
             </ul>
           </section>
-          <!-- TPL: 보유, 미보유 개수  -->
+
           <section class="skill-status">
-            <p class="get">3개 보유 ·</p>
-            <p class="none">3개 미보유</p>
+            <p class="get">
+              {{ total_owned_count }}개 보유 ·
+            </p>
+
+            <p class="none">
+              {{ total_missing_count }}개 미보유
+            </p>
           </section>
         </article>
 
-        <button type="submit" class="apply-btn btn-hover">지원하기</button>
+        {% if existing_application %}
+          <button
+            type="button"
+            class="apply-btn"
+            disabled
+          >
+            지원 완료
+          </button>
 
-        <button class="attach-btn openModalBtn" aria-label="이력서 첨부">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M12 5v14M5 12h14"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-            />
-          </svg>
-        </button>
-        <small class="attach-text">이력서 첨부하기</small>
+        {% elif can_apply %}
+          <button
+            type="button"
+            class="apply-btn btn-hover openModalBtn"
+          >
+            지원하기
+          </button>
 
-        <div id="modal" class="modal-overlay hidden">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h2>지원 서류 제출</h2>
-              <button class="modal-close closeModalBtn">&times;</button>
-            </div>
-
-            <small class="attach-desc"
-              >이력서, 자기소개서, 포트폴리오 파일을 첨부해주세요</small
+          <button
+            type="button"
+            class="attach-btn openModalBtn"
+            aria-label="이력서 첨부"
+          >
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
             >
-
-            <div class="attach-box">
-              <input
-                type="file"
-                id="fileInput"
-                multiple
-                accept=".pdf,.ppt,.pptx,.jpg,.jpeg,.png"
-                hidden
+              <path
+                d="M12 5v14M5 12h14"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
               />
-              <div class="plus-icon">+</div>
-              <p>파일을 드래그하거나 클릭해서 업로드</p>
-              <small>PDF · PPT · JPG · PNG (최대 10MB)</small>
-            </div>
-            <ul id="fileList"></ul>
+            </svg>
+          </button>
 
-            <div class="plus-file hidden">
-              <input
-                type="file"
-                id="fileInput"
-                multiple
-                accept=".pdf,.ppt,.pptx,.jpg,.jpeg,.png"
-                hidden
-              />
-              + 파일 추가
-            </div>
-            <small class="attach-count">첨부 파일 (0/5)</small>
-            <div class="btn-wrap">
-              <button class="btn-cancel closeModalBtn">취소</button>
-              <button class="btn-submit">제출하기</button>
+          <small class="attach-text">
+            이력서 첨부하기
+          </small>
+
+        {% else %}
+          <button
+            type="button"
+            class="apply-btn"
+            disabled
+          >
+            지원할 수 없는 프로젝트입니다
+          </button>
+        {% endif %}
+
+        {% if can_apply %}
+          <div
+            id="modal"
+            class="modal-overlay hidden"
+          >
+            <div class="modal-content">
+              <form
+                id="application-form"
+                method="post"
+                action="{% url 'worker:project_apply' project.id %}"
+                enctype="multipart/form-data"
+              >
+                {% csrf_token %}
+
+                <div class="modal-header">
+                  <h2>지원 서류 제출</h2>
+
+                  <button
+                    type="button"
+                    class="modal-close closeModalBtn"
+                  >
+                    &times;
+                  </button>
+                </div>
+
+                <small class="attach-desc">
+                  이력서, 자기소개서, 포트폴리오 파일을 첨부해주세요
+                </small>
+
+                <div class="attach-box">
+                  <input
+                    type="file"
+                    id="fileInput"
+                    name="application_files"
+                    multiple
+                    accept=".pdf,.ppt,.pptx,.jpg,.jpeg,.png"
+                    hidden
+                  />
+
+                  <div class="plus-icon">+</div>
+
+                  <p>
+                    파일을 드래그하거나 클릭해서 업로드
+                  </p>
+
+                  <small>
+                    PDF · PPT · JPG · PNG (최대 10MB)
+                  </small>
+                </div>
+
+                <ul id="fileList"></ul>
+
+                <button
+                  type="button"
+                  class="plus-file hidden"
+                >
+                  + 파일 추가
+                </button>
+
+                <small class="attach-count">
+                  첨부 파일 (0/5)
+                </small>
+
+                <div class="btn-wrap">
+                  <button
+                    type="button"
+                    class="btn-cancel closeModalBtn"
+                  >
+                    취소
+                  </button>
+
+                  <button
+                    type="submit"
+                    class="btn-submit"
+                  >
+                    제출하기
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
-        </div>
+        {% endif %}
       </nav>
     </main>
+
+    <script src="{% static 'js/project_detail.js' %}"></script>
   </body>
-  <script src="../../static/js/project_detail.js"></script>
 </html>
