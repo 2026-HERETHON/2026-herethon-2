@@ -85,7 +85,8 @@
               <!-- TPL: 프로젝트 상태(모집중/선발중)에 따라 프로젝트 설명(project-des), 버튼 스타일(applicant-btn, start-project-btn) 변경 -->
               <!-- TPL: 현재 더미 데이터에서는 모집중 OPEN, 선발중 SELECTING 클래스로 설정 -->
               <article class="recruiting-project-card OPEN">
-                <div class="recruiting-project-des">
+                <!-- 프로젝트 상세 설명 -->
+                <div class="recruiting-project-detail">
                   <!-- TPL: 프로젝트 상태 -->
                   <p class="project-status">모집중</p>
                   <!-- TPL: 프로젝트명 -->
@@ -99,6 +100,7 @@
                   <p class="project-des">지원자 2명 · 마감까지 D-3</p>
                 </div>
 
+                <!-- 프로젝트 카드 버튼 그룹 -->
                 <div class="recruiting-project-btns">
                   <a class="applicant-btn">지원자 확인하기</a>
                   <a class="start-project-btn">프로젝트 시작하기</a>
@@ -106,7 +108,7 @@
               </article>
 
               <article class="recruiting-project-card SELECTING">
-                <div class="recruiting-project-des">
+                <div class="recruiting-project-detail">
                   <p class="project-status">선발중</p>
                   <p class="project-title">온라인 커뮤니티 운영 및 회원 응대</p>
                   <p class="project-info">
@@ -137,18 +139,88 @@
         </section>
 
         <!-- 진행중 탭 -->
-        <div
-          class="tab-content"
-          id="tab-recruiting"
-          style="display: none"
-        ></div>
+        <section class="tab-content" id="tab-progress" style="display: flex">
+          <div class="tab-header">
+            <p class="title">진행 중인 프로젝트</p>
+            <p class="caption">
+              현재 참여자와 함께 진행 중인 프로젝트를 확인하세요
+            </p>
+          </div>
 
-        <!-- 완료 탭 -->
-        <div
-          class="tab-content"
-          id="tab-recruiting"
-          style="display: none"
-        ></div>
+          <div class="tab-body">
+            <!-- 진행 중인 프로젝트 리스트 -->
+            <div class="progress-project-list">
+              <!-- TPL: 진행 중 프로젝트 카드 아이템 article 반복-->
+              <article class="progress-project-card">
+                <!-- 프로젝트 상세 설명 -->
+                <div class="progress-project-detail">
+                  <!-- TPL: 프로젝트명 -->
+                  <p class="project-title">스타트업 뉴스레터 기획 및 발행</p>
+                  <!-- TPL: 프로젝트 상태(진행중 고정) -->
+                  <p class="project-status">진행중</p>
+                  <!-- TPL: 프로젝트 정보 -->
+                  <p class="project-info">
+                    콘텐츠 기획 · 재택 · 주 12시간 · 보수 금액 23,000원
+                  </p>
+                  <!-- TPL: 프로젝트 설명 -->
+                  <p class="project-des">2026.06.20 시작 · D-18</p>
+                </div>
+
+                <!-- 프로젝트 참여 인원 -->
+                <div class="progress-project-participant">
+                  <p class="participant-title">참여 인원</p>
+                  <div class="participant-group">
+                    <!-- TPL: 프로젝트 참여자 article 반복-->
+                    <article class="participant">
+                      <!-- TPL: 프로젝트 참여자 프로필 -->
+                      <div class="participant-profile">김</div>
+                      <!-- TPL: 프로젝트 참여자 이름 -->
+                      <p class="participant-name">김리브</p>
+                    </article>
+                  </div>
+                </div>
+
+                <!-- 프로젝트 카드 버튼 그룹 -->
+                <div class="progress-project-btns">
+                  <a class="detail-btn">상세 보기</a>
+                  <a class="complete-project-btn">프로젝트 마감하기</a>
+                </div>
+              </article>
+
+              <article class="progress-project-card">
+                <div class="progress-project-detail">
+                  <p class="project-title">스타트업 뉴스레터 기획 및 발행</p>
+                  <p class="project-status">진행중</p>
+                  <p class="project-info">
+                    콘텐츠 기획 · 재택 · 주 12시간 · 보수 금액 23,000원
+                  </p>
+                  <p class="project-des">2026.06.28 시작 · D-10</p>
+                </div>
+
+                <div class="progress-project-participant">
+                  <p class="participant-title">참여 인원</p>
+                  <div class="participant-group">
+                    <article class="participant">
+                      <div class="participant-profile">김</div>
+                      <p class="participant-name">김리브</p>
+                    </article>
+                    <article class="participant">
+                      <div class="participant-profile">박</div>
+                      <p class="participant-name">박하늘</p>
+                    </article>
+                  </div>
+                </div>
+
+                <div class="progress-project-btns">
+                  <a class="detail-btn">상세 보기</a>
+                  <button class="complete-project-btn">
+                    프로젝트 마감하기
+                  </button>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
       </main>
     </div>
   </body>
