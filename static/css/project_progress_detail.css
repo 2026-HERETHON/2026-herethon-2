@@ -20,6 +20,8 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+
+  cursor: pointer;
 }
 
 .header-group {
@@ -76,7 +78,7 @@
   align-items: flex-end;
 }
 
-.header-right button {
+.header-right > * {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -100,6 +102,7 @@
   border: 1px solid #d1d5db;
   color: #4b5563;
   margin-right: 0.63rem;
+  cursor: pointer;
 }
 
 .project-delete-btn {
