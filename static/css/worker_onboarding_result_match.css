@@ -53,7 +53,7 @@ header {
 }
 
 .matching-circle .track {
-  stroke: #f0eefe; 
+  stroke: #f0eefe;
 }
 
 .matching-circle .arc {
@@ -162,6 +162,7 @@ header {
   padding: 15px;
 
   width: 370px;
+  height: 190px;
 }
 
 .project-title {
@@ -238,7 +239,6 @@ header {
   margin: 0.81rem 0;
   margin-right: auto;
 }
-
 
 /* 워밍업 상단 안내 박스 */
 .warmup-guide {
