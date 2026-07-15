@@ -6,13 +6,150 @@
 </head>
 <body>
     <h1>프로젝트 관리</h1>
-    <ul>
-        {% for project in projects %}
-            <li>{{ project.title }} ({{ project.status }})</li>
-        {% empty %}
-            <li>등록된 공고가 없습니다.</li>
+ 
+    {% if messages %}
+        <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
         {% endfor %}
-    </ul>
-    <p>TODO: 모집중/진행중/완료 탭, 수락/거절, 리턴십</p>
+        </ul>
+    {% endif %}
+ 
+    <nav>
+        <a href="?tab=recruiting">모집 중인 프로젝트</a> |
+        <a href="?tab=progress">진행 중인 프로젝트</a> |
+        <a href="?tab=completed">완료된 프로젝트</a>
+    </nav>
+ 
+    <hr>
+ 
+    {% if tab == 'completed' %}
+ 
+        <h2>완료된 프로젝트</h2>
+        <p style="color:#888;">완료한 프로젝트를 클릭해 참여 인원을 확인하세요</p>
+ 
+        <ul>
+            {% for project in projects %}
+                <li style="margin-bottom:10px; border:1px solid #ccc; padding:12px;
+                           {% if selected_project.id == project.id %}background:#eef4ff;{% endif %}">
+                    <a href="?tab=completed&selected={{ project.id }}">
+                        <strong>{{ project.title }}</strong>
+                    </a>
+                    [{{ project.get_status_display }}]
+                    <br>
+                    {{ project.job_category.name }} ·
+                    {{ project.get_work_style_display }} ·
+                    주 {{ project.get_weekly_hours_display }} ·
+                    시급 {{ project.compensation_amount }}원 ·
+                    {{ project.started_at|date:'Y.m.d' }} ~ {{ project.completed_at|date:'Y.m.d' }}
+                </li>
+            {% empty %}
+                <li>완료된 프로젝트가 없어요.</li>
+            {% endfor %}
+        </ul>
+ 
+        <hr>
+ 
+        {% if selected_project %}
+            <h3>완료된 프로젝트 참여 인원 - {{ selected_project.title }}</h3>
+            <ul>
+                {% for application in participants %}
+                    <li style="margin-bottom:10px; border:1px solid #ddd; padding:10px;
+                               display:flex; justify-content:space-between; align-items:center;">
+                        <span>
+                            <strong>{{ application.worker_profile.user.name }}</strong>
+                            · {{ selected_project.title }} 완료
+                        </span>
+ 
+                        {% if application.returnship %}
+                            {% if application.returnship.status == 'ACCEPTED' %}
+                                <span style="color:#16a34a; font-weight:bold;">수락됨</span>
+                            {% elif application.returnship.status == 'REJECTED' %}
+                                <span style="color:#dc2626; font-weight:bold;">거절됨</span>
+                            {% else %}
+                                <span style="color:#888;">응답 대기중</span>
+                            {% endif %}
+                        {% else %}
+                            <a href="{% url 'company:returnship_create' selected_project.id application.id %}">
+                                <button type="button">리턴십 제안하기</button>
+                            </a>
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <li>참여 인원이 없어요.</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+ 
+    {% else %}
+ 
+        <ul>
+            {% for project in projects %}
+                <li style="margin-bottom:16px; border:1px solid #ccc; padding:12px;">
+                    <strong>{{ project.title }}</strong>
+                    [{{ project.get_status_display }}]
+                    <span style="color:#e11d48; font-weight:bold;">{{ project.d_day_label }}</span>
+                    <br>
+                    {{ project.company_profile.company_name }} ·
+                    {{ project.job_category.name }} ·
+                    {{ project.get_work_style_display }} ·
+                    주 {{ project.get_weekly_hours_display }} ·
+                    시급 {{ project.compensation_amount }}원 ·
+                    마감일 {{ project.deadline }}
+                    <br>
+                    필수 스킬:
+                    {% for skill_name in project.required_skill_names %}
+                        {{ skill_name }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                    {% endfor %}
+                    <br>
+                    지원자 {{ project.applicant_count }}명
+ 
+                    <div style="margin-top:8px;">
+                        {% if project.status == 'IN_PROGRESS' %}
+                            <span>참여자: </span>
+                            {% for name in project.participant_names %}
+                                {{ name }}{% if not forloop.last %}, {% endif %}
+                            {% empty %}
+                                없음
+                            {% endfor %}
+                            <a href="{% url 'company:project_progress_detail' project.id %}">
+                                <button type="button">상세보기</button>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'company:project_applicants' project.id %}">
+                                <button type="button">지원자 확인하기</button>
+                            </a>
+                        {% endif %}
+ 
+                        {% if project.status == 'OPEN' %}
+                            <form method="post" action="{% url 'company:project_delete' project.id %}"
+                                  style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        onclick="return confirm('정말 삭제하시겠어요? 지원자가 있어도 함께 삭제됩니다.')">
+                                    삭제
+                                </button>
+                            </form>
+                        {% endif %}
+ 
+                        {% if project.status == 'SELECTING' %}
+                            <form method="post" action="{% url 'company:project_start' project.id %}"
+                                  style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        onclick="return confirm('프로젝트를 시작하시겠어요? 아직 결정하지 않은 지원자는 자동으로 거절 처리됩니다.')">
+                                    프로젝트 시작하기
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </li>
+            {% empty %}
+                <li>등록된 프로젝트가 없어요.</li>
+            {% endfor %}
+        </ul>
+ 
+    {% endif %}
 </body>
 </html>

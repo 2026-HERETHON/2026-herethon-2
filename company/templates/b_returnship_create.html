@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>리턴십 제안</title>
+</head>
+<body>
+    <a href="{% url 'company:project_manage' %}?tab=completed&selected={{ project.id }}">← 취소하고 돌아가기</a>
+
+    <h1>리턴십 제안</h1>
+    <p>{{ application.worker_profile.user.name }}님에게 제안을 보냅니다.</p>
+
+    {% if messages %}
+        <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div>
+            <label>제목</label><br>
+            <input type="text" name="title" placeholder="예: 정규직 전환 제안" required>
+        </div>
+
+        <div>
+            <label>제안 내용</label><br>
+            <textarea name="content" placeholder="제안 내용을 입력하세요" required></textarea>
+        </div>
+
+        <button type="submit">제안 보내기</button>
+    </form>
+</body>
+</html>
