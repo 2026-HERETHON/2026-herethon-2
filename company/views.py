@@ -1,6 +1,7 @@
 import json
  
 from django.contrib import messages
+from django.db import transaction
 from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import get_object_or_404, render, redirect
 from django.utils import timezone
@@ -54,32 +55,77 @@ def company_onboarding(request):
         return redirect('company:project_create')
  
     return render(request, 'company_onboarding.html')
+
+
+def _get_time_slots_for_display():
+    time_slots = list(TimeSlot.objects.all())
+
+    for slot in time_slots:
+        full_name = slot.name.strip()
+
+        if '(' in full_name and full_name.endswith(')'):
+            display_name, time_range = full_name.rsplit('(', 1)
+
+            slot.display_name = display_name.strip()
+            slot.time_range = time_range.rstrip(')').strip()
+        else:
+            slot.display_name = full_name
+            slot.time_range = ''
+
+    return time_slots
  
  
 def _build_context():
     job_categories = JobCategory.objects.all()
-    time_slots = TimeSlot.objects.all()
- 
+
     skills_by_job = {}
-    for js in JobSkill.objects.select_related('job_category', 'skill').all():
-        skills_by_job.setdefault(js.job_category_id, []).append(
-            {'id': js.skill_id, 'name': js.skill.name}
-        )
- 
-    hidden_abilities_by_job = {}
-    for relation in JobHiddenAbility.objects.select_related(
-        'job_category', 'hidden_ability'
+
+    for js in JobSkill.objects.select_related(
+        'job_category',
+        'skill',
     ).all():
-        hidden_abilities_by_job.setdefault(relation.job_category_id, []).append(
-            {'id': relation.hidden_ability_id, 'name': relation.hidden_ability.name}
-        )
- 
+        skills_by_job.setdefault(
+            str(js.job_category_id),
+            [],
+        ).append({
+            'id': js.skill_id,
+            'name': js.skill.name,
+        })
+
+    hidden_abilities_by_job = {}
+
+    for relation in JobHiddenAbility.objects.select_related(
+        'job_category',
+        'hidden_ability',
+    ).all():
+        hidden_abilities_by_job.setdefault(
+            str(relation.job_category_id),
+            [],
+        ).append({
+            'id': relation.hidden_ability_id,
+            'name': relation.hidden_ability.name,
+        })
+
     return {
         'job_categories': job_categories,
-        'time_slots': time_slots,
-        'skills_by_job_json': json.dumps(skills_by_job, cls=DjangoJSONEncoder),
+
+        'time_slots': _get_time_slots_for_display(),
+
+        'work_style_choices': Project.WorkStyle.choices,
+        'weekly_hours_choices': Project.WeeklyHours.choices,
+        'career_years_choices': Project.CareerYears.choices,
+        'scale_choices': ProjectPreferredScale.ScaleType.choices,
+
+        'skills_by_job_json': json.dumps(
+            skills_by_job,
+            cls=DjangoJSONEncoder,
+            ensure_ascii=False,
+        ),
+
         'hidden_abilities_by_job_json': json.dumps(
-            hidden_abilities_by_job, cls=DjangoJSONEncoder
+            hidden_abilities_by_job,
+            cls=DjangoJSONEncoder,
+            ensure_ascii=False,
         ),
     }
  
@@ -88,51 +134,253 @@ def _build_context():
 @onboarding_required
 def project_create(request):
     context = _build_context()
- 
+
+    # GET/POST 공통 기본값
+    context.update({
+        'today': timezone.localdate().isoformat(),
+        'form_data': {},
+        'selected_core_times': [],
+        'selected_scales': [],
+        'selected_required_skills': [],
+        'selected_preferred_skills': [],
+        'selected_hidden_abilities': [],
+    })
+
     if request.method == 'POST':
         company = request.user.company_profile
- 
-        try:
-            skill_priorities = json.loads(request.POST.get('skill_priorities', '{}'))
-        except (json.JSONDecodeError, TypeError):
-            skill_priorities = {}
- 
-        project = Project.objects.create(
-            company_profile=company,
-            job_category_id=request.POST.get('job_category'),
-            project_type=request.POST.get('project_type'),
-            title=request.POST.get('title'),
-            work_style=request.POST.get('work_style'),
-            weekly_hours=request.POST.get('weekly_hours'),
-            compensation_amount=request.POST.get('compensation_amount'),
-            career_years=request.POST.get('career_years'),
-            description=request.POST.get('description'),
-            deadline=request.POST.get('deadline'),
-            duration=request.POST.get('duration'),
-            recruitment_count=request.POST.get('recruit_count'),
-            status=Project.Status.OPEN,
+
+        title = request.POST.get('title', '').strip()
+        description = request.POST.get('description', '').strip()
+        job_category_id = request.POST.get('job_category', '').strip()
+        work_style = request.POST.get('work_style', '').strip()
+        weekly_hours = request.POST.get('weekly_hours', '').strip()
+        career_years = request.POST.get('career_years', '').strip()
+
+        compensation_amount = request.POST.get(
+            'compensation_amount',
+            '',
+        ).strip()
+
+        deadline = request.POST.get('deadline', '').strip()
+        duration = request.POST.get('duration', '').strip()
+
+        recruitment_count = request.POST.get(
+            'recruit_count',
+            '',
+        ).strip()
+
+        core_time_ids = {
+            value
+            for value in request.POST.getlist('core_times')
+            if value.isdigit()
+        }
+
+        selected_scales = request.POST.getlist(
+            'preferred_scales'
         )
- 
-        for skill_id, priority in skill_priorities.items():
-            ProjectSkill.objects.create(
-                project=project, skill_id=skill_id, priority=priority
+
+        required_skill_ids = {
+            value
+            for value in request.POST.getlist('skill_required')
+            if value.isdigit()
+        }
+
+        preferred_skill_ids = {
+            value
+            for value in request.POST.getlist('skill_preferred')
+            if value.isdigit()
+        }
+
+        # 우대 스킬은 필수 스킬로 먼저 선택한 항목만 허용
+        preferred_skill_ids &= required_skill_ids
+
+        try:
+            hidden_ability_ids = json.loads(
+                request.POST.get(
+                    'hidden_abilities',
+                    '[]',
+                )
             )
- 
-        for time_id in request.POST.getlist('core_times'):
-            ProjectCoreTime.objects.create(project=project, time_slot_id=time_id)
- 
-        for scale in request.POST.getlist('preferred_scales'):
-            ProjectPreferredScale.objects.create(project=project, scale_type=scale)
- 
-        for ability_id in request.POST.getlist('hidden_abilities'):
-            ProjectHiddenAbility.objects.create(
-                project=project, hidden_ability_id=ability_id
+        except (json.JSONDecodeError, TypeError):
+            hidden_ability_ids = []
+
+        if not isinstance(hidden_ability_ids, list):
+            hidden_ability_ids = []
+
+        hidden_ability_ids = {
+            str(value)
+            for value in hidden_ability_ids
+            if str(value).isdigit()
+        }
+
+        errors = []
+
+        if not title:
+            errors.append('프로젝트명을 입력해주세요.')
+
+        if not description:
+            errors.append('상세 내용을 입력해주세요.')
+
+        if not job_category_id:
+            errors.append('직무 유형을 선택해주세요.')
+
+        if not work_style:
+            errors.append('근무 형태를 선택해주세요.')
+
+        if not weekly_hours:
+            errors.append('주간 가용 시간을 선택해주세요.')
+
+        if not career_years:
+            errors.append('필요 경력 연차를 선택해주세요.')
+
+        if not required_skill_ids:
+            errors.append('필수 스킬을 1개 이상 선택해주세요.')
+
+        if not core_time_ids:
+            errors.append('코어타임을 1개 이상 선택해주세요.')
+
+        if not selected_scales:
+            errors.append('업무 규모를 1개 이상 선택해주세요.')
+
+        try:
+            compensation_value = int(compensation_amount)
+
+            if compensation_value < 0:
+                raise ValueError
+
+        except (TypeError, ValueError):
+            compensation_value = 0
+            errors.append(
+                '보수 금액은 0 이상의 숫자로 입력해주세요.'
             )
- 
+
+        try:
+            recruitment_value = int(recruitment_count)
+
+            if recruitment_value < 1:
+                raise ValueError
+
+        except (TypeError, ValueError):
+            recruitment_value = 1
+            errors.append(
+                '모집 인원은 1명 이상의 숫자로 입력해주세요.'
+            )
+
+        if not deadline:
+            errors.append('모집 마감일을 선택해주세요.')
+        else:
+            try:
+                deadline_date = timezone.datetime.strptime(
+                    deadline,
+                    '%Y-%m-%d',
+                ).date()
+
+                if deadline_date < timezone.localdate():
+                    errors.append(
+                        '모집 마감일은 오늘 이후로 선택해주세요.'
+                    )
+
+            except ValueError:
+                errors.append(
+                    '모집 마감일 형식이 올바르지 않습니다.'
+                )
+
+        if not duration:
+            errors.append('프로젝트 기간을 입력해주세요.')
+
+        if errors:
+            context.update({
+                'error': errors[0],
+                'form_data': request.POST,
+                'selected_core_times': [
+                    int(value)
+                    for value in core_time_ids
+                ],
+                'selected_scales': selected_scales,
+                'selected_required_skills': [
+                    int(value)
+                    for value in required_skill_ids
+                ],
+                'selected_preferred_skills': [
+                    int(value)
+                    for value in preferred_skill_ids
+                ],
+                'selected_hidden_abilities': [
+                    int(value)
+                    for value in hidden_ability_ids
+                ],
+            })
+
+            return render(
+                request,
+                'project_create.html',
+                context,
+            )
+
+        with transaction.atomic():
+            project = Project.objects.create(
+                company_profile=company,
+                job_category_id=job_category_id,
+
+                # 기업 공고는 항상 실무 프로젝트
+                project_type=Project.ProjectType.REAL,
+
+                title=title,
+                work_style=work_style,
+                weekly_hours=weekly_hours,
+                compensation_amount=compensation_value,
+                deadline=deadline,
+                description=description,
+                duration=duration,
+                recruitment_count=recruitment_value,
+                career_years=career_years,
+                status=Project.Status.OPEN,
+            )
+
+            # 모델상 하나의 스킬은 NORMAL 또는 PREFERRED 중 하나로 저장
+            for skill_id in required_skill_ids:
+                priority = (
+                    ProjectSkill.Priority.PREFERRED
+                    if skill_id in preferred_skill_ids
+                    else ProjectSkill.Priority.NORMAL
+                )
+
+                ProjectSkill.objects.create(
+                    project=project,
+                    skill_id=int(skill_id),
+                    priority=priority,
+                )
+
+            for time_id in core_time_ids:
+                ProjectCoreTime.objects.create(
+                    project=project,
+                    time_slot_id=int(time_id),
+                )
+
+            for scale in selected_scales:
+                ProjectPreferredScale.objects.create(
+                    project=project,
+                    scale_type=scale,
+                )
+
+            for ability_id in hidden_ability_ids:
+                ProjectHiddenAbility.objects.create(
+                    project=project,
+                    hidden_ability_id=int(ability_id),
+                )
+
+        messages.success(
+            request,
+            '프로젝트 공고가 등록되었습니다.',
+        )
+
         return redirect('company:project_manage')
- 
-    return render(request, 'b_project_create.html', context)
- 
+
+    return render(
+        request,
+        'project_create.html',
+        context,
+    )
  
 def _sync_deadline_status(projects):
     # 마감일이 지난 OPEN 프로젝트를 SELECTING으로 자동 전환.
