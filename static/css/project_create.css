@@ -49,7 +49,7 @@
 }
 
 /* 공고 등록 영역 */
-.project_create {
+.project-create {
   margin-left: 260px; /* 왼쪽 사이드바 너비 */
   width: calc(100% - 260px); /* 사이드바 너비만큼 뺀 나머지 */
   padding-left: 2.5rem;
