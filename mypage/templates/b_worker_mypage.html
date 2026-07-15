@@ -240,38 +240,41 @@
           </div>
 
           <div class="application-right">
-            <div class="matching-rate-item {{ app.project.match_class }}">
-              {% if app.project.match_class == 'heart' %}
-              <img
-                class="matching-state-img"
-                src="{% static 'img/heart-filled.svg' %}"
-                alt="matching-state"
-              />
-              {% else %}
-              <img
-                class="matching-state-img"
-                src="{% static 'img/good-one.svg' %}"
-                alt="matching-state"
-              />
-              {% endif %}
-              <span class="matching-rate {{ app.project.match_class }}"
-                >{{ app.project.match_score }}%</span
-              >
+            <div class="matching-group">
+              <div class="matching-rate-item {{ app.project.match_class }}">
+                {% if app.project.match_class == 'heart' %}
+                <img
+                  class="matching-state-img"
+                  src="{% static 'img/heart-filled.svg' %}"
+                  alt="matching-state"
+                />
+                {% else %}
+                <img
+                  class="matching-state-img"
+                  src="{% static 'img/good-one.svg' %}"
+                  alt="matching-state"
+                />
+                {% endif %}
+                <span class="matching-rate {{ app.project.match_class }}"
+                  >{{ app.project.match_score }}%</span
+                >
+              </div>
+
+              {% if app.status == 'PENDING' %}
+              <div class="application-status pending">심사중</div>
+              {% elif app.status == 'ACCEPTED' %}
+              <div class="application-status accepted">합격</div>
+              {% elif app.status == 'REJECTED' %}
+              <div class="application-status rejected">불합격</div>
+              {% endif %} {% if app.status == 'PENDING' %}
             </div>
 
-            {% if app.status == 'PENDING' %}
-            <div class="application-status pending">심사중</div>
-            {% elif app.status == 'ACCEPTED' %}
-            <div class="application-status accepted">합격</div>
-            {% elif app.status == 'REJECTED' %}
-            <div class="application-status rejected">불합격</div>
-            {% endif %} {% if app.status == 'PENDING' %}
             <form
               method="post"
               action="{% url 'mypage:cancel_application' app.id %}"
             >
               {% csrf_token %}
-              <button type="submit" class="btn-cancel-application">
+              <button type="submit" class="cancel-application-btn">
                 지원 취소
               </button>
             </form>
