@@ -316,31 +316,31 @@
           </div>
 
           <!-- TPL: 리턴십 제안 보내기 폼 -->
-          <form method="post" id="submit-returnship-form">
-            <div class="modal-body">
-              <!-- TPL: 제안 직무 입력창 name, type 확인 필요 -->
-              <input
-                type="text"
-                name="returnship-title"
-                placeholder="제안 직무를 입력하세요"
-                required
-              />
-              <!-- TPL: 제안 메세지 입력창 name, type 확인 필요 -->
-              <textarea
-                name="returnship-detail"
-                placeholder="제안 내용을 입력하세요"
-                required
-              ></textarea>
-            </div>
+          <div class="modal-body">
+            <!-- TPL: 제안 직무 입력창 name, type 확인 필요 -->
+            <input
+              type="text"
+              name="returnship-title"
+              id="returnship-title"
+              placeholder="제안 직무를 입력하세요"
+              required
+            />
+            <!-- TPL: 제안 메세지 입력창 name, type 확인 필요 -->
+            <textarea
+              name="returnship-detail"
+              id="returnship-detail"
+              placeholder="제안 내용을 입력하세요"
+              required
+            ></textarea>
+          </div>
 
-            <div class="modal-footer">
-              <button type="submit" class="submit-returnship-btn">
-                제안 보내기
-              </button>
-            </div>
-          </form>
+          <div class="modal-footer">
+            <button class="submit-returnship-btn" disabled>제안 보내기</button>
+          </div>
         </div>
       </div>
     </div>
+
+    <script src="../../static/js/project_manage.js"></script>
   </body>
 </html>

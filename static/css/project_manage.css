@@ -121,11 +121,12 @@
 }
 
 #tab-recruiting .card-field {
-  padding: 1rem 1.25rem;
+  padding: 1rem 1.25rem 1.25rem;
   justify-content: space-between;
 }
 
 .recruiting-project-detail {
+  align-self: flex-start;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -164,7 +165,12 @@
   margin-top: 0.81rem;
 }
 
+#tab-recruiting .SELECTING .project-des {
+  color: #b45309;
+}
+
 .recruiting-project-btns {
+  align-self: flex-end;
   display: flex;
   gap: 1.25rem;
   height: 2.5rem;
