@@ -94,8 +94,7 @@
                     {{ project.job_category.name }} ·
                     {{ project.get_work_style_display }} ·
                     주 {{ project.get_weekly_hours_display }} ·
-                    시급 {{ project.compensation_amount }}원 ·
-                    마감일 {{ project.deadline }}
+                    시급 {{ project.compensation_amount }}원
                     <br>
                     필수 스킬:
                     {% for skill_name in project.required_skill_names %}
