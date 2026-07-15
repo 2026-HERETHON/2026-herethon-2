@@ -1,0 +1,563 @@
+/* 공통 요소 (색상, 사이즈 등 개별 설정) */
+/* 폰트 크기 */
+.project-title {
+  color: #1f2937;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+/* 폰트 크기, 색상 */
+.project-info,
+.applicant-des {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+/* 너비, 높이, 폰트 크기 */
+.applicant-profile {
+  color: #1e40af;
+  text-align: center;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  background-color: #eff6ff;
+  border: 1px solid #3b82f6;
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 폰트 크기 */
+.applicant-name {
+  color: #1f2937;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+/* 메인 지원자 확인하기 영역 */
+.project-applicants-main {
+  padding: 0.69rem 8.44rem 0.69rem 2.06rem;
+}
+
+.project-card {
+  height: 5.9375rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.69rem;
+  padding: 0.94rem 1rem;
+  align-items: flex-start;
+
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+}
+
+.project-card .project-title {
+  font-size: 0.875rem;
+}
+.project-card .project-info {
+  color: #6b7280;
+  font-size: 0.6875rem;
+}
+
+.project-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 0.69rem;
+}
+
+.project-des {
+  color: #6b7280;
+  font-family: Inter;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  transform: translateX(0.62rem);
+}
+
+.start-project-btn {
+  color: #fff;
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  padding: 0.63rem 0.66rem;
+  background-color: #3b82f6;
+  border-radius: 0.5rem;
+  transform: translateX(-0.5rem);
+}
+
+.project-applicants-section {
+  margin-top: 0.88rem;
+  padding: 0 0.06rem 0 0.44rem;
+}
+
+.applicants-title {
+  color: #1f2937;
+  font-family: Inter;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.applicants-des {
+  color: #6b7280;
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  background-color: #f3f4f6;
+  border-radius: 0.625rem;
+  margin-top: 0.25rem;
+  padding: 1rem 1.5rem;
+}
+
+.applicant-list {
+  margin-top: 2.12rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0 7.88rem 0 0.12rem;
+}
+
+.applicant-card {
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+
+  display: flex;
+  padding-left: 1.75rem;
+  padding-right: 4.06rem;
+}
+
+.applicant-card .applicant-profile {
+  width: 2.75rem;
+  height: 2.75rem;
+  font-size: 0.8125rem;
+  align-self: center;
+  margin-right: 0.88rem;
+}
+
+.applicant-card .applicant-detail {
+  padding-top: 1.44rem;
+  align-self: flex-start;
+  flex: 0 0 17.12rem;
+}
+
+.applicant-card .applicant-name {
+  font-size: 0.9375rem;
+}
+
+.applicant-card .applicant-des {
+  color: #6b7280;
+  font-size: 0.75rem;
+  margin-top: 0.31rem;
+}
+
+.matching-rate-item {
+  width: 4.0625rem;
+  height: 1.625rem;
+  border-radius: 999px;
+
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  margin-top: 1.56rem;
+  margin-bottom: 2.44rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.matching-rate-item.heart {
+  background-color: var(--color-error-bg);
+  color: var(--color-error);
+}
+
+.matching-rate-item.good {
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text-secondary);
+}
+
+.applicant-action-btns {
+  margin-left: auto;
+  display: flex;
+  gap: 0.94rem;
+  margin-top: 1.56rem;
+  margin-bottom: 2.44rem;
+}
+
+.applicant-action-btns button {
+  width: 4.375rem;
+  height: 2.125rem;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  color: #4b5563;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+}
+
+.applicant-accept-btn:hover,
+.applicant-accept-btn:active {
+  color: #fff;
+  background-color: #10b981;
+}
+
+.applicant-reject-btn:hover,
+.applicant-reject-btn:active {
+  color: #fff;
+  background-color: #dc2626;
+}
+
+/* 지원자 프로필 모달 영역 */
+#applicant-profile-modal {
+  position: fixed;
+  inset: 0; /* top:0, right:0, bottom:0, left:0 축약 */
+  background-color: rgba(0, 0, 0, 0.4);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 999;
+}
+
+#applicant-profile-modal .modal-box {
+  background-color: #fff;
+  border: 1.5px solid #d1d5db;
+  border-radius: 0.75rem;
+  width: 37.5rem;
+  max-height: 38.75rem;
+  padding: 1.19rem 1.5rem 3.37rem;
+
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE, Edge */
+}
+
+#applicant-profile-modal .modal-box::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+#applicant-profile-modal .modal-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-header .title {
+  color: #111827;
+  font-family: Inter;
+  font-size: 0.9375rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.close-modal-btn {
+  width: 0.8125rem;
+  height: 0.8125rem;
+  transform: translateX(0.41rem);
+}
+
+.user-info {
+  display: flex;
+  gap: 0.87rem;
+  margin-top: 1.69rem;
+}
+
+.user-info .applicant-profile {
+  width: 3.25rem;
+  height: 3.25rem;
+}
+
+.user-info .applicant-detail {
+  padding-top: 0.44rem;
+}
+
+.user-info .applicant-name {
+  font-size: 0.9375rem;
+}
+
+.user-info .applicant-des {
+  color: #6b7280;
+  font-size: 0.75rem;
+}
+
+.user-info .applicant-email {
+  color: #6b7280;
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+#applicant-profile-modal .divider {
+  width: 100%;
+  margin: 0;
+  height: 0;
+  border-bottom: 1px solid #e5e7eb;
+  margin-top: 1.19rem;
+}
+
+.career-group {
+  margin-top: 1.06rem;
+}
+
+.subtitle {
+  color: #111827;
+  font-family: Inter;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  margin-bottom: 0.44rem;
+}
+
+.text {
+  color: #374151;
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  padding: 0.88rem 0.75rem 1.06rem;
+  margin-top: 0.12rem;
+}
+
+.box {
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+}
+
+.skills {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.81rem;
+}
+
+.skill-group {
+  flex: 1;
+}
+
+.hidden-ability-group {
+  flex: 1;
+}
+
+.item-list {
+  margin-top: 0.44rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.item {
+  height: 1.75rem;
+  border-radius: 9999px;
+  padding: 0.44rem 0.66rem 0.5rem;
+
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.6875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.skill-group .item {
+  color: #2563eb;
+  background-color: #eff6ff;
+}
+
+.hidden-ability-group .item {
+  color: #059669;
+  background-color: #ecfdf5;
+}
+
+.progress-project-group {
+  margin-top: 1.31rem;
+}
+
+.completed-project-group {
+  margin-top: 0.69rem;
+}
+
+.project-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.project-item {
+  padding: 0.62rem 0.75rem;
+}
+
+.modal-project-title {
+  color: #111827;
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.modal-project-info {
+  color: #9ca3af;
+  font-family: Inter;
+  font-size: 0.6875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  margin-top: 0.37rem;
+}
+
+#applicant-profile-modal .modal-footer {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+#applicant-profile-modal .modal-footer button {
+  flex: 1;
+  height: 2.875rem;
+  border-radius: 0.5rem;
+
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-reject-btn {
+  background-color: #fff;
+  border: 1.5px solid #dc2626;
+  color: #dc2626;
+}
+
+.modal-accept-btn {
+  background-color: #2563eb;
+  color: #fff;
+}
+
+/* 지원자 수락 / 거절 이중 확인 모달 영역 */
+#applicant-doublecheck-modal {
+  position: fixed;
+  inset: 0; /* top:0, right:0, bottom:0, left:0 축약 */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 1000;
+}
+
+#applicant-doublecheck-modal .modal-box {
+  background-color: #fff;
+  border: 1.5px solid #d1d5db;
+  border-radius: 0.75rem;
+  width: 20.625rem;
+  height: 11.875rem;
+  padding: 1.19rem 1.5rem 2.25rem;
+}
+
+#applicant-doublecheck-modal .modal-body {
+  margin-top: 1.25rem;
+}
+
+.check-text {
+  color: #374151;
+  font-family: Inter;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.check-caption {
+  color: #9ca3af;
+  font-family: Inter;
+  font-size: 0.6875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  margin-top: 0.5rem;
+}
+
+#applicant-doublecheck-modal .modal-footer {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.13rem;
+}
+
+#applicant-doublecheck-modal button {
+  flex: 1;
+  height: 2.625rem;
+  border-radius: 0.5rem;
+
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.8125rem;
+  font-style: normal;
+  line-height: normal;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.doublecheck-cancel-btn {
+  color: #374151;
+  font-weight: 400;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+}
+
+.doublecheck-accept-btn {
+  color: #fff;
+  font-weight: 700;
+  background-color: #2563eb;
+}
