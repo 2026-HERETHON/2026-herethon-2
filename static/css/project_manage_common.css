@@ -1,3 +1,11 @@
+header {
+  z-index: 100;
+}
+
+.sidebar-nav {
+  z-index: 90;
+}
+
 /* 헤더 */
 .header-profile {
   display: inline-block;
