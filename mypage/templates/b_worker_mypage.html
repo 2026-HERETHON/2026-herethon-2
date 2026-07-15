@@ -339,6 +339,20 @@
             </div>
           </div>
 
+           <!-- 참여 상태 (워밍업/실무) -->
+          <div class="form-row">
+            <p class="form-label">참여 상태</p>
+            <div class="form-field">
+              <select class="form-field form-select" name="application_type">
+                {% for value, label in application_type_choices %}
+                  <option value="{{ value }}" {% if value == worker_profile.application_type %}selected{% endif %}>
+                    {{ label }}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
           <button type="submit" class="btn-submit">저장하기</button>
         </form>
 
