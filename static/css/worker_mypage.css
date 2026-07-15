@@ -935,6 +935,7 @@
   border: 1px solid var(--color-info);
 }
 
+/* 라디오 버튼, 체크박스 숨기기 */
 .work-type-item input {
   position: absolute;
   opacity: 0;
