@@ -139,7 +139,6 @@
 
 .detail-body {
   display: flex;
-  justify-content: space-between;
   align-items: flex-end;
   gap: 2.88rem;
   margin-top: 1.81rem;
@@ -147,7 +146,7 @@
 }
 
 .project-group {
-  width: 40.875rem;
+  flex: 2;
   padding: 1.5rem 19.88rem 1.56rem 2.06rem;
 
   background-color: #fff;
@@ -192,7 +191,8 @@
 }
 
 .participant-group {
-  width: 20.4375rem;
+  min-width: 20.4375rem;
+  flex: 1;
 }
 
 .participant-card {
