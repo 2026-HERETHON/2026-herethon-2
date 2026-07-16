@@ -160,16 +160,24 @@
   padding-top: 1.44rem;
   align-self: flex-start;
   flex: 0 0 17.12rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .applicant-card .applicant-name {
+  width: 100%;
   font-size: 0.9375rem;
+  text-align: left;
 }
 
 .applicant-card .applicant-des {
+  width: 100%;
   color: #6b7280;
   font-size: 0.75rem;
   margin-top: 0.31rem;
+  text-align: left;
 }
 
 .matching-rate-item {
@@ -244,9 +252,9 @@
 }
 
 /* 지원자 프로필 모달 영역 */
-#applicant-profile-modal {
+.applicant-profile-modal {
   position: fixed;
-  inset: 0; /* top:0, right:0, bottom:0, left:0 축약 */
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.4);
 
   display: flex;
@@ -256,26 +264,67 @@
   z-index: 999;
 }
 
-#applicant-profile-modal .modal-box {
-  background-color: #fff;
-  border: 1.5px solid #d1d5db;
-  border-radius: 0.75rem;
+.applicant-profile-modal .modal-box {
   width: 37.5rem;
   max-height: 38.75rem;
   padding: 1.19rem 1.5rem 3.37rem;
 
-  overflow-y: scroll;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE, Edge */
+  overflow-y: auto;
+  scrollbar-width: none;
+
+  background-color: #fff;
+  border: 1.5px solid #d1d5db;
+  border-radius: 0.75rem;
 }
 
-#applicant-profile-modal .modal-box::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+.applicant-profile-modal .modal-box::-webkit-scrollbar {
+  display: none;
 }
 
-#applicant-profile-modal .modal-header {
+.applicant-profile-modal .modal-header {
   display: flex;
   justify-content: space-between;
+}
+
+.applicant-profile-modal .divider {
+  width: 100%;
+  height: 0;
+  margin: 1.19rem 0 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.applicant-profile-modal .modal-footer {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.applicant-profile-modal .modal-footer button {
+  flex: 1;
+  height: 2.875rem;
+  border-radius: 0.5rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.close-profile-modal-btn {
+  width: 0.8125rem;
+  height: 0.8125rem;
+  transform: translateX(0.41rem);
+}
+
+.close-profile-modal-btn img {
+  width: 100%;
+  height: 100%;
+}
+
+body.modal-open {
+  overflow: hidden;
 }
 
 .modal-header .title {
@@ -324,14 +373,6 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-}
-
-#applicant-profile-modal .divider {
-  width: 100%;
-  margin: 0;
-  height: 0;
-  border-bottom: 1px solid #e5e7eb;
-  margin-top: 1.19rem;
 }
 
 .career-group {
@@ -448,29 +489,6 @@
   margin-top: 0.37rem;
 }
 
-#applicant-profile-modal .modal-footer {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 1.25rem;
-}
-
-#applicant-profile-modal .modal-footer button {
-  flex: 1;
-  height: 2.875rem;
-  border-radius: 0.5rem;
-
-  text-align: center;
-  font-family: Inter;
-  font-size: 0.875rem;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .modal-reject-btn {
   background-color: #fff;
   border: 1.5px solid #dc2626;
@@ -560,4 +578,32 @@
   color: #fff;
   font-weight: 700;
   background-color: #2563eb;
+}
+
+.application-status {
+  margin-left: auto;
+  align-self: center;
+
+  padding: 0.5rem 0.8rem;
+  border-radius: 999px;
+
+  color: #6b7280;
+  background-color: #f3f4f6;
+
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.application-status.accepted {
+  color: #059669;
+  background-color: #ecfdf5;
+}
+
+.application-status.rejected {
+  color: #dc2626;
+  background-color: #fef2f2;
+}
+
+.application-result-footer {
+  justify-content: flex-end;
 }

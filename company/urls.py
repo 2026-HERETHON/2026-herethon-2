@@ -15,11 +15,6 @@ urlpatterns = [
     path('projects/<int:project_id>/complete/', views.project_complete, name='project_complete'),
     path('projects/<int:project_id>/applicants/', views.project_applicants, name='project_applicants'),
     path(
-        'projects/<int:project_id>/applicants/<int:application_id>/',
-        views.project_applicant_detail,
-        name='project_applicant_detail',
-    ),
-    path(
         'projects/<int:project_id>/applicants/<int:application_id>/decide/',
         views.application_decide,
         name='application_decide',

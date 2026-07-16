@@ -1,355 +1,463 @@
+{% load static %}
+
 <!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>프로젝트 관리하기</title>
-    <link rel="stylesheet" href="../../static/css/colorpalette.css" />
-    <link rel="stylesheet" href="../../static/css/global.css" />
-    <link rel="stylesheet" href="../../static/css/project_manage_common.css" />
-    <link rel="stylesheet" href="../../static/css/project_manage.css" />
+
+    <link rel="stylesheet" href="{% static 'css/colorpalette.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/global.css' %}" />
+    <link
+      rel="stylesheet"
+      href="{% static 'css/project_manage_common.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'css/project_manage.css' %}"
+    />
   </head>
+
   <body>
-    <!-- 헤더 영역 -->
     <header>
       <div class="header-logo">
         <img
           class="header-logo-img"
-          src="../../static/img/logo.svg"
-          alt="logo"
+          src="{% static 'img/logo.svg' %}"
+          alt="RE:Bridge 로고"
         />
+
         <div class="header-logo-text">
-          <span class="logo-desc">당신의 두 번째 커리어 브릿지</span>
-          <span class="logo-brand"
-            ><span class="RE">RE</span><span class="colon">:</span>Bridge</span
-          >
+          <span class="logo-desc">
+            당신의 두 번째 커리어 브릿지
+          </span>
+
+          <span class="logo-brand">
+            <span class="RE">RE</span><span class="colon">:</span>Bridge
+          </span>
         </div>
       </div>
+
       <div class="header-profile">
-        <!-- TPL:  기업 프로필 이름 -->
-        <a>주</a>
+        <a>
+          {{ request.user.company_profile.company_name|slice:":1" }}
+        </a>
       </div>
     </header>
 
-    <!-- 왼쪽 사이드바 -->
     <nav class="sidebar-nav">
-      <!-- TPL: href 실제 url 패턴으로 변경 필요 -->
-      <!-- TPL: 현재 active 클래스 하드 코딩함. 연동 시 현재 페이지의 active 판단 로직으로 교체 필요  -->
-      <a href="project_create.html" class="nav-menu" data-label="공고 등록">
+      <a
+        href="{% url 'company:project_create' %}"
+        class="nav-menu"
+        data-label="공고 등록"
+      >
         공고 등록
       </a>
+
       <a
-        href="project_manage.html"
+        href="{% url 'company:project_manage' %}"
         class="nav-menu active"
         data-label="프로젝트 관리하기"
       >
         프로젝트 관리하기
       </a>
-      <a href="#" class="nav-menu" data-label="기업 정보"> 기업 정보 </a>
+
+      <a
+        href="#"
+        class="nav-menu"
+        data-label="기업 정보"
+      >
+        기업 정보
+      </a>
     </nav>
 
-    <!-- 프로젝트 관리하기 영역 -->
     <div class="project-manage">
-      <!-- 탭 메뉴 영역 -->
       <div class="nav-group">
         <nav class="tab-nav">
-          <a href="?tab=recruiting" class="nav-tab active" data-tab="recruiting"
-            >모집 중인 프로젝트</a
+          <a
+            href="?tab=recruiting"
+            class="nav-tab {% if tab == 'recruiting' %}active{% endif %}"
           >
-          <a href="?tab=progress" class="nav-tab" data-tab="progress"
-            >진행 중인 프로젝트</a
+            모집 중인 프로젝트
+          </a>
+
+          <a
+            href="?tab=progress"
+            class="nav-tab {% if tab == 'progress' %}active{% endif %}"
           >
-          <a href="?tab=completed" class="nav-tab" data-tab="completed"
-            >완료된 프로젝트</a
+            진행 중인 프로젝트
+          </a>
+
+          <a
+            href="?tab=completed"
+            class="nav-tab {% if tab == 'completed' %}active{% endif %}"
           >
+            완료된 프로젝트
+          </a>
         </nav>
 
         <div class="divider"></div>
       </div>
 
-      <!-- 메인 프로젝트 관리하기 영역 -->
       <main class="project-manage-main">
-        <!-- 모집중 탭 -->
-        <section class="tab-content" id="tab-recruiting" style="display: flex">
-          <div class="tab-header">
-            <p class="title">모집 중인 프로젝트</p>
-            <p class="caption">
-              마감일이 지나면 자동으로 '선발중' 상태로 전환돼요
-            </p>
-          </div>
+        {% if tab == 'recruiting' %}
+          <section class="tab-content" id="tab-recruiting">
+            <div class="tab-header">
+              <p class="title">모집 중인 프로젝트</p>
 
-          <div class="tab-body">
-            <!-- 모집 중인 프로젝트 리스트 -->
-            <div class="recruiting-project-list">
-              <!-- TPL: 모집 중 프로젝트 카드 아이템 article 반복-->
-              <!-- TPL: 프로젝트 상태(모집중/선발중)에 따라 프로젝트 설명(project-des), 버튼 스타일(applicant-btn, start-project-btn) 변경 -->
-              <!-- TPL: 현재 더미 데이터에서는 모집중 OPEN, 선발중 SELECTING 클래스로 설정 -->
-              <article class="card-field OPEN">
-                <!-- 프로젝트 상세 설명 -->
-                <div class="recruiting-project-detail">
-                  <!-- TPL: 프로젝트 상태 -->
-                  <p class="project-status">모집중</p>
-                  <!-- TPL: 프로젝트명 -->
-                  <p class="project-title">온라인 커뮤니티 운영 및 회원 응대</p>
-                  <!-- TPL: 프로젝트 정보 -->
-                  <p class="project-info">
-                    (주)맘스토리 · 커뮤니티운영 · 재택 · 주 8시간 · 보수 금액
-                    20,000원 · 커뮤니티 운영, 고객 응대
-                  </p>
-                  <!-- TPL: 프로젝트 설명 -->
-                  <p class="project-des">지원자 2명 · 마감까지 D-3</p>
-                </div>
-
-                <!-- 프로젝트 카드 버튼 그룹 -->
-                <div class="recruiting-project-btns">
-                  <!-- TPL: 지원자 확인하기 버튼에 지원자 확인 HTML 연결 필요 -->
-                  <a href="project_applicants.html" class="applicant-btn"
-                    >지원자 확인하기</a
-                  >
-                  <a class="start-project-btn">프로젝트 시작하기</a>
-                </div>
-              </article>
-
-              <article class="card-field SELECTING">
-                <div class="recruiting-project-detail">
-                  <p class="project-status">선발중</p>
-                  <p class="project-title">온라인 커뮤니티 운영 및 회원 응대</p>
-                  <p class="project-info">
-                    (주)맘스토리 · 커뮤니티운영 · 재택 · 주 8시간 · 보수 금액
-                    20,000원 · 커뮤니티 운영, 고객 응대
-                  </p>
-                  <p class="project-des">
-                    마감 완료 · 지원자 4명 중 선발이 필요해요
-                  </p>
-                </div>
-
-                <div class="recruiting-project-btns">
-                  <a href="project_applicants.html" class="applicant-btn"
-                    >지원자 확인하기</a
-                  >
-                  <a class="start-project-btn">프로젝트 시작하기</a>
-                </div>
-              </article>
+              <p class="caption">
+                마감일이 지나면 자동으로 '선발중' 상태로 전환돼요
+              </p>
             </div>
-          </div>
 
-          <!-- 프로젝트 시작하기 설명 -->
-          <div class="tab-footer">
-            <p class="recruiting-description">
-              💡 모집 마감일이 지나기 전에는 '프로젝트 시작하기' 버튼이 보이지
+            <div class="tab-body">
+              <div class="recruiting-project-list">
+                {% for project in projects %}
+                  <article
+                    class="card-field {{ project.status }}"
+                  >
+                    <div class="recruiting-project-detail">
+                      <p class="project-status">
+                        {{ project.get_status_display }}
+                      </p>
+
+                      <p class="project-title">
+                        {{ project.title }}
+                      </p>
+
+                      <p class="project-info">
+                        {{ project.company_profile.company_name }}
+                        · {{ project.job_category.name }}
+                        · {{ project.get_work_style_display }}
+                        · {{ project.get_weekly_hours_display }}
+                        · 보수 금액 {{ project.compensation_amount }}원
+
+                        {% if project.required_skill_names %}
+                          ·
+                          {% for skill_name in project.required_skill_names %}
+                            {{ skill_name }}{% if not forloop.last %}, {% endif %}
+                          {% endfor %}
+                        {% endif %}
+                      </p>
+
+                      {% if project.status == 'OPEN' %}
+                        <p class="project-des">
+                          지원자 {{ project.applicant_count }}명
+                          · 마감까지 {{ project.d_day_label }}
+                        </p>
+                      {% else %}
+                        <p class="project-des">
+                          마감 완료 · 지원자
+                          {{ project.applicant_count }}명 중 선발이 필요해요
+                        </p>
+                      {% endif %}
+                    </div>
+
+                    <div class="recruiting-project-btns">
+                      <a
+                        href="{% url 'company:project_applicants' project.id %}"
+                        class="applicant-btn"
+                      >
+                        지원자 확인하기
+                      </a>
+
+                      {% if project.status == 'OPEN' %}
+                        <button
+                          type="button"
+                          class="project-delete-btn"
+                          data-project-id="{{ project.id }}"
+                          data-project-title="{{ project.title }}"
+                          data-delete-url="{% url 'company:project_delete' project.id %}"
+                        >
+                          삭제
+                        </button>
+                      {% endif %}
+
+                      {% if project.status == 'SELECTING' %}
+                        <form
+                          method="post"
+                          action="{% url 'company:project_start' project.id %}"
+                          class="start-project-form"
+                        >
+                          {% csrf_token %}
+
+                          <button
+                            type="submit"
+                            class="start-project-btn"
+                            onclick="return confirm('프로젝트를 시작하시겠어요? 아직 결정하지 않은 지원자는 자동으로 거절 처리됩니다.')"
+                          >
+                            프로젝트 시작하기
+                          </button>
+                        </form>
+                      {% endif %}
+                    </div>
+                  </article>
+                {% empty %}
+                  <div class="empty-project">
+                    등록된 모집 프로젝트가 없어요.
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+
+            <div class="tab-footer">
+              <p class="recruiting-description">
+                💡 모집 마감일이 지나기 전에는 '프로젝트 시작하기' 버튼이 보이지
               않아요. 마감 후 '선발중' 상태로 바뀌고, 지원자를 수락하면 시작할
               수 있어요.
-            </p>
-          </div>
-        </section>
+              </p>
+            </div>
+          </section>
 
-        <!-- 진행중 탭 -->
-        <section class="tab-content" id="tab-progress" style="display: none">
-          <div class="tab-header">
-            <p class="title">진행 중인 프로젝트</p>
-            <p class="caption">
-              현재 참여자와 함께 진행 중인 프로젝트를 확인하세요
-            </p>
-          </div>
+        {% elif tab == 'progress' %}
+          <section class="tab-content" id="tab-progress">
+            <div class="tab-header">
+              <p class="title">진행 중인 프로젝트</p>
 
-          <div class="tab-body">
-            <!-- 진행 중인 프로젝트 리스트 -->
-            <div class="progress-project-list">
-              <!-- TPL: 진행 중 프로젝트 카드 아이템 article 반복-->
-              <article class="card-field">
-                <!-- 프로젝트 상세 설명 -->
-                <div class="progress-project-detail">
-                  <!-- TPL: 프로젝트명 -->
-                  <p class="project-title">스타트업 뉴스레터 기획 및 발행</p>
-                  <!-- TPL: 프로젝트 상태(진행중 고정) -->
-                  <p class="project-status">진행중</p>
-                  <!-- TPL: 프로젝트 정보 -->
-                  <p class="project-info">
-                    콘텐츠 기획 · 재택 · 주 12시간 · 보수 금액 23,000원
-                  </p>
-                  <!-- TPL: 프로젝트 설명 -->
-                  <p class="project-des">2026.06.20 시작 · D-18</p>
-                </div>
+              <p class="caption">
+                현재 참여자와 함께 진행 중인 프로젝트를 확인하세요
+              </p>
+            </div>
 
-                <!-- 프로젝트 참여 인원 -->
-                <div class="progress-project-participant">
-                  <p class="participant-title">참여 인원</p>
-                  <div class="participant-group">
-                    <!-- TPL: 프로젝트 참여자 article 반복-->
-                    <article class="participant">
-                      <!-- TPL: 프로젝트 참여자 프로필 -->
-                      <div class="participant-profile">김</div>
-                      <!-- TPL: 프로젝트 참여자 이름 -->
-                      <p class="participant-name">김리브</p>
-                    </article>
+            <div class="tab-body">
+              <div class="progress-project-list">
+                {% for project in projects %}
+                  <article class="card-field">
+                    <div class="progress-project-detail">
+                      <p class="project-title">
+                        {{ project.title }}
+                      </p>
+
+                      <p class="project-status">
+                        {{ project.get_status_display }}
+                      </p>
+
+                      <p class="project-info">
+                        {{ project.job_category.name }}
+                        · {{ project.get_work_style_display }}
+                        · {{ project.get_weekly_hours_display }}
+                        · 보수 금액 {{ project.compensation_amount }}원
+                      </p>
+
+                      <p class="project-des">
+                        {{ project.started_at|date:'Y.m.d' }} 시작
+                      </p>
+                    </div>
+
+                    <div class="progress-project-participant">
+                      <p class="participant-title">참여 인원</p>
+
+                      <div class="participant-group">
+                        {% for application in project.participants %}
+                          <article class="participant">
+                            <div class="participant-profile">
+                              {{ application.worker_profile.user.name|slice:":1" }}
+                            </div>
+
+                            <p class="participant-name">
+                              {{ application.worker_profile.user.name }}
+                            </p>
+                          </article>
+                        {% empty %}
+                          <p class="empty-participant">참여 인원 없음</p>
+                        {% endfor %}
+                      </div>
+                    </div>
+
+                    <div class="progress-project-btns">
+                      <a
+                        href="{% url 'company:project_progress_detail' project.id %}"
+                        class="detail-btn"
+                      >
+                        상세 보기
+                      </a>
+
+                      <form
+                        method="post"
+                        action="{% url 'company:project_complete' project.id %}"
+                      >
+                        {% csrf_token %}
+
+                        <button
+                          type="submit"
+                          class="complete-project-btn"
+                          onclick="return confirm('프로젝트를 완료 처리하시겠어요?')"
+                        >
+                          프로젝트 마감하기
+                        </button>
+                      </form>
+                    </div>
+                  </article>
+                {% empty %}
+                  <div class="empty-project">
+                    진행 중인 프로젝트가 없어요.
                   </div>
-                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </section>
 
-                <!-- 프로젝트 카드 버튼 그룹 -->
-                <div class="progress-project-btns">
-                  <a href="project_progress_detail.html" class="detail-btn"
-                    >상세 보기</a
+        {% else %}
+          <section class="tab-content" id="tab-completed">
+            <div class="tab-header">
+              <p class="title">완료된 프로젝트</p>
+
+              <p class="caption">
+                완료한 프로젝트를 클릭해 참여 인원을 확인하세요
+              </p>
+            </div>
+
+            <div class="tab-body">
+              <div class="completed-project-list">
+                {% for project in projects %}
+                  <a
+                    href="?tab=completed&selected={{ project.id }}"
+                    class="completed-project-link"
                   >
-                  <button class="complete-project-btn">
-                    프로젝트 마감하기
-                  </button>
-                </div>
-              </article>
+                    <article
+                      class="card-field {% if selected_project.id == project.id %}selected{% endif %}"
+                    >
+                      <div class="completed-project-detail">
+                        <p class="project-title">
+                          {{ project.title }}
+                        </p>
 
-              <article class="card-field">
-                <div class="progress-project-detail">
-                  <p class="project-title">스타트업 뉴스레터 기획 및 발행</p>
-                  <p class="project-status">진행중</p>
-                  <p class="project-info">
-                    콘텐츠 기획 · 재택 · 주 12시간 · 보수 금액 23,000원
-                  </p>
-                  <p class="project-des">2026.06.28 시작 · D-10</p>
-                </div>
+                        <p class="project-info">
+                          {{ project.job_category.name }}
+                          · {{ project.get_work_style_display }}
+                          · {{ project.get_weekly_hours_display }}
+                          · 보수 금액 {{ project.compensation_amount }}원
+                          · {{ project.started_at|date:'Y.m.d' }}
+                          ~ {{ project.completed_at|date:'Y.m.d' }}
+                        </p>
+                      </div>
 
-                <div class="progress-project-participant">
-                  <p class="participant-title">참여 인원</p>
-                  <div class="participant-group">
-                    <article class="participant">
-                      <div class="participant-profile">김</div>
-                      <p class="participant-name">김리브</p>
+                      <div class="project-status">완료</div>
                     </article>
-                    <article class="participant">
-                      <div class="participant-profile">박</div>
-                      <p class="participant-name">박하늘</p>
-                    </article>
+                  </a>
+                {% empty %}
+                  <div class="empty-project">
+                    완료된 프로젝트가 없어요.
                   </div>
-                </div>
+                {% endfor %}
+              </div>
 
-                <div class="progress-project-btns">
-                  <a href="project_progress_detail.html" class="detail-btn"
-                    >상세 보기</a
-                  >
-                  <button class="complete-project-btn">
-                    프로젝트 마감하기
-                  </button>
+              {% if selected_project %}
+                <div class="divider"></div>
+
+                <p class="title">
+                  완료된 프로젝트 참여 인원
+                </p>
+
+                <div class="participant-list">
+                  {% for application in participants %}
+                    <article class="card-field">
+                      <div class="participant-profile">
+                        {{ application.worker_profile.user.name|slice:":1" }}
+                      </div>
+
+                      <div class="participant-detail">
+                        <p class="participant-name-second">
+                          {{ application.worker_profile.user.name }}
+                        </p>
+
+                        <p class="participant-des">
+                          {{ selected_project.title }} 완료
+                        </p>
+                      </div>
+
+                      {% if application.returnship %}
+                        {% if application.returnship.status == 'ACCEPTED' %}
+                          <span class="returnship-status accepted">
+                            수락됨
+                          </span>
+                        {% elif application.returnship.status == 'REJECTED' %}
+                          <span class="returnship-status rejected">
+                            거절됨
+                          </span>
+                        {% else %}
+                          <span class="returnship-status pending">
+                            응답 대기중
+                          </span>
+                        {% endif %}
+                      {% else %}
+                        <a
+                          href="{% url 'company:returnship_create' selected_project.id application.id %}"
+                          class="open-returnship-btn"
+                        >
+                          리턴십 제안하기
+                        </a>
+                      {% endif %}
+                    </article>
+                  {% empty %}
+                    <div class="empty-project">
+                      완료 참여 인원이 없어요.
+                    </div>
+                  {% endfor %}
                 </div>
-              </article>
+              {% endif %}
             </div>
-          </div>
-        </section>
-
-        <!-- 완료 탭 -->
-        <section class="tab-content" id="tab-completed" style="display: none">
-          <div class="tab-header">
-            <p class="title">완료된 프로젝트</p>
-            <p class="caption">
-              완료한 프로젝트를 클릭해 참여 인원을 확인하세요
-            </p>
-          </div>
-
-          <div class="tab-body">
-            <!-- 완료된 프로젝트 리스트 -->
-            <div class="completed-project-list">
-              <!-- TPL: 완료 프로젝트 카드 아이템 article 반복-->
-              <article class="card-field">
-                <!-- 프로젝트 상세 설명 -->
-                <div class="completed-project-detail">
-                  <!-- TPL: 프로젝트명 -->
-                  <p class="project-title">
-                    커머스 앱 상세페이지 UX 기획 및 문구 교정
-                  </p>
-                  <!-- TPL: 프로젝트 정보 -->
-                  <p class="project-info">
-                    콘텐츠 기획 · 재택 · 주 12시간 · 보수 금액 23,000원 ·
-                    2026.05.02 ~ 2026.06.15
-                  </p>
-                </div>
-
-                <!-- 프로젝트 상태(완료 고정) -->
-                <div class="project-status">완료</div>
-              </article>
-
-              <article class="card-field">
-                <div class="completed-project-detail">
-                  <!-- TPL: 프로젝트명 -->
-                  <p class="project-title">
-                    커머스 앱 상세페이지 UX 기획 및 문구 교정
-                  </p>
-                  <!-- TPL: 프로젝트 정보 -->
-                  <p class="project-info">
-                    콘텐츠 기획 · 재택 · 주 12시간 · 보수 금액 23,000원 ·
-                    2026.05.02 ~ 2026.06.15
-                  </p>
-                </div>
-
-                <div class="project-status">완료</div>
-              </article>
-            </div>
-
-            <div class="divider"></div>
-            <p class="title">완료된 프로젝트 참여 인원</p>
-
-            <!-- 완료된 프로젝트 참여 인원 리스트 -->
-            <div class="participant-list">
-              <!-- TPL: 완료 프로젝트 참여자 article 반복-->
-              <article class="card-field">
-                <!-- TPL: 참여자 프로필 -->
-                <div class="participant-profile">김</div>
-
-                <div class="participant-detail">
-                  <!-- TPL: 참여자 이름 -->
-                  <p class="participant-name-second">김리브</p>
-                  <!-- TPL: 참여자 설명 -->
-                  <p class="participant-des">커머스 상세페이지 UX 기획 완료</p>
-                </div>
-
-                <button class="open-returnship-btn">리턴십 제안하기</button>
-              </article>
-
-              <article class="card-field">
-                <div class="participant-profile">박</div>
-                <div class="participant-detail">
-                  <p class="participant-name-second">박하늘</p>
-                  <p class="participant-des">커머스 상세페이지 UX 기획 완료</p>
-                </div>
-                <button class="open-returnship-btn">리턴십 제안하기</button>
-              </article>
-            </div>
-          </div>
-        </section>
+          </section>
+        {% endif %}
       </main>
+    </div>
 
-      <!-- 리턴십 제안 모달 (리턴십 제안하기 버튼 클릭 시 출력) -->
-      <div class="modal-overlay" id="returnship-modal" style="display: none">
-        <div class="modal-box">
-          <div class="modal-header">
-            <span class="title">리턴십 제안</span>
-            <button class="close-modal-btn">
-              <img src="../../static/img/close.svg" alt="close" />
-            </button>
-          </div>
+    <!-- 공고 삭제 모달 -->
+    <div
+      class="modal-overlay"
+      id="project-delete-modal"
+      style="display: none"
+    >
+      <div class="modal-box">
+        <form
+          method="post"
+          id="project-delete-form"
+          action=""
+        >
+          {% csrf_token %}
 
-          <!-- TPL: 리턴십 제안 보내기 폼 -->
           <div class="modal-body">
-            <!-- TPL: 제안 직무 입력창 name, type 확인 필요 -->
-            <input
-              type="text"
-              name="returnship-title"
-              id="returnship-title"
-              placeholder="제안 직무를 입력하세요"
-              required
-            />
-            <!-- TPL: 제안 메세지 입력창 name, type 확인 필요 -->
-            <textarea
-              name="returnship-detail"
-              id="returnship-detail"
-              placeholder="제안 내용을 입력하세요"
-              required
-            ></textarea>
+            <div class="warning-icon">
+              <img
+                src="{% static 'img/warning-icon.svg' %}"
+                alt="경고"
+              />
+            </div>
+
+            <p class="modal-title">
+              이 공고를 삭제할까요?
+            </p>
+
+            <p
+              class="modal-caption"
+              id="delete-project-caption"
+            >
+              삭제하면 참여 인원과의 대화, 진행 기록이 모두 함께 삭제되며 복구할
+            수 없어요.
+            </p>
           </div>
 
           <div class="modal-footer">
-            <button class="submit-returnship-btn" disabled>제안 보내기</button>
+            <button
+              type="button"
+              id="delete-cancel-btn"
+            >
+              취소
+            </button>
+
+            <button
+              type="submit"
+              id="delete-btn"
+            >
+              삭제하기
+            </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
 
-    <script src="../../static/js/project_manage.js"></script>
+    <script src="{% static 'js/project_manage.js' %}"></script>
   </body>
 </html>

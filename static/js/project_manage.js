@@ -58,3 +58,87 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+// 공고 삭제 모달
+document.addEventListener("DOMContentLoaded", () => {
+  function openModal(modalElement) {
+    if (!modalElement) return;
+
+    modalElement.style.display = "flex";
+    document.body.classList.add("modal-open");
+  }
+
+  function closeModal(modalElement) {
+    if (!modalElement) return;
+
+    modalElement.style.display = "none";
+    document.body.classList.remove("modal-open");
+  }
+
+  const deleteModal = document.getElementById(
+    "project-delete-modal",
+  );
+
+  const deleteForm = document.getElementById(
+    "project-delete-form",
+  );
+
+  const deleteCaption = document.getElementById(
+    "delete-project-caption",
+  );
+
+  const deleteCancelButton = document.getElementById(
+    "delete-cancel-btn",
+  );
+
+  const deleteButtons = document.querySelectorAll(
+    ".project-delete-btn",
+  );
+
+  deleteButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (!deleteModal || !deleteForm) return;
+
+      const deleteUrl = button.dataset.deleteUrl;
+      const projectTitle =
+        button.dataset.projectTitle || "이 프로젝트";
+
+      if (!deleteUrl) {
+        console.error(
+          "삭제 URL이 없습니다.",
+          button.dataset,
+        );
+        return;
+      }
+
+      deleteForm.action = deleteUrl;
+
+      if (deleteCaption) {
+        deleteCaption.textContent =
+          "삭제하면 참여 인원과의 대화, 진행 기록이\n모두 함께 삭제되며 복구할 수 없어요.";
+      }
+
+      openModal(deleteModal);
+    });
+  });
+
+  deleteCancelButton?.addEventListener("click", () => {
+    closeModal(deleteModal);
+  });
+
+  deleteModal?.addEventListener("click", (event) => {
+    if (event.target === deleteModal) {
+      closeModal(deleteModal);
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (
+      event.key === "Escape" &&
+      deleteModal &&
+      deleteModal.style.display === "flex"
+    ) {
+      closeModal(deleteModal);
+    }
+  });
+});

@@ -1,322 +1,555 @@
+{% load static %}
+
 <!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>지원자 확인하기</title>
-    <link rel="stylesheet" href="../../static/css/colorpalette.css" />
-    <link rel="stylesheet" href="../../static/css/global.css" />
-    <link rel="stylesheet" href="../../static/css/project_manage_common.css" />
-    <link rel="stylesheet" href="../../static/css/project_applicants.css" />
+
+    <link rel="stylesheet" href="{% static 'css/colorpalette.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/global.css' %}" />
+    <link
+      rel="stylesheet"
+      href="{% static 'css/project_manage_common.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'css/project_applicants.css' %}"
+    />
   </head>
+
   <body>
-    <!-- 헤더 영역 -->
+    <!-- 헤더 -->
     <header>
       <div class="header-logo">
         <img
           class="header-logo-img"
-          src="../../static/img/logo.svg"
-          alt="logo"
+          src="{% static 'img/logo.svg' %}"
+          alt="RE:Bridge 로고"
         />
+
         <div class="header-logo-text">
-          <span class="logo-desc">당신의 두 번째 커리어 브릿지</span>
-          <span class="logo-brand"
-            ><span class="RE">RE</span><span class="colon">:</span>Bridge</span
-          >
+          <span class="logo-desc">
+            당신의 두 번째 커리어 브릿지
+          </span>
+
+          <span class="logo-brand">
+            <span class="RE">RE</span><span class="colon">:</span>Bridge
+          </span>
         </div>
       </div>
+
       <div class="header-profile">
-        <!-- TPL:  기업 프로필 이름 -->
-        <a>주</a>
+        <a>
+          {{ request.user.company_profile.company_name|slice:":1" }}
+        </a>
       </div>
     </header>
 
     <!-- 왼쪽 사이드바 -->
     <nav class="sidebar-nav">
-      <!-- TPL: href 실제 url 패턴으로 변경 필요 -->
-      <!-- TPL: 현재 active 클래스 하드 코딩함. 연동 시 현재 페이지의 active 판단 로직으로 교체 필요  -->
-      <a href="project_create.html" class="nav-menu" data-label="공고 등록">
+      <a
+        href="{% url 'company:project_create' %}"
+        class="nav-menu"
+        data-label="공고 등록"
+      >
         공고 등록
       </a>
+
       <a
-        href="project_manage.html"
+        href="{% url 'company:project_manage' %}"
         class="nav-menu active"
         data-label="프로젝트 관리하기"
       >
         프로젝트 관리하기
       </a>
-      <a href="#" class="nav-menu" data-label="기업 정보"> 기업 정보 </a>
+
+      <a
+        href="#"
+        class="nav-menu"
+        data-label="기업 정보"
+      >
+        기업 정보
+      </a>
     </nav>
 
-    <!-- 프로젝트 관리하기 영역 -->
     <div class="project-manage">
-      <!-- 탭 메뉴 영역 -->
       <div class="nav-group">
         <nav class="tab-nav">
           <a
-            href="project_manage.html?tab=recruiting"
+            href="{% url 'company:project_manage' %}?tab=recruiting"
             class="nav-tab active"
             data-tab="recruiting"
-            >모집 중인 프로젝트</a
           >
+            모집 중인 프로젝트
+          </a>
+
           <a
-            href="project_manage.html?tab=progress"
+            href="{% url 'company:project_manage' %}?tab=progress"
             class="nav-tab"
             data-tab="progress"
-            >진행 중인 프로젝트</a
           >
+            진행 중인 프로젝트
+          </a>
+
           <a
-            href="project_manage.html?tab=completed"
+            href="{% url 'company:project_manage' %}?tab=completed"
             class="nav-tab"
             data-tab="completed"
-            >완료된 프로젝트</a
           >
+            완료된 프로젝트
+          </a>
         </nav>
 
         <div class="divider"></div>
       </div>
 
-      <!-- 메인 지원자 확인하기 영역 -->
-      <!-- 프로젝트 관리하기 - 모집중 - 지원자 확인하기 -->
+      <!-- 지원자 확인 영역 -->
       <main class="project-applicants-main">
-        <!-- 선택한 프로젝트 영역 -->
+        <!-- 선택 프로젝트 -->
         <section class="project-section">
           <div class="project-card">
-            <!-- TPL: 선택한 프로젝트명 -->
-            <p class="project-title">온라인 커뮤니티 운영 및 회원 응대</p>
-            <!-- TPL: 선택한 프로젝트 정보  -->
+            <p class="project-title">
+              {{ project.title }}
+            </p>
+
             <p class="project-info">
-              (주)맘스토리 · 커뮤니티운영 · 재택 · 주 8시간 · 보수 금액 20,000원
-              · 커뮤니티 운영, 고객 응대
+              {{ project.company_profile.company_name }}
+              · {{ project.job_category.name }}
+              · {{ project.get_work_style_display }}
+              · {{ project.get_weekly_hours_display }}
+              · 보수 금액 {{ project.compensation_amount }}원
+
+              {% if project.required_skill_names %}
+                ·
+                {% for skill_name in project.required_skill_names %}
+                  {{ skill_name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+              {% endif %}
             </p>
           </div>
+
           <div class="project-card-footer">
-            <!-- TPL: 지원자 수, 마감 d-day -->
-            <span class="project-des">지원자 2명 · 마감까지 D-3</span>
-            <button class="start-project-btn">프로젝트 시작하기</button>
+            {% if project.status == 'OPEN' %}
+              <span class="project-des">
+                지원자 {{ applicant_count }}명
+                · 마감까지 {{ project.d_day_label }}
+              </span>
+            {% elif project.status == 'SELECTING' %}
+              <span class="project-des">
+                모집 마감 · 지원자 {{ applicant_count }}명 중
+                참여자를 선발해주세요
+              </span>
+            {% endif %}
+
+            <!-- 선발중일 때만 프로젝트 시작 가능 -->
+            {% if project.status == 'SELECTING' %}
+              <form
+                method="post"
+                action="{% url 'company:project_start' project.id %}"
+                class="start-project-form"
+              >
+                {% csrf_token %}
+
+                <button
+                  type="submit"
+                  class="start-project-btn"
+                  onclick="return confirm('프로젝트를 시작하시겠어요? 아직 결정하지 않은 지원자는 자동으로 거절 처리됩니다.')"
+                >
+                  프로젝트 시작하기
+                </button>
+              </form>
+            {% endif %}
           </div>
         </section>
 
-        <!-- 선택한 프로젝트의 지원자 영역 -->
+        <!-- 지원자 목록 -->
         <section class="project-applicants-section">
           <div class="applicants-header">
-            <!-- TPL: 지원자 수 -->
-            <p class="applicants-title">지원자 (2명)</p>
-            <!-- TPL: 마감 d-day-->
-            <!-- TPL: 마감 후 지원자 확인 시 메세지 변경 필요 -->
-            <p class="applicants-des">
-              아직 모집 기간이에요. 마감일(D-3) 이후에 지원자를 수락하거나
-              거절할 수 있어요.
+            <p class="applicants-title">
+              지원자 ({{ applicant_count }}명)
             </p>
+
+            {% if can_decide %}
+              <p class="applicants-des">
+                모집이 마감됐어요. 지원자를 수락하거나 거절해주세요.
+              </p>
+            {% else %}
+              <p class="applicants-des">
+                아직 모집 기간이에요.
+                마감일({{ project.d_day_label }}) 이후에 지원자를
+                수락하거나 거절할 수 있어요.
+              </p>
+            {% endif %}
           </div>
 
           <div class="applicants-body">
             <div class="applicant-list">
-              <!-- TPL: 지원자 카드 반복 영역 article이 하나의 지원자 카드 -->
-              <article class="applicant-card">
-                <!-- TPL: 지원자 프로필 -->
-                <div class="applicant-profile">김</div>
+              {% for application in applications %}
+                <article
+                  class="applicant-card"
+                  data-application-id="{{ application.id }}"
+                >
+                  <!-- 프로필 클릭 영역 -->
+                  <button
+                    type="button"
+                    class="applicant-profile applicant-profile-open-btn"
+                    data-modal-id="profile-modal-{{ application.id }}"
+                    aria-label="{{ application.worker_profile.user.name }} 프로필 보기"
+                  >
+                    {{ application.worker_profile.user.name|slice:":1" }}
+                  </button>
 
-                <div class="applicant-detail">
-                  <!-- TPL: 지원자 이름 -->
-                  <p class="applicant-name">김리브</p>
-                  <!-- TPL: 지원자 설명 -->
-                  <p class="applicant-des">
-                    콘텐츠 기획 경력 3~5년 · 주 15시간 가능
-                  </p>
+                  <button
+                    type="button"
+                    class="applicant-detail applicant-profile-open-btn"
+                    data-modal-id="profile-modal-{{ application.id }}"
+                  >
+                    <p class="applicant-name">
+                      {{ application.worker_profile.user.name }}
+                    </p>
+
+                    <p class="applicant-des">
+                      {{ application.worker_profile.job_category.name }}
+                      경력
+                      {{ application.worker_profile.get_career_years_display }}
+                      ·
+                      {{ application.worker_profile.get_weekly_hours_display }}
+                      가능
+                    </p>
+                  </button>
+
+                  <!-- 매칭률 -->
+                  <div
+                    class="matching-rate-item {% if application.match_score >= 80 %}heart{% else %}good{% endif %}"
+                  >
+                    {% if application.match_score >= 80 %}
+                      <img
+                        class="matching-state-img"
+                        src="{% static 'img/heart-filled.svg' %}"
+                        alt=""
+                      />
+                    {% else %}
+                      <img
+                        class="matching-state-img"
+                        src="{% static 'img/good-one.svg' %}"
+                        alt=""
+                      />
+                    {% endif %}
+
+                    <span
+                      class="matching-rate {% if application.match_score >= 80 %}heart{% else %}good{% endif %}"
+                    >
+                      {{ application.match_score }}%
+                    </span>
+                  </div>
+
+                  {% if can_decide %}
+                    {% if application.status == 'PENDING' %}
+                      <div class="applicant-action-btns">
+                        <button
+                          type="button"
+                          class="applicant-accept-btn decision-open-btn"
+                          data-name="{{ application.worker_profile.user.name }}"
+                          data-decision="accept"
+                          data-action="{% url 'company:application_decide' project.id application.id %}"
+                        >
+                          수락
+                        </button>
+
+                        <button
+                          type="button"
+                          class="applicant-reject-btn decision-open-btn"
+                          data-name="{{ application.worker_profile.user.name }}"
+                          data-decision="reject"
+                          data-action="{% url 'company:application_decide' project.id application.id %}"
+                        >
+                          거절
+                        </button>
+                      </div>
+                    {% else %}
+                      <div
+                        class="application-status {% if application.status == 'ACCEPTED' %}accepted{% elif application.status == 'REJECTED' %}rejected{% endif %}"
+                      >
+                        {{ application.get_status_display }}
+                      </div>
+                    {% endif %}
+                  {% endif %}
+                </article>
+
+                <!-- 지원자 프로필 모달 -->
+                <div
+                  class="modal-overlay applicant-profile-modal"
+                  id="profile-modal-{{ application.id }}"
+                  style="display: none"
+                >
+                  <div class="modal-box">
+                    <div class="modal-header">
+                      <span class="title">
+                        지원자 프로필 -
+                        {{ application.worker_profile.user.name }}
+                      </span>
+
+                      <button
+                        type="button"
+                        class="close-profile-modal-btn"
+                        aria-label="프로필 모달 닫기"
+                      >
+                        <img
+                          src="{% static 'img/close.svg' %}"
+                          alt=""
+                        />
+                      </button>
+                    </div>
+
+                    <div class="modal-body">
+                      <!-- 유저 정보 -->
+                      <div class="user-info">
+                        <div class="applicant-profile">
+                          {{ application.worker_profile.user.name|slice:":1" }}
+                        </div>
+
+                        <div class="applicant-detail">
+                          <p class="applicant-name">
+                            {{ application.worker_profile.user.name }} 님
+                          </p>
+
+                          <p class="applicant-des">
+                            {{ application.worker_profile.job_category.name }}
+                            경력
+                            {{ application.worker_profile.get_career_years_display }}
+                            ·
+                            {{ application.worker_profile.get_weekly_hours_display }}
+                            가능
+                          </p>
+
+                          <p class="applicant-email">
+                            {{ application.worker_profile.user.email }}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div class="divider"></div>
+
+                      <!-- 주요 성과 키워드 -->
+                      <div class="career-group">
+                        <p class="subtitle">
+                          주요 성과 키워드
+                        </p>
+
+                        <p class="text box">
+                          {{ application.worker_profile.achievement_keywords|default:'등록된 주요 성과가 없습니다.' }}
+                        </p>
+                      </div>
+
+                      <div class="skills">
+                        <!-- 보유 스킬 -->
+                        <div class="skill-group">
+                          <p class="subtitle">
+                            보유 스킬
+                          </p>
+
+                          <div class="item-list">
+                            {% for skill_name in application.skill_names %}
+                              <span class="item">
+                                {{ skill_name }}
+                              </span>
+                            {% empty %}
+                              <p class="empty-item-msg">
+                                등록된 스킬이 없습니다
+                              </p>
+                            {% endfor %}
+                          </div>
+                        </div>
+
+                        <!-- 숨은 능력 -->
+                        <div class="hidden-ability-group">
+                          <p class="subtitle">
+                            숨은 능력
+                          </p>
+
+                          <div class="item-list">
+                            {% for ability_name in application.hidden_ability_names %}
+                              <span class="item">
+                                {{ ability_name }}
+                              </span>
+                            {% empty %}
+                              <p class="empty-item-msg">
+                                등록된 숨은 능력이 없습니다
+                              </p>
+                            {% endfor %}
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- 진행 중인 프로젝트 -->
+                      <div class="progress-project-group">
+                        <p class="subtitle">
+                          진행 중인 프로젝트
+                        </p>
+
+                        <div class="project-list">
+                          {% for worker_project in application.in_progress_projects %}
+                            <article class="project-item box">
+                              <p class="modal-project-title">
+                                {{ worker_project.title }}
+                              </p>
+
+                              <p class="modal-project-info">
+                                {{ worker_project.company_profile.company_name }}
+                                · {{ worker_project.job_category.name }}
+                                · {{ worker_project.get_work_style_display }}
+                                · {{ worker_project.get_weekly_hours_display }}
+                              </p>
+                            </article>
+                          {% empty %}
+                            <p class="empty-item-msg">
+                              진행 중인 프로젝트가 없습니다
+                            </p>
+                          {% endfor %}
+                        </div>
+                      </div>
+
+                      <!-- 완료된 프로젝트 -->
+                      <div class="completed-project-group">
+                        <p class="subtitle">
+                          완료된 프로젝트
+                        </p>
+
+                        <div class="project-list">
+                          {% for worker_project in application.completed_projects %}
+                            <article class="project-item box">
+                              <p class="modal-project-title">
+                                {{ worker_project.title }}
+                              </p>
+
+                              <p class="modal-project-info">
+                                {{ worker_project.company_profile.company_name }}
+                                · {{ worker_project.job_category.name }}
+                                · {{ worker_project.get_work_style_display }}
+                              </p>
+                            </article>
+                          {% empty %}
+                            <p class="empty-item-msg">
+                              완료된 프로젝트가 없습니다
+                            </p>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+
+                    {% if can_decide %}
+                      {% if application.status == 'PENDING' %}
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            class="modal-reject-btn decision-open-btn"
+                            data-name="{{ application.worker_profile.user.name }}"
+                            data-decision="reject"
+                            data-action="{% url 'company:application_decide' project.id application.id %}"
+                          >
+                            거절하기
+                          </button>
+
+                          <button
+                            type="button"
+                            class="modal-accept-btn decision-open-btn"
+                            data-name="{{ application.worker_profile.user.name }}"
+                            data-decision="accept"
+                            data-action="{% url 'company:application_decide' project.id application.id %}"
+                          >
+                            수락하기
+                          </button>
+                        </div>
+                      {% else %}
+                        <div class="modal-footer application-result-footer">
+                          <span
+                            class="application-status {% if application.status == 'ACCEPTED' %}accepted{% elif application.status == 'REJECTED' %}rejected{% endif %}"
+                          >
+                            {{ application.get_status_display }}
+                          </span>
+                        </div>
+                      {% endif %}
+                    {% endif %}
+                  </div>
                 </div>
 
-                <!-- 매칭률 -->
-                <!-- TPL: 매칭률 상태 클래스명 80% 이상: heart / 이하: good -->
-                <div class="matching-rate-item heart">
-                  <!-- TPL: (매칭률 상태/80 이상이면 하트, 그 외 따봉) -->
-                  <img
-                    class="matching-state-img"
-                    src="../../static/img/heart-filled.svg"
-                    alt="matching-state"
-                  />
-                  <!-- TPL: 매칭률 -->
-                  <!-- TPL: 매칭률 상태 클래스명 80% 이상: heart / 이하: good -->
-                  <span class="matching-rate heart">92%</span>
+              {% empty %}
+                <div class="empty-applicants">
+                  아직 지원자가 없어요.
                 </div>
-
-                <!-- 수락/거절 버튼 -->
-                <div class="applicant-action-btns">
-                  <button class="applicant-accept-btn">수락</button>
-                  <button class="applicant-reject-btn">거절</button>
-                </div>
-              </article>
-
-              <article class="applicant-card">
-                <div class="applicant-profile">김</div>
-
-                <div class="applicant-detail">
-                  <p class="applicant-name">김리브</p>
-                  <p class="applicant-des">
-                    콘텐츠 기획 경력 3~5년 · 주 15시간 가능
-                  </p>
-                </div>
-
-                <div class="matching-rate-item good">
-                  <img
-                    class="matching-state-img"
-                    src="../../static/img/good-one.svg"
-                    alt="matching-state"
-                  />
-                  <span class="matching-rate good">72%</span>
-                </div>
-
-                <div class="applicant-action-btns">
-                  <button class="applicant-accept-btn">수락</button>
-                  <button class="applicant-reject-btn">거절</button>
-                </div>
-              </article>
+              {% endfor %}
             </div>
           </div>
         </section>
       </main>
     </div>
 
-    <!-- 지원자 프로필 모달 팝업 -->
-    <div
-      class="modal-overlay"
-      id="applicant-profile-modal"
-      style="display: none"
-    >
-      <div class="modal-box">
-        <div class="modal-header">
-          <!-- TPL: 지원자 이름 -->
-          <span class="title">지원자 프로필 - 김리브</span>
-          <button class="close-modal-btn">
-            <img src="../../static/img/close.svg" alt="close" />
-          </button>
-        </div>
-
-        <div class="modal-body">
-          <!-- 유저 정보 -->
-          <div class="user-info">
-            <!-- TPL: 지원자 프로필 -->
-            <div class="applicant-profile">김</div>
-            <div class="applicant-detail">
-              <!-- TPL: 지원자 이름 -->
-              <p class="applicant-name">김리브 님</p>
-              <!-- TPL: 지원자 설명 -->
-              <p class="applicant-des">
-                콘텐츠 기획 경력 3~5년 · 주 15시간 가능
-              </p>
-              <!-- TPL: 지원자 이메일 -->
-              <p class="applicant-email">abcdeg@gmail.com</p>
-            </div>
-          </div>
-
-          <div class="divider"></div>
-
-          <!-- 주요 성과 키워드 -->
-          <!-- TPL: 마이페이지 연동에서 경력 사항 -> 주요 성과 키워드로 대체돼서 동일하게 반영했습니다 ! -->
-          <div class="career-group">
-            <p class="subtitle">주요 성과 키워드</p>
-            <!-- TPL: 주요 성과 키워드 -->
-            <p class="text box">콘텐츠 기획</p>
-          </div>
-
-          <div class="skills">
-            <!-- 보유 스킬 -->
-            <div class="skill-group">
-              <p class="subtitle">보유 스킬</p>
-              <div class="item-list">
-                <!-- TPL: 보유 스킬 아이템 반복. span이 하나의 스킬 아이템 -->
-                <span class="item">엑셀</span>
-                <span class="item">데이터 분석</span>
-                <!-- TPL: 보유 스킬 없을 경우 안내 메세지 출력
-                <p class="empty-item-msg">등록된 스킬이 없습니다</p> -->
-              </div>
-            </div>
-
-            <!-- 숨은 능력 -->
-            <div class="hidden-ability-group">
-              <p class="subtitle">숨은 능력</p>
-              <div class="item-list">
-                <!-- TPL: 숨은 능력 아이템 반복 span이 하나의 능력 아이템 -->
-                <span class="item">SNS 마케팅</span>
-                <span class="item">커뮤니티 매니징</span>
-                <!-- TPL: 숨은 능력 없을 경우 안내 메세지 출력
-                <p class="empty-item-msg">등록된 숨은 능력이 없습니다</p> -->
-              </div>
-            </div>
-          </div>
-
-          <!-- 진행 중인 프로젝트 -->
-          <div class="progress-project-group">
-            <p class="subtitle">진행 중인 프로젝트</p>
-            <div class="project-list">
-              <!-- TPL: 진행 중인 프로젝트 아이템 반복 article이 하나의 프로젝트 카드 -->
-              <article class="project-item box">
-                <!-- TPL: 진행 중 프로젝트명 -->
-                <p class="modal-project-title">
-                  스타트업 뉴스레터 기획 및 발행
-                </p>
-                <!-- TPL: 진행 중 프로젝트 정보 -->
-                <p class="modal-project-info">
-                  (주)맘스토리 · 커뮤니티운영 · 재택 · 주 8시간 · 보수 금액
-                  20,000원
-                </p>
-              </article>
-            </div>
-          </div>
-
-          <!-- 완료된 프로젝트 -->
-          <div class="completed-project-group">
-            <p class="subtitle">완료된 프로젝트</p>
-            <div class="project-list">
-              <!-- TPL: 완료된 프로젝트 아이템 반복 article이 하나의 프로젝트 카드 -->
-              <article class="project-item box">
-                <!-- TPL: 완료된 프로젝트명 -->
-                <p class="modal-project-title">
-                  스타트업 뉴스레터 기획 및 발행
-                </p>
-                <!-- TPL: 완료된 프로젝트 정보 -->
-                <p class="modal-project-info">
-                  (주)맘스토리 · 커뮤니티운영 · 재택 · 주 8시간 · 보수 금액
-                  20,000원
-                </p>
-              </article>
-            </div>
-          </div>
-        </div>
-
-        <div class="modal-footer">
-          <button class="modal-reject-btn">거절하기</button>
-          <button class="modal-accept-btn">수락하기</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 지원자 수락 / 거절 이중 확인 모달 팝업 -->
+    <!-- 수락/거절 이중 확인 모달 -->
     <div
       class="modal-overlay"
       id="applicant-doublecheck-modal"
       style="display: none"
     >
       <div class="modal-box">
-        <div class="modal-header">
-          <!-- TPL: 수락 / 거절 상태에 따라 '수락 확인', '거절 확인' -->
-          <p class="title">수락 확인</p>
-        </div>
+        <form
+          method="post"
+          id="application-decision-form"
+          action=""
+        >
+          {% csrf_token %}
 
-        <div class="modal-body">
-          <!-- TPL: 수락 / 거절 상태에 따라 각각 수락, 거절 텍스트 변경 -->
-          <!-- TPL: 지원자 이름 -->
-          <p class="check-text">김리브 님의 지원을 수락하시겠어요?</p>
-          <p class="check-caption">수락 후에는 취소할 수 없어요</p>
-        </div>
+          <input
+            type="hidden"
+            name="decision"
+            id="application-decision-input"
+          />
 
-        <div class="modal-footer">
-          <button class="doublecheck-cancel-btn">취소</button>
-          <button class="doublecheck-accept-btn">수락</button>
-        </div>
+          <div class="modal-header">
+            <p
+              class="title"
+              id="decision-modal-title"
+            >
+              수락 확인
+            </p>
+          </div>
+
+          <div class="modal-body">
+            <p
+              class="check-text"
+              id="decision-modal-text"
+            ></p>
+
+            <p
+              class="check-caption"
+              id="decision-modal-caption"
+            >
+              수락 후에는 취소할 수 없어요
+            </p>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="doublecheck-cancel-btn"
+            >
+              취소
+            </button>
+
+            <button
+              type="submit"
+              class="doublecheck-accept-btn"
+              id="decision-submit-btn"
+            >
+              수락
+            </button>
+          </div>
+        </form>
       </div>
     </div>
 
-    <script src="../../static/js/project_applicants.js"></script>
+    <script src="{% static 'js/project_applicants.js' %}"></script>
   </body>
 </html>

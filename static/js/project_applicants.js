@@ -1,74 +1,213 @@
-// 모달 함수 설정
-function openModal(modalEl) {
-  modalEl.style.display = "flex";
-}
+document.addEventListener("DOMContentLoaded", () => {
+  const profileModals = document.querySelectorAll(
+    ".applicant-profile-modal",
+  );
 
-function closeModal(modalEl) {
-  modalEl.style.display = "none";
-}
+  const decisionModal = document.getElementById(
+    "applicant-doublecheck-modal",
+  );
 
-// 지원자 카드의 수락/거절 버튼
-const applicantBtns = document.querySelectorAll(
-  ".applicant-action-btns button",
-);
+  const decisionForm = document.getElementById(
+    "application-decision-form",
+  );
 
-// 지원자 프로필 모달
-const applicantProfileModal = document.getElementById(
-  "applicant-profile-modal",
-);
-const closeModalBtn = document.querySelector(".close-modal-btn");
-const modalRejectBtn = document.querySelector(".modal-reject-btn");
-const modalAcceptBtn = document.querySelector(".modal-accept-btn");
+  const decisionInput = document.getElementById(
+    "application-decision-input",
+  );
 
-// 지원자 수락, 거절 이중 확인 모달
-const applicantDoublecheckModal = document.getElementById(
-  "applicant-doublecheck-modal",
-);
-const doublecheckCancelBtn = document.querySelector(".doublecheck-cancel-btn");
-const doublecheckAcceptBtn = document.querySelector(".doublecheck-accept-btn");
+  const decisionModalTitle = document.getElementById(
+    "decision-modal-title",
+  );
 
-// 지원자 프로필 모달 열기
-applicantBtns.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    openModal(applicantProfileModal);
-  });
-});
+  const decisionModalText = document.getElementById(
+    "decision-modal-text",
+  );
 
-// 닫기 버튼으로 모달 닫기
-closeModalBtn.addEventListener("click", () =>
-  closeModal(applicantProfileModal),
-);
+  const decisionModalCaption = document.getElementById(
+    "decision-modal-caption",
+  );
 
-// 이중 확인 모달 열기
-// TPL: 수락, 거절 선택 상태에 따라 모달 내용 다르게 출력 필요
-// 거절 확인 모달
-modalRejectBtn.addEventListener("click", () => {
-  openModal(applicantDoublecheckModal);
-});
-// 수락 확인 모달
-modalAcceptBtn.addEventListener("click", () => {
-  openModal(applicantDoublecheckModal);
-});
+  const decisionSubmitButton = document.getElementById(
+    "decision-submit-btn",
+  );
 
-// 모달 전체 닫기
-// 수락 제출
-doublecheckAcceptBtn.addEventListener("click", () => {
-  closeModal(applicantDoublecheckModal);
-  closeModal(applicantProfileModal);
-});
+  const decisionCancelButton = document.querySelector(
+    ".doublecheck-cancel-btn",
+  );
 
-// 취소
-doublecheckCancelBtn.addEventListener("click", () => {
-  closeModal(applicantDoublecheckModal);
-});
+  function getOpenedModals() {
+    return Array.from(
+      document.querySelectorAll(".modal-overlay"),
+    ).filter((modal) => {
+      return window.getComputedStyle(modal).display !== "none";
+    });
+  }
 
-// 배경 클릭으로 모달 닫기
-const allModals = [applicantProfileModal, applicantDoublecheckModal];
+  function updateBodyModalState() {
+    const hasOpenedModal =
+      getOpenedModals().length > 0;
 
-allModals.forEach((modal) => {
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      closeModal(modal);
+    document.body.classList.toggle(
+      "modal-open",
+      hasOpenedModal,
+    );
+  }
+
+  function openModal(modal) {
+    if (!modal) return;
+
+    modal.style.display = "flex";
+    updateBodyModalState();
+  }
+
+  function closeModal(modal) {
+    if (!modal) return;
+
+    modal.style.display = "none";
+    updateBodyModalState();
+  }
+
+  function closeContainingProfileModal(element) {
+    const profileModal = element.closest(
+      ".applicant-profile-modal",
+    );
+
+    if (profileModal) {
+      closeModal(profileModal);
     }
+  }
+
+  document
+    .querySelectorAll(".applicant-profile-open-btn")
+    .forEach((button) => {
+      button.addEventListener("click", () => {
+        const modalId = button.dataset.modalId;
+
+        if (!modalId) return;
+
+        const profileModal =
+          document.getElementById(modalId);
+
+        openModal(profileModal);
+      });
+    });
+
+
+  document
+    .querySelectorAll(".close-profile-modal-btn")
+    .forEach((button) => {
+      button.addEventListener("click", () => {
+        closeContainingProfileModal(button);
+      });
+    });
+
+  document
+    .querySelectorAll(".decision-open-btn")
+    .forEach((button) => {
+      button.addEventListener("click", () => {
+        if (
+          !decisionModal ||
+          !decisionForm ||
+          !decisionInput ||
+          !decisionModalTitle ||
+          !decisionModalText ||
+          !decisionSubmitButton
+        ) {
+          return;
+        }
+
+        const applicantName =
+          button.dataset.name || "지원자";
+
+        const decision =
+          button.dataset.decision;
+
+        const actionUrl =
+          button.dataset.action;
+
+        if (
+          !actionUrl ||
+          !["accept", "reject"].includes(decision)
+        ) {
+          return;
+        }
+
+        const isAccept =
+          decision === "accept";
+
+        const decisionLabel =
+          isAccept ? "수락" : "거절";
+
+
+        closeContainingProfileModal(button);
+
+        decisionForm.action = actionUrl;
+        decisionInput.value = decision;
+
+        decisionModalTitle.textContent =
+          `${decisionLabel} 확인`;
+
+        decisionModalText.textContent =
+          `${applicantName} 님의 지원을 ${decisionLabel}하시겠어요?`;
+
+        if (decisionModalCaption) {
+          decisionModalCaption.textContent =
+            `${decisionLabel} 후에는 취소할 수 없어요`;
+        }
+
+        decisionSubmitButton.textContent =
+          decisionLabel;
+
+        decisionSubmitButton.classList.toggle(
+          "accept",
+          isAccept,
+        );
+
+        decisionSubmitButton.classList.toggle(
+          "reject",
+          !isAccept,
+        );
+
+        openModal(decisionModal);
+      });
+    });
+
+  decisionCancelButton?.addEventListener(
+    "click",
+    () => {
+      closeModal(decisionModal);
+    },
+  );
+
+
+  profileModals.forEach((modal) => {
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        closeModal(modal);
+      }
+    });
+  });
+
+
+  decisionModal?.addEventListener(
+    "click",
+    (event) => {
+      if (event.target === decisionModal) {
+        closeModal(decisionModal);
+      }
+    },
+  );
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+
+    const openedModals = getOpenedModals();
+
+    if (openedModals.length === 0) return;
+
+    const topModal =
+      openedModals[openedModals.length - 1];
+
+    closeModal(topModal);
   });
 });
