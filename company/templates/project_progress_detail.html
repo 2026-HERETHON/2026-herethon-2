@@ -103,16 +103,6 @@
         <div class="divider"></div>
       </div>
 
-      {% if messages %}
-        <div class="message-list">
-          {% for message in messages %}
-            <p class="message {{ message.tags }}">
-              {{ message }}
-            </p>
-          {% endfor %}
-        </div>
-      {% endif %}
-
       <!-- 메인 프로젝트 상세 보기 영역 -->
       <!-- 프로젝트 관리하기 - 진행중 - 프로젝트 상세 보기 -->
       <main class="project-detail-main">
@@ -197,21 +187,21 @@
             </p>
 
             <p class="work-condition-text">
-              코어타임:
-              {% for core_time in project.core_times.all %}
-                {{ core_time.time_slot.name }}{% if not forloop.last %}, {% endif %}
-              {% empty %}
-                협의 가능
-              {% endfor %}
-            </p>
-
-            <p class="work-condition-text">
               업무 규모:
 
               {% for scale in project.preferred_scales.all %}
                 {{ scale.get_scale_type_display }}{% if not forloop.last %}, {% endif %}
               {% empty %}
                 없음
+              {% endfor %}
+            </p>
+
+            <p class="work-condition-text">
+              코어타임:
+              {% for core_time in project.core_times.all %}
+                {{ core_time.time_slot.name }}{% if not forloop.last %}, {% endif %}
+              {% empty %}
+                협의 가능
               {% endfor %}
             </p>
 

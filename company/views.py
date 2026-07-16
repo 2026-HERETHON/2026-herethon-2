@@ -847,22 +847,150 @@ def project_progress_detail(request, project_id):
 def project_edit(request, project_id):
     # 진행중 상태에서만 제목/상세내용만 수정 가능
     project = get_object_or_404(
-        Project, id=project_id, company_profile=request.user.company_profile
+        Project.objects
+        .select_related(
+            'company_profile',
+            'job_category',
+        )
+        .prefetch_related(
+            'project_skills__skill',
+            'core_times__time_slot',
+            'preferred_scales',
+            'hidden_abilities__hidden_ability',
+        ),
+        id=project_id,
+        company_profile=request.user.company_profile,
     )
- 
+
     if project.status != Project.Status.IN_PROGRESS:
-        messages.error(request, '진행중 상태에서만 수정할 수 있어요.')
-        return redirect('company:project_progress_detail', project_id=project.id)
- 
+        messages.error(
+            request,
+            '진행중 상태에서만 수정할 수 있어요.',
+        )
+
+        return redirect(
+            'company:project_progress_detail',
+            project_id=project.id,
+        )
+
     if request.method == 'POST':
-        project.title = request.POST.get('title', project.title)
-        project.description = request.POST.get('description', project.description)
-        project.save(update_fields=['title', 'description'])
-        messages.success(request, '프로젝트 정보를 수정했어요.')
-        return redirect('company:project_progress_detail', project_id=project.id)
- 
-    return render(request, 'b_project_edit.html', {'project': project})
- 
+        title = request.POST.get(
+            'title',
+            '',
+        ).strip()
+
+        description = request.POST.get(
+            'description',
+            '',
+        ).strip()
+
+        if not title:
+            messages.error(
+                request,
+                '프로젝트명을 입력해주세요.',
+            )
+
+        elif not description:
+            messages.error(
+                request,
+                '상세 내용을 입력해주세요.',
+            )
+
+        else:
+            project.title = title
+            project.description = description
+
+            project.save(
+                update_fields=[
+                    'title',
+                    'description',
+                    'updated_at',
+                ]
+            )
+
+            messages.success(
+                request,
+                '프로젝트 정보를 수정했어요.',
+            )
+
+            return redirect(
+                'company:project_progress_detail',
+                project_id=project.id,
+            )
+
+    required_skills = []
+    preferred_skills = []
+
+    for relation in project.project_skills.all():
+        if (
+            relation.priority
+            == ProjectSkill.Priority.NORMAL
+        ):
+            required_skills.append(relation.skill)
+
+        elif (
+            relation.priority
+            == ProjectSkill.Priority.PREFERRED
+        ):
+            preferred_skills.append(relation.skill)
+
+    selected_core_time_ids = [
+        relation.time_slot_id
+        for relation in project.core_times.all()
+    ]
+
+    selected_scales = [
+        relation.scale_type
+        for relation in project.preferred_scales.all()
+    ]
+
+    hidden_abilities = [
+        relation.hidden_ability
+        for relation in project.hidden_abilities.all()
+    ]
+
+    context = {
+        'project': project,
+
+        'job_categories':
+            JobCategory.objects.all(),
+
+        'time_slots':
+            _get_time_slots_for_display(),
+
+        'work_style_choices':
+            Project.WorkStyle.choices,
+
+        'weekly_hours_choices':
+            Project.WeeklyHours.choices,
+
+        'career_years_choices':
+            Project.CareerYears.choices,
+
+        'scale_choices':
+            ProjectPreferredScale.ScaleType.choices,
+
+        'required_skills':
+            required_skills,
+
+        'preferred_skills':
+            preferred_skills,
+
+        'selected_core_time_ids':
+            selected_core_time_ids,
+
+        'selected_scales':
+            selected_scales,
+
+        'hidden_abilities':
+            hidden_abilities,
+    }
+
+    return render(
+        request,
+        'project_edit.html',
+        context,
+    )
  
 @role_required('COMPANY')
 @onboarding_required
