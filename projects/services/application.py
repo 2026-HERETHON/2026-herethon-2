@@ -21,20 +21,31 @@ MAX_FILE_SIZE = 10 * 1024 * 1024
 
 
 def validate_application_files(files):
+    if not files:
+        raise ValidationError(
+            '첨부파일을 1개 이상 등록해주세요.'
+        )
+
     if len(files) > MAX_FILE_COUNT:
-        raise ValidationError('첨부파일은 최대 5개까지 등록할 수 있습니다.')
+        raise ValidationError(
+            '첨부파일은 최대 5개까지 등록할 수 있습니다.'
+        )
 
     for uploaded_file in files:
-        extension = Path(uploaded_file.name).suffix.lower()
+        extension = Path(
+            uploaded_file.name
+        ).suffix.lower()
 
         if extension not in ALLOWED_EXTENSIONS:
             raise ValidationError(
-                f'{uploaded_file.name}: 지원하지 않는 파일 형식입니다.'
+                f'{uploaded_file.name}: '
+                '지원하지 않는 파일 형식입니다.'
             )
 
         if uploaded_file.size > MAX_FILE_SIZE:
             raise ValidationError(
-                f'{uploaded_file.name}: 파일 크기는 10MB 이하여야 합니다.'
+                f'{uploaded_file.name}: '
+                '파일 크기는 10MB 이하여야 합니다.'
             )
 
 
