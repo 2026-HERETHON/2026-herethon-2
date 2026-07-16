@@ -37,6 +37,8 @@ let selectedHiddenAbilities = new Set(
   (window.initialHiddenAbilities || []).map(String),
 );
 
+let confirmedHiddenAbilities = new Set(selectedHiddenAbilities);
+
 /* 직무 선택 */
 document.querySelectorAll('input[name="job_category"]').forEach((radio) => {
   radio.addEventListener("change", () => {
@@ -49,6 +51,7 @@ document.querySelectorAll('input[name="job_category"]').forEach((radio) => {
     selectedRequiredSkills.clear();
     selectedPreferredSkills.clear();
     selectedHiddenAbilities.clear();
+    confirmedHiddenAbilities.clear();
 
     syncHiddenAbilitiesInput();
 
@@ -317,16 +320,19 @@ function validateModalButton() {
 }
 
 modalCloseButton?.addEventListener("click", () => {
+  selectedHiddenAbilities = new Set(confirmedHiddenAbilities);
   modalOverlay.style.display = "none";
 });
 
 modalOverlay?.addEventListener("click", (event) => {
   if (event.target === modalOverlay) {
+    selectedHiddenAbilities = new Set(confirmedHiddenAbilities);
     modalOverlay.style.display = "none";
   }
 });
 
 hiddenAbilityAddButton?.addEventListener("click", () => {
+  confirmedHiddenAbilities = new Set(selectedHiddenAbilities);
   syncHiddenAbilitiesInput();
   modalOverlay.style.display = "none";
 
