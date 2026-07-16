@@ -424,3 +424,14 @@ textarea:read-only::placeholder {
   background-color: #d1d5db;
   border: 1px solid #d1d5db;
 }
+
+.create-project-btn:disabled {
+  background-color: var(--color-border-input);
+  border-color: var(--color-border-input);
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+}
+
+.create-project-btn:not(:disabled) {
+  cursor: pointer;
+}
