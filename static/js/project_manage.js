@@ -1,24 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // 탭
-  const params = new URLSearchParams(window.location.search);
-  const initialTab = params.get("tab") || "recruiting";
-
-  document
-    .querySelectorAll(".nav-tab")
-    .forEach((tab) => tab.classList.remove("active"));
-
-  document
-    .querySelector(`.nav-tab[data-tab="${initialTab}"]`)
-    ?.classList.add("active");
-
-  document.querySelectorAll(".tab-content").forEach((tab) => {
-    tab.style.display = "none";
-  });
-
-  document.querySelector(
-    `#tab-${initialTab}`,
-  )?.style.setProperty("display", "flex");
-
   // 공통 모달
   function openModal(modal) {
     if (!modal) return;
