@@ -7,16 +7,20 @@
     <link rel="stylesheet" href="{% static 'css/colorpalette.css' %}" />
     <link rel="stylesheet" href="{% static 'css/global.css' %}" />
     <link rel="stylesheet" href="{% static 'css/landing.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/animation.css' %}" />
   </head>
   <body>
     <!-- 헤더 -->
     <header class="landing-header">
       <div class="header-logo">
-        <img
-          class="header-logo-img"
-          src="../../static/img/logo.svg"
-          alt="logo"
-        />
+        <svg class="bridge-logo" xmlns="http://www.w3.org/2000/svg" width="85" height="43" viewBox="0 0 85 43" fill="none">
+          <path class="arch arch-left" pathLength="100" d="M3.5 39.3065C3.5 3.50006 45.476 3.50006 45.476 39.3065" stroke="#4F46E5" stroke-width="7" stroke-linecap="round"/>
+          <path class="arch arch-right" pathLength="100" d="M33.4829 39.3064C33.4829 -8.43547 81.4554 -8.43547 81.4554 39.3064" stroke="#06B6D4" stroke-opacity="0.9" stroke-width="7" stroke-linecap="round"/>
+          <g class="dot">
+            <path d="M39.4794 40.4998C41.7977 40.4998 43.677 38.6296 43.677 36.3224C43.677 34.0153 41.7977 32.145 39.4794 32.145C37.1612 32.145 35.2818 34.0153 35.2818 36.3224C35.2818 38.6296 37.1612 40.4998 39.4794 40.4998Z" fill="white"/>
+            <path d="M39.4794 38.7095C40.8042 38.7095 41.8781 37.6408 41.8781 36.3224C41.8781 35.004 40.8042 33.9353 39.4794 33.9353C38.1547 33.9353 37.0808 35.004 37.0808 36.3224C37.0808 37.6408 38.1547 38.7095 39.4794 38.7095Z" fill="#4F46E5"/>
+          </g>
+        </svg>
         <div class="header-logo-text">
           <span class="logo-desc">당신의 두 번째 커리어 브릿지</span>
           <span class="logo-brand"
@@ -27,9 +31,7 @@
 
       <!-- (로그인페이지 진입 버튼) -->
       <div class="header-login">
-        <a
-          class="header-login-button"
-          href="{% url 'accounts:google_login' %}"
+        <a class="header-login-button" href="{% url 'accounts:google_login' %}"
           >로그인</a
         >
       </div>
@@ -55,8 +57,12 @@
 
         <!-- TPL: google_login_url (Google OAuth 로그인 시작 URL) -->
         <section class="select-user-type">
-          <a class="worker-btn" href="{% url 'accounts:google_login' %}">경력자로 시작하기</a>
-          <a class="comp-btn" href="{% url 'accounts:google_login' %}">기업으로 시작하기</a>
+          <a class="worker-btn" href="{% url 'accounts:google_login' %}"
+            >경력자로 시작하기</a
+          >
+          <a class="comp-btn" href="{% url 'accounts:google_login' %}"
+            >기업으로 시작하기</a
+          >
         </section>
         <small class="user-type-desc"
           >✔ 가입 즉시 자가진단으로 나만의 프로필 완성</small
@@ -108,4 +114,5 @@
       <p>#맞춤 추천 기준 5가지</p>
     </section>
   </body>
+  <script src="../../static/js/animation.js"></script>
 </html>

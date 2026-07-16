@@ -1,0 +1,58 @@
+/* 애니메이션 */
+.brand-wrap .char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.35em);
+  animation: charUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes charUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logo-brand .char {
+  transform: translateY(0.6em);
+  animation-duration: 0.6s;
+}
+
+/* 로고 */
+
+.bridge-logo .arch {
+  stroke-dasharray: 100;
+  animation: drawArch 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* 왼쪽 아치: 왼쪽 끝에서 가운데로 */
+.arch-left {
+  stroke-dashoffset: 100;
+}
+
+/* 오른쪽 아치: 오른쪽 끝에서 가운데로 (역방향) */
+.arch-right {
+  stroke-dashoffset: -100;
+  animation-delay: 0.1s;
+}
+
+@keyframes drawArch {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* 두 아치가 만난 뒤 점이 찍힘 */
+.bridge-logo .dot {
+  opacity: 0;
+  transform-origin: 39.5px 36.3px;
+  transform: scale(0);
+  animation: dotPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.85s;
+}
+
+@keyframes dotPop {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
