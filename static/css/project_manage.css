@@ -848,3 +848,42 @@ textarea::placeholder {
 body.modal-open {
   overflow: hidden;
 }
+
+/* 리턴십 상태 */
+.returnship-status {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  min-width: 5rem;
+  height: 2rem;
+  padding: 0 0.875rem;
+
+  border-radius: 999px;
+
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+
+  white-space: nowrap;
+}
+
+/* 응답 대기 */
+.returnship-status.pending {
+  color: #7a7c84;
+  background: #f3f4f6;
+}
+
+/* 수락 */
+.returnship-status.accepted {
+  color: #16a34a;
+  background: #ecfdf3;
+  border: 1px solid #bbf7d0;
+}
+
+/* 거절 */
+.returnship-status.rejected {
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
