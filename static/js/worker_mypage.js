@@ -1,3 +1,20 @@
+// 헤더 active 클래스 추가
+const menuLinks = document.querySelectorAll(".header-menu a");
+console.log(menuLinks);
+const currentPath = window.location.pathname;
+
+menuLinks.forEach((link) => {
+  link.classList.remove("active");
+
+  const linkPath = new URL(link.href).pathname;
+  console.log(`currentPath: ${currentPath}`);
+  console.log(`linkPath: ${linkPath}`);
+  if (linkPath === currentPath) {
+    link.classList.add("active");
+    console.log(link.classList);
+  }
+});
+
 // 탭 네비게이션 설정
 const tabBtns = document.querySelectorAll(".tab-btn");
 const tabContents = document.querySelectorAll(".tab-content");
@@ -181,7 +198,7 @@ allModals.forEach((modal) => {
 
 // --- URL 파라미터를 읽어서 해당 탭 유지하기  ---
 const urlParams = new URLSearchParams(window.location.search);
-const activeTab = urlParams.get('tab');
+const activeTab = urlParams.get("tab");
 
 if (activeTab) {
   const targetBtn = document.querySelector(`.tab-btn[data-tab="${activeTab}"]`);
