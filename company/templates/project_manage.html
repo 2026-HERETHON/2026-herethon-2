@@ -383,12 +383,15 @@
                           </span>
                         {% endif %}
                       {% else %}
-                        <a
-                          href="{% url 'company:returnship_create' selected_project.id application.id %}"
+                        <button
+                          type="button"
                           class="open-returnship-btn"
+                          data-worker-name="{{ application.worker_profile.user.name }}"
+                          data-project-title="{{ selected_project.title }}"
+                          data-action="{% url 'company:returnship_create' selected_project.id application.id %}"
                         >
                           리턴십 제안하기
-                        </a>
+                        </button>
                       {% endif %}
                     </article>
                   {% empty %}
@@ -402,6 +405,71 @@
           </section>
         {% endif %}
       </main>
+    </div>
+
+    <!-- 리턴십 제안 모달 (리턴십 제안하기 버튼 클릭 시 출력) -->
+    <div
+      class="modal-overlay"
+      id="returnship-modal"
+      style="display: none"
+    >
+      <div class="modal-box">
+        <!-- TPL: 리턴십 제안 보내기 폼 -->
+        <form
+          method="post"
+          id="returnship-form"
+          action=""
+        >
+          {% csrf_token %}
+
+          <div class="modal-header">
+            <span class="title">
+              리턴십 제안
+            </span>
+
+            <button
+              type="button"
+              class="close-modal-btn"
+              aria-label="리턴십 제안 모달 닫기"
+            >
+              <img
+                src="{% static 'img/close.svg' %}"
+                alt="close"
+              />
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <!-- TPL: 제안 직무 -->
+            <input
+              type="text"
+              name="title"
+              id="returnship-title"
+              placeholder="제안 직무를 입력하세요"
+              maxlength="200"
+              required
+            />
+
+            <!-- TPL: 제안 메시지 -->
+            <textarea
+              name="content"
+              id="returnship-detail"
+              placeholder="제안 내용을 입력하세요"
+              required
+            ></textarea>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="submit"
+              class="submit-returnship-btn"
+              disabled
+            >
+              제안 보내기
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <!-- 공고 삭제 모달 -->

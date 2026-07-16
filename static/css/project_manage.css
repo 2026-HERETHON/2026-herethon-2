@@ -610,8 +610,19 @@
 
 .close-modal-btn {
   position: absolute;
-  top: -0.56rem;
-  right: -12rem;
+  top: -0.7rem;
+  right: -0.7rem;
+
+  width: 2rem;
+  height: 2rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: none;
+  background: transparent;
+  cursor: pointer;
 }
 
 .modal-body {

@@ -527,7 +527,18 @@ def project_manage(request):
 
     # "완료된 프로젝트" 탭에서는 목록 위에서 클릭한 프로젝트의 참여인원을 아래에 보여줌
     selected_project = None
-    participants = []
+    participants = (
+        Application.objects
+        .filter(
+            project=selected_project,
+            status=Application.Status.ACCEPTED,
+        )
+        .select_related(
+            'worker_profile__user',
+            'worker_profile__job_category',
+            'returnship',
+        )
+    )
 
     if tab == 'completed':
         selected_id = request.GET.get('selected')
@@ -1015,28 +1026,68 @@ def project_complete(request, project_id):
 
 @role_required('COMPANY')
 @onboarding_required
-def returnship_create(request, project_id, application_id):
+def returnship_create(
+    request,
+    project_id,
+    application_id,
+):
     project = get_object_or_404(
-        Project, id=project_id, company_profile=request.user.company_profile
+        Project,
+        id=project_id,
+        company_profile=request.user.company_profile,
+        status=Project.Status.COMPLETED,
     )
-    application = get_object_or_404(Application, id=application_id, project=project)
 
-    if request.method == 'POST':
-        title = request.POST.get('title', '')
-        content = request.POST.get('content', '')
+    application = get_object_or_404(
+        Application.objects.select_related(
+            'worker_profile__user',
+        ),
+        id=application_id,
+        project=project,
+        status=Application.Status.ACCEPTED,
+    )
 
-        try:
-            create_returnship_offer(application=application, title=title, content=content)
-        except ValidationError as error:
-            message = error.messages[0] if hasattr(error, 'messages') else str(error)
-            messages.error(request, message)
-        else:
-            messages.success(request, '리턴십을 제안했어요.')
+    redirect_url = (
+        f"{reverse('company:project_manage')}"
+        f"?tab=completed&selected={project.id}"
+    )
 
-        redirect_url = f"{reverse('company:project_manage')}?tab=completed&selected={project.id}"
+    if request.method != 'POST':
         return redirect(redirect_url)
 
-    return render(request, 'b_returnship_create.html', {
-        'project': project,
-        'application': application,
-    })
+    title = request.POST.get(
+        'title',
+        '',
+    ).strip()
+
+    content = request.POST.get(
+        'content',
+        '',
+    ).strip()
+
+    try:
+        create_returnship_offer(
+            application=application,
+            title=title,
+            content=content,
+        )
+
+    except ValidationError as error:
+        message = (
+            error.messages[0]
+            if hasattr(error, 'messages')
+            else str(error)
+        )
+
+        messages.error(
+            request,
+            message,
+        )
+
+    else:
+        messages.success(
+            request,
+            '리턴십을 제안했어요.',
+        )
+
+    return redirect(redirect_url)
