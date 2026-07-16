@@ -29,9 +29,7 @@
         <a href="{% url 'mypage:dashboard' %}" data-label="마이페이지">마이페이지</a>
       </div>
       <div class="header-profile">
-        <a href="{% url 'mypage:dashboard' %}" data-label="마이페이지"
-          >마이페이지</a
-        >
+              <a>{{ user.name|slice:":1" }}</a>
       </div>
     </header>
 
