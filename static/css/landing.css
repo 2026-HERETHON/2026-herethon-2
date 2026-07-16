@@ -291,22 +291,3 @@ main {
   white-space: nowrap;
 }
 
-/* 애니메이션 */
-.brand-wrap .char {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(0.35em);
-  animation: charUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-@keyframes charUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.logo-brand .char {
-  transform: translateY(0.6em);
-  animation-duration: 0.6s;
-}
