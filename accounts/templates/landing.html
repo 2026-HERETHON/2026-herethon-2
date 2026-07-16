@@ -27,9 +27,7 @@
 
       <!-- (로그인페이지 진입 버튼) -->
       <div class="header-login">
-        <a
-          class="header-login-button"
-          href="{% url 'accounts:google_login' %}"
+        <a class="header-login-button" href="{% url 'accounts:google_login' %}"
           >로그인</a
         >
       </div>
@@ -55,8 +53,12 @@
 
         <!-- TPL: google_login_url (Google OAuth 로그인 시작 URL) -->
         <section class="select-user-type">
-          <a class="worker-btn" href="{% url 'accounts:google_login' %}">경력자로 시작하기</a>
-          <a class="comp-btn" href="{% url 'accounts:google_login' %}">기업으로 시작하기</a>
+          <a class="worker-btn" href="{% url 'accounts:google_login' %}"
+            >경력자로 시작하기</a
+          >
+          <a class="comp-btn" href="{% url 'accounts:google_login' %}"
+            >기업으로 시작하기</a
+          >
         </section>
         <small class="user-type-desc"
           >✔ 가입 즉시 자가진단으로 나만의 프로필 완성</small
@@ -108,4 +110,5 @@
       <p>#맞춤 추천 기준 5가지</p>
     </section>
   </body>
+  <script src="../../static/js/animation.js"></script>
 </html>
