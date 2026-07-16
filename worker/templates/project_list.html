@@ -149,80 +149,123 @@
         <!--TPL: 프로젝트 목록 -->
         <div class="card-wrap" id="project-list">
           {% for project in projects %}
-          <a
-            class="project-card-link"
-            href="{% url 'worker:project_detail' project.id %}"
-          >
-            <article class="project-card">
-              <section class="project-info">
-                <p class="project-title">
-                  {{ project.title }}
-                </p>
 
-                <!--프로젝트 정보 요약(카드의 왼쪽 영역)-->
-                <div class="project-type-wrap">
-                  <span class="type-company">{{ project.company_profile.company_name }} · </span>
-                  <span class="type-career">{{ project.job_category.name }} · </span>
-                  <span class="type-work">{{ project.get_work_style_display }} · </span>
-                  <span class="type-time">{{ project.get_weekly_hours_display }} · </span>
-                  <span class="type-pay">시급 {{ project.compensation_amount }}원 · </span>
-                  <span class="type-keyword">
+            {% if view_type == 'warmup' %}
+              <div class="project-card-link warmup-card-disabled">
+            {% else %}
+              <a
+                class="project-card-link"
+                href="{% url 'worker:project_detail' project.id %}"
+              >
+            {% endif %}
+
+              <article class="project-card">
+                <section class="project-info">
+                  <p class="project-title">
+                    {{ project.title }}
+                  </p>
+
+                  <!--프로젝트 정보 요약(카드의 왼쪽 영역)-->
+                  <div class="project-type-wrap">
+                    <span class="type-company">
+                      {{ project.company_profile.company_name }} ·
+                    </span>
+
+                    <span class="type-career">
+                      {{ project.job_category.name }} ·
+                    </span>
+
+                    <span class="type-work">
+                      {{ project.get_work_style_display }} ·
+                    </span>
+
+                    <span class="type-time">
+                      {{ project.get_weekly_hours_display }}
+                    </span>
+
+                    {% if view_type != 'warmup' %}
+                      <span aria-hidden="true"> · </span>
+
+                      <span class="type-pay">
+                        시급 {{ project.compensation_amount }}원
+                      </span>
+                    {% endif %}
+
                     {% if project.preferred_skills_list %}
-                      {% for skill in project.preferred_skills_list %}
-                        {{ skill.name }}{% if not forloop.last %}, {% endif %}
-                      {% endfor %}
-                    {% else %}
-                      우대 스킬 없음
-                    {% endif %}
-                  </span>
-                </div>
-              </section>
+                      <span aria-hidden="true"> · </span>
 
-              <!--프로젝트 상태(카드의 오른쪽 영역)-->
-              <section class="project-status">
-                {% if view_type == 'warmup' %}
-                  <p class="due-date warmup-due-date">
-                    {% if project.deadline_d_day > 0 %}
-                      마감 D-{{ project.deadline_d_day }}
-                    {% elif project.deadline_d_day == 0 %}
-                      마감 D-DAY
-                    {% else %}
-                      마감
+                      <span class="type-keyword">
+                        {% for skill in project.preferred_skills_list %}
+                          {{ skill.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                      </span>
                     {% endif %}
-                  </p>
-                {% else %}
-                  <div class="matching-rate {% if project.match_score|default:0 < 80 %}low{% endif %}">
-                    {% if project.match_score|default:0 >= 80 %}
-                      <img src="{% static 'img/heart-filled.svg' %}" />
-                    {% else %}
-                      <img src="{% static 'img/good-one.svg' %}" />
-                    {% endif %}
-                    <p>{{ project.match_score|default:0 }}%</p>
                   </div>
+                </section>
 
-                  <p class="due-date">
-                    {% if project.deadline_d_day > 0 %}
-                      마감 D-{{ project.deadline_d_day }}
-                    {% elif project.deadline_d_day == 0 %}
-                      마감 D-DAY
-                    {% else %}
-                      마감
-                    {% endif %}
-                  </p>
-                {% endif %}
-              </section>
-            </article>
-          </a>
+                <!--프로젝트 상태(카드의 오른쪽 영역)-->
+                <section class="project-status">
+                  {% if view_type == 'warmup' %}
+                    <p class="due-date warmup-due-date">
+                      {% if project.deadline_d_day > 0 %}
+                        마감 D-{{ project.deadline_d_day }}
+                      {% elif project.deadline_d_day == 0 %}
+                        마감 D-DAY
+                      {% else %}
+                        마감
+                      {% endif %}
+                    </p>
+                  {% else %}
+                    <div
+                      class="matching-rate {% if project.match_score|default:0 < 80 %}low{% endif %}"
+                    >
+                      {% if project.match_score|default:0 >= 80 %}
+                        <img
+                          src="{% static 'img/heart-filled.svg' %}"
+                          alt=""
+                        />
+                      {% else %}
+                        <img
+                          src="{% static 'img/good-one.svg' %}"
+                          alt=""
+                        />
+                      {% endif %}
+
+                      <p>{{ project.match_score|default:0 }}%</p>
+                    </div>
+
+                    <p class="due-date">
+                      {% if project.deadline_d_day > 0 %}
+                        마감 D-{{ project.deadline_d_day }}
+                      {% elif project.deadline_d_day == 0 %}
+                        마감 D-DAY
+                      {% else %}
+                        마감
+                      {% endif %}
+                    </p>
+                  {% endif %}
+                </section>
+              </article>
+
+            {% if view_type == 'warmup' %}
+              </div>
+            {% else %}
+              </a>
+            {% endif %}
+
           {% empty %}
-          <div class="no-projects" style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
-            <p style="font-size: 16px; color: #666;">
-              {% if view_type == 'warmup' %}
-              아직 등록된 워밍업 프로젝트가 없어요.
-              {% else %}
-              아직 등록된 실무 프로젝트가 없어요.
-              {% endif %}
-            </p>
-          </div>
+            <div
+              class="no-projects"
+              style="grid-column: 1/-1; text-align: center; padding: 60px 20px;"
+            >
+              <p style="font-size: 16px; color: #666;">
+                {% if view_type == 'warmup' %}
+                  아직 등록된 워밍업 프로젝트가 없어요.
+                {% else %}
+                  아직 등록된 실무 프로젝트가 없어요.
+                {% endif %}
+              </p>
+            </div>
           {% endfor %}
         </div>
 

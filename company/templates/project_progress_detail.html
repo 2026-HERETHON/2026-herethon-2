@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>프로젝트 상세 보기</title>
+    <link rel="stylesheet" href="../../static/css/colorpalette.css" />
+    <link rel="stylesheet" href="../../static/css/global.css" />
+    <link rel="stylesheet" href="../../static/css/project_manage_common.css" />
+    <link
+      rel="stylesheet"
+      href="../../static/css/project_progress_detail.css"
+    />
+  </head>
+  <body>
+    <!-- 헤더 영역 -->
+    <header>
+      <div class="header-logo">
+        <img
+          class="header-logo-img"
+          src="../../static/img/logo.svg"
+          alt="logo"
+        />
+        <div class="header-logo-text">
+          <span class="logo-desc">당신의 두 번째 커리어 브릿지</span>
+          <span class="logo-brand"
+            ><span class="RE">RE</span><span class="colon">:</span>Bridge</span
+          >
+        </div>
+      </div>
+      <div class="header-profile">
+        <!-- TPL:  기업 프로필 이름 -->
+        <a>주</a>
+      </div>
+    </header>
+
+    <!-- 왼쪽 사이드바 -->
+    <nav class="sidebar-nav">
+      <!-- TPL: href 실제 url 패턴으로 변경 필요 -->
+      <!-- TPL: 현재 active 클래스 하드 코딩함. 연동 시 현재 페이지의 active 판단 로직으로 교체 필요  -->
+      <a href="project_create.html" class="nav-menu" data-label="공고 등록">
+        공고 등록
+      </a>
+      <a
+        href="project_manage.html"
+        class="nav-menu active"
+        data-label="프로젝트 관리하기"
+      >
+        프로젝트 관리하기
+      </a>
+      <a href="#" class="nav-menu" data-label="기업 정보"> 기업 정보 </a>
+    </nav>
+
+    <!-- 프로젝트 관리하기 영역 -->
+    <div class="project-manage">
+      <!-- 탭 메뉴 영역 -->
+      <div class="nav-group">
+        <nav class="tab-nav">
+          <a
+            href="project_manage.html?tab=recruiting"
+            class="nav-tab active"
+            data-tab="recruiting"
+            >모집 중인 프로젝트</a
+          >
+          <a
+            href="project_manage.html?tab=progress"
+            class="nav-tab"
+            data-tab="progress"
+            >진행 중인 프로젝트</a
+          >
+          <a
+            href="project_manage.html?tab=completed"
+            class="nav-tab"
+            data-tab="completed"
+            >완료된 프로젝트</a
+          >
+        </nav>
+
+        <div class="divider"></div>
+      </div>
+
+      <!-- 메인 프로젝트 상세 보기 영역 -->
+      <!-- 프로젝트 관리하기 - 진행중 - 프로젝트 상세 보기 -->
+      <main class="project-detail-main">
+        <section class="detail-header">
+          <a href="project_manage.html?tab=progress" class="back">← 목록으로</a>
+          <div class="header-group">
+            <div class="header-left">
+              <p class="project-status">진행중</p>
+              <!-- TPL: 프로젝트명 -->
+              <p class="project-title">스타트업 뉴스레터 기획 및 발행</p>
+              <!-- TPL: 프로젝트 정보 -->
+              <p class="project-info">
+                콘텐츠 기획 · 재택 · 주 12시간 · 보수 금액 23,000원 · 2026.06.20
+                시작 · D-18
+              </p>
+            </div>
+            <div class="header-right">
+              <a href="project_edit.html" class="btn project-edit-btn">수정</a>
+              <button class="btn project-delete-btn">삭제</button>
+              <button class="project-close-btn">프로젝트 마감하기</button>
+            </div>
+          </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="detail-body">
+          <!-- 프로젝트 내용 -->
+          <div class="project-group">
+            <p class="title">프로젝트 개요</p>
+            <!-- TPL: 프로젝트 개요 -->
+            <div class="project-des">
+              주 2회 발행되는 스타트업 뉴스레터의 콘텐츠 기획과 카피라이팅을
+              담당합니다. 매주 화/금 발행 예정입니다.
+            </div>
+            <p class="subtitle">근무 조건</p>
+            <!-- TPL: 프로젝트 정보 -->
+            <p class="work-condition-text">
+              재택 · 주 12시간 · 화·금 오전 협업 미팅
+            </p>
+            <!-- TPL: 프로젝트 시작일, 마감일 -->
+            <p class="work-condition-text date">
+              시작일 2026.06.20 · 종료 예정 2026.09.20
+            </p>
+          </div>
+
+          <!-- 참여 인원 -->
+          <div class="participant-group">
+            <!-- TPL: 프로젝트 참여자 수 -->
+            <p class="title">참여 인원 (1명)</p>
+            <div class="participant-card">
+              <div class="card-top">
+                <!-- TPL: 참여자 프로필 -->
+                <div class="participant-profile">김</div>
+                <div class="participant-detail">
+                  <!-- TPL: 참여자 이름 -->
+                  <p class="participant-name">김리브</p>
+                  <!-- TPL: 참여자 설명 -->
+                  <p class="participant-des">콘텐츠 기획 담당</p>
+                </div>
+              </div>
+              <!-- TPL: 참여자 프로젝트 참여일, 매칭률 -->
+              <div class="card-middle">2026.06.20 합류 · 매칭률 92%</div>
+              <div class="card-bottom">
+                <button class="send-msg-btn">메세지 보내기</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 진행 업데이트 -->
+        <section class="detail-footer">
+          <p class="title">진행 업데이트</p>
+          <div class="update-list">
+            <!-- TPL: 업데이트 내역 반복. article이 하나의 업데이트 카드 -->
+            <article class="update-card">
+              <!-- TPL: 업데이트 제목(내용?) -->
+              <p class="subtitle">1주차 뉴스레터 초안 전달 완료</p>
+              <!-- TPL: 업데이트 날짜 -->
+              <p class="update-date">2026.06.24</p>
+            </article>
+            <article class="update-card">
+              <p class="subtitle">2주차 뉴스레터 초안 전달 완료</p>
+              <p class="update-date">2026.06.27</p>
+            </article>
+            <article class="update-card">
+              <p class="subtitle">3주차 뉴스레터 초안 전달 완료</p>
+              <p class="update-date">2026.07.03</p>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- 공고 삭제 모달 -->
+    <div class="modal-overlay" id="project-delete-modal" style="display: none">
+      <div class="modal-box">
+        <div class="modal-body">
+          <div class="warning-icon">
+            <img src="../../static/img/warning-icon.svg" alt="warning" />
+          </div>
+          <p class="modal-title">이 공고를 삭제할까요?</p>
+          <p class="modal-caption">
+            삭제하면 참여 인원과의 대화, 진행 기록이 모두 함께 삭제되며 복구할
+            수 없어요.
+          </p>
+        </div>
+
+        <div class="modal-footer">
+          <button id="delete-cancel-btn">취소</button>
+          <!-- TPL: 삭제한 뒤 진행 중 프로젝트 목록으로 돌아가고 프로젝트 목록 갱신 ? -->
+          <button id="delete-btn">삭제하기</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="../../static/js/project_progress_detail.js"></script>
+  </body>
+</html>

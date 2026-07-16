@@ -1,0 +1,644 @@
+/* 공통 요소 (색상, 사이즈 등은 개별 설정) */
+/* 폰트 크기 */
+.title {
+  color: #1f2937;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+/* 색상, 폰트 크기 */
+.caption {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+/* 배경색, 색상, 패딩, 폰트 크기 */
+.project-status {
+  text-align: center;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  border-radius: 999px;
+}
+
+/* 폰트 크기 */
+.project-title {
+  color: #1f2937;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+/* 폰트 크기, 색상 */
+.project-info {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+/* 폰트 크기, 색상 */
+.project-des {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+/* 패딩 */
+.tab-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.31rem;
+}
+
+/* 패딩, gap 등 */
+.card-field {
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+
+  display: flex;
+}
+
+/* 폰트 크기 */
+.participant-profile {
+  width: 2rem;
+  height: 2rem;
+  background-color: #f3f4f6;
+  border: 1px solid #93c5fd;
+  border-radius: 50%;
+
+  color: #1d4ed8;
+  text-align: center;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 메인 프로젝트 관리하기 영역 */
+/* 모집중 탭 */
+#tab-recruiting {
+  padding: 1.19rem 2.5rem 1.19rem 1.25rem;
+}
+
+#tab-recruiting .tab-header {
+  transform: translateX(0.5rem);
+}
+
+#tab-recruiting .title {
+  font-size: 1.125rem;
+}
+
+#tab-recruiting .caption {
+  color: #6b7280;
+  font-size: 0.75rem;
+}
+
+.recruiting-project-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.69rem;
+}
+
+#tab-recruiting .card-field {
+  padding: 1rem 1.25rem 1.25rem;
+  justify-content: space-between;
+}
+
+.recruiting-project-detail {
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* 프로젝트 상태 - 모집중 OPEN */
+#tab-recruiting .OPEN .project-status {
+  background-color: #eff6ff;
+  color: #1e40af;
+  padding: 0.25rem 0.91rem 0.31rem;
+  font-size: 0.6875rem;
+}
+
+/* 프로젝트 상태 - 선발중 SELECTING */
+#tab-recruiting .SELECTING .project-status {
+  background-color: #fef3c7;
+  color: #b45309;
+  padding: 0.25rem 0.91rem 0.31rem;
+  font-size: 0.6875rem;
+}
+
+#tab-recruiting .project-title {
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+#tab-recruiting .project-info {
+  color: #6b7280;
+  font-size: 0.75rem;
+  margin-top: 0.44rem;
+}
+
+#tab-recruiting .project-des {
+  color: #4b5563;
+  font-size: 0.75rem;
+  margin-top: 0.81rem;
+}
+
+#tab-recruiting .SELECTING .project-des {
+  color: #b45309;
+}
+
+.recruiting-project-btns {
+  align-self: flex-end;
+  display: flex;
+  gap: 1.25rem;
+  height: 2.5rem;
+}
+
+.applicant-btn {
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+
+  color: #4b5563;
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.start-project-btn {
+  background-color: #3b82f6;
+  border-radius: 0.5rem;
+
+  color: #fff;
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 12.5rem;
+  cursor: pointer;
+}
+
+/* 지원자 확인 버튼 - 모집 중 OPEN */
+#tab-recruiting .OPEN .applicant-btn {
+  width: 12.5rem;
+}
+
+/* 프로젝트 시작 버튼 - 모집 중 OPEN */
+#tab-recruiting .OPEN .start-project-btn {
+  display: none;
+}
+
+/* 지원자 확인 버튼 - 선발중 SELECTING */
+#tab-recruiting .SELECTING .applicant-btn {
+  width: 10rem;
+}
+
+.recruiting-description {
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 0.78125rem;
+  padding: 1.31rem 1.5rem 1.25rem;
+
+  color: #1e3a8a;
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  margin-top: 1.5rem;
+}
+
+/* 진행중 탭 */
+#tab-progress {
+  padding: 1.19rem 1.37rem;
+}
+
+#tab-progress .tab-header {
+  transform: translateX(0.69rem);
+}
+
+#tab-progress .title {
+  font-size: 1rem;
+}
+
+#tab-progress .caption {
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+.progress-project-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.19rem;
+  margin-top: 1.25rem;
+}
+
+#tab-progress .card-field {
+  padding-left: 1.44rem;
+  padding-right: 1.69rem;
+}
+
+.progress-project-detail {
+  flex: 0 0 40.31rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1.12rem 0;
+}
+
+#tab-progress .project-title {
+  font-size: 0.9375rem;
+}
+
+#tab-progress .project-status {
+  color: #b45309;
+  background-color: #fef3c7;
+  padding: 0.25rem 0.63rem 0.31rem;
+  margin-top: 0.56rem;
+  font-size: 0.6875rem;
+}
+
+#tab-progress .project-info {
+  color: #6b7280;
+  font-size: 0.75rem;
+  margin-top: 0.44rem;
+}
+
+#tab-progress .project-des {
+  color: #9ca3af;
+  font-size: 0.6875rem;
+  margin-top: 0.44rem;
+  transform: translateX(-0.13rem);
+}
+
+.progress-project-participant {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.87rem;
+  padding: 1.44rem 0 1.63rem;
+}
+
+.participant-title {
+  color: #6b7280;
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  transform: translateX(-0.13rem);
+}
+
+.participant-group {
+  display: flex;
+  gap: 0.81rem;
+  justify-content: flex-start;
+}
+
+.participant {
+  display: flex;
+  flex-direction: column;
+  gap: 0.31rem;
+  align-items: center;
+}
+
+#tab-progress .participant-profile {
+  font-size: 0.625rem;
+}
+
+.participant-name {
+  color: #6b7280;
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.625rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.progress-project-btns {
+  display: flex;
+  gap: 0.63rem;
+  height: 2.25rem;
+
+  flex: 0 0 auto;
+  align-self: center;
+}
+
+.detail-btn {
+  width: 5.625rem;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+
+  color: #4b5563;
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.complete-project-btn {
+  width: 7.5rem;
+  background-color: #fff;
+  border: 1px solid #ef4444;
+  border-radius: 0.5rem;
+
+  color: #ef4444;
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 완료 탭 */
+#tab-completed {
+  padding: 1.69rem 4.19rem 1.69rem 2.06rem;
+}
+
+#tab-completed .title {
+  font-size: 1rem;
+}
+
+#tab-completed .caption {
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+.completed-project-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 2.56rem;
+}
+
+#tab-completed .completed-project-list .card-field {
+  padding-left: 1.37rem;
+  padding-right: 2.25rem;
+  justify-content: space-between;
+}
+
+.completed-project-detail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 0.94rem;
+  padding-bottom: 0.81rem;
+}
+
+#tab-completed .project-title {
+  font-size: 0.875rem;
+}
+
+#tab-completed .project-info {
+  margin-top: 0.56rem;
+  color: #9ca3af;
+  font-size: 0.6875rem;
+}
+
+#tab-completed .project-status {
+  color: #059669;
+  background-color: #d1fae5;
+  padding: 0.31rem 0.87rem 0.37rem;
+  font-size: 0.75rem;
+  align-self: center;
+}
+
+#tab-completed .divider {
+  height: 0;
+  border-bottom: 1px solid #e5e7eb;
+  margin: 3.19rem 0 0 0.31rem;
+}
+
+#tab-completed .tab-body .title {
+  font-size: 0.9375rem;
+  margin-top: 1.5rem;
+}
+
+.participant-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.56rem;
+}
+
+#tab-completed .participant-list .card-field {
+  padding: 0.69rem 1.06rem 0.75rem 1rem;
+  align-items: center;
+}
+
+#tab-completed .participant-profile {
+  flex: 0 0 auto;
+  font-size: 0.6875rem;
+}
+
+.participant-detail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.31rem;
+  margin-left: 0.81rem;
+}
+
+.participant-name-second {
+  color: #111827;
+  font-family: Inter;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.participant-des {
+  color: #9ca3af;
+  font-family: Inter;
+  font-size: 0.6875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.open-returnship-btn {
+  flex: 0 0 auto;
+  width: 6.75rem;
+  height: 1.9375rem;
+  background-color: #2563eb;
+  border-radius: 0.45rem;
+
+  color: #fff;
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 리턴십 제안 모달 */
+.modal-overlay {
+  position: fixed;
+  inset: 0; /* top:0, right:0, bottom:0, left:0 축약 */
+  background-color: rgba(0, 0, 0, 0.4);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 1000;
+}
+
+.modal-box {
+  background-color: var(--color-bg-default);
+  border: 1px solid var(--color-border-light);
+  border-radius: 1rem;
+  width: 20rem;
+  height: 18.125rem;
+  padding: 1.69rem 1.87rem 2.13rem;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  position: relative;
+  align-self: flex-start;
+}
+
+.modal-header .title {
+  font-size: 0.9375rem;
+}
+
+.close-modal-btn {
+  position: absolute;
+  top: -0.56rem;
+  right: -12rem;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.63rem;
+  margin-top: 1.06rem;
+}
+
+input {
+  width: 100%;
+  height: 2.625rem;
+  outline: none;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  padding: 0.81rem 1rem;
+
+  color: #4b5563;
+  font-family: Inter;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+textarea {
+  width: 100%;
+  height: 5rem;
+  padding: 0.63rem 1rem;
+
+  outline: none;
+  resize: none;
+  overflow-y: auto;
+  scrollbar-width: none;
+
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+
+  color: #4b5563;
+  font-family: Inter;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+.modal-footer {
+  margin-top: 1.12rem;
+}
+
+.submit-returnship-btn {
+  width: 100%;
+  height: 2.75rem;
+  background-color: #3b82f6;
+  border-radius: 0.5rem;
+
+  color: #fff;
+  text-align: center;
+  font-family: Inter;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

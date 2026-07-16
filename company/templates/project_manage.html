@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>프로젝트 관리하기</title>
+    <link rel="stylesheet" href="../../static/css/colorpalette.css" />
+    <link rel="stylesheet" href="../../static/css/global.css" />
+    <link rel="stylesheet" href="../../static/css/project_manage_common.css" />
+    <link rel="stylesheet" href="../../static/css/project_manage.css" />
+  </head>
+  <body>
+    <!-- 헤더 영역 -->
+    <header>
+      <div class="header-logo">
+        <img
+          class="header-logo-img"
+          src="../../static/img/logo.svg"
+          alt="logo"
+        />
+        <div class="header-logo-text">
+          <span class="logo-desc">당신의 두 번째 커리어 브릿지</span>
+          <span class="logo-brand"
+            ><span class="RE">RE</span><span class="colon">:</span>Bridge</span
+          >
+        </div>
+      </div>
+      <div class="header-profile">
+        <!-- TPL:  기업 프로필 이름 -->
+        <a>주</a>
+      </div>
+    </header>
+
+    <!-- 왼쪽 사이드바 -->
+    <nav class="sidebar-nav">
+      <!-- TPL: href 실제 url 패턴으로 변경 필요 -->
+      <!-- TPL: 현재 active 클래스 하드 코딩함. 연동 시 현재 페이지의 active 판단 로직으로 교체 필요  -->
+      <a href="project_create.html" class="nav-menu" data-label="공고 등록">
+        공고 등록
+      </a>
+      <a
+        href="project_manage.html"
+        class="nav-menu active"
+        data-label="프로젝트 관리하기"
+      >
+        프로젝트 관리하기
+      </a>
+      <a href="#" class="nav-menu" data-label="기업 정보"> 기업 정보 </a>
+    </nav>
+
+    <!-- 프로젝트 관리하기 영역 -->
+    <div class="project-manage">
+      <!-- 탭 메뉴 영역 -->
+      <div class="nav-group">
+        <nav class="tab-nav">
+          <a href="?tab=recruiting" class="nav-tab active" data-tab="recruiting"
+            >모집 중인 프로젝트</a
+          >
+          <a href="?tab=progress" class="nav-tab" data-tab="progress"
+            >진행 중인 프로젝트</a
+          >
+          <a href="?tab=completed" class="nav-tab" data-tab="completed"
+            >완료된 프로젝트</a
+          >
+        </nav>
+
+        <div class="divider"></div>
+      </div>
+
+      <!-- 메인 프로젝트 관리하기 영역 -->
+      <main class="project-manage-main">
+        <!-- 모집중 탭 -->
+        <section class="tab-content" id="tab-recruiting" style="display: flex">
+          <div class="tab-header">
+            <p class="title">모집 중인 프로젝트</p>
+            <p class="caption">
+              마감일이 지나면 자동으로 '선발중' 상태로 전환돼요
+            </p>
+          </div>
+
+          <div class="tab-body">
+            <!-- 모집 중인 프로젝트 리스트 -->
+            <div class="recruiting-project-list">
+              <!-- TPL: 모집 중 프로젝트 카드 아이템 article 반복-->
+              <!-- TPL: 프로젝트 상태(모집중/선발중)에 따라 프로젝트 설명(project-des), 버튼 스타일(applicant-btn, start-project-btn) 변경 -->
+              <!-- TPL: 현재 더미 데이터에서는 모집중 OPEN, 선발중 SELECTING 클래스로 설정 -->
+              <article class="card-field OPEN">
+                <!-- 프로젝트 상세 설명 -->
+                <div class="recruiting-project-detail">
+                  <!-- TPL: 프로젝트 상태 -->
+                  <p class="project-status">모집중</p>
+                  <!-- TPL: 프로젝트명 -->
+                  <p class="project-title">온라인 커뮤니티 운영 및 회원 응대</p>
+                  <!-- TPL: 프로젝트 정보 -->
+                  <p class="project-info">
+                    (주)맘스토리 · 커뮤니티운영 · 재택 · 주 8시간 · 보수 금액
+                    20,000원 · 커뮤니티 운영, 고객 응대
+                  </p>
+                  <!-- TPL: 프로젝트 설명 -->
+                  <p class="project-des">지원자 2명 · 마감까지 D-3</p>
+                </div>
+
+                <!-- 프로젝트 카드 버튼 그룹 -->
+                <div class="recruiting-project-btns">
+                  <!-- TPL: 지원자 확인하기 버튼에 지원자 확인 HTML 연결 필요 -->
+                  <a href="project_applicants.html" class="applicant-btn"
+                    >지원자 확인하기</a
+                  >
+                  <a class="start-project-btn">프로젝트 시작하기</a>
+                </div>
+              </article>
+
+              <article class="card-field SELECTING">
+                <div class="recruiting-project-detail">
+                  <p class="project-status">선발중</p>
+                  <p class="project-title">온라인 커뮤니티 운영 및 회원 응대</p>
+                  <p class="project-info">
+                    (주)맘스토리 · 커뮤니티운영 · 재택 · 주 8시간 · 보수 금액
+                    20,000원 · 커뮤니티 운영, 고객 응대
+                  </p>
+                  <p class="project-des">
+                    마감 완료 · 지원자 4명 중 선발이 필요해요
+                  </p>
+                </div>
+
+                <div class="recruiting-project-btns">
+                  <a href="project_applicants.html" class="applicant-btn"
+                    >지원자 확인하기</a
+                  >
+                  <a class="start-project-btn">프로젝트 시작하기</a>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <!-- 프로젝트 시작하기 설명 -->
+          <div class="tab-footer">
+            <p class="recruiting-description">
+              💡 모집 마감일이 지나기 전에는 '프로젝트 시작하기' 버튼이 보이지
+              않아요. 마감 후 '선발중' 상태로 바뀌고, 지원자를 수락하면 시작할
+              수 있어요.
+            </p>
+          </div>
+        </section>
+
+        <!-- 진행중 탭 -->
+        <section class="tab-content" id="tab-progress" style="display: none">
+          <div class="tab-header">
+            <p class="title">진행 중인 프로젝트</p>
+            <p class="caption">
+              현재 참여자와 함께 진행 중인 프로젝트를 확인하세요
+            </p>
+          </div>
+
+          <div class="tab-body">
+            <!-- 진행 중인 프로젝트 리스트 -->
+            <div class="progress-project-list">
+              <!-- TPL: 진행 중 프로젝트 카드 아이템 article 반복-->
+              <article class="card-field">
+                <!-- 프로젝트 상세 설명 -->
+                <div class="progress-project-detail">
+                  <!-- TPL: 프로젝트명 -->
+                  <p class="project-title">스타트업 뉴스레터 기획 및 발행</p>
+                  <!-- TPL: 프로젝트 상태(진행중 고정) -->
+                  <p class="project-status">진행중</p>
+                  <!-- TPL: 프로젝트 정보 -->
+                  <p class="project-info">
+                    콘텐츠 기획 · 재택 · 주 12시간 · 보수 금액 23,000원
+                  </p>
+                  <!-- TPL: 프로젝트 설명 -->
+                  <p class="project-des">2026.06.20 시작 · D-18</p>
+                </div>
+
+                <!-- 프로젝트 참여 인원 -->
+                <div class="progress-project-participant">
+                  <p class="participant-title">참여 인원</p>
+                  <div class="participant-group">
+                    <!-- TPL: 프로젝트 참여자 article 반복-->
+                    <article class="participant">
+                      <!-- TPL: 프로젝트 참여자 프로필 -->
+                      <div class="participant-profile">김</div>
+                      <!-- TPL: 프로젝트 참여자 이름 -->
+                      <p class="participant-name">김리브</p>
+                    </article>
+                  </div>
+                </div>
+
+                <!-- 프로젝트 카드 버튼 그룹 -->
+                <div class="progress-project-btns">
+                  <a href="project_progress_detail.html" class="detail-btn"
+                    >상세 보기</a
+                  >
+                  <button class="complete-project-btn">
+                    프로젝트 마감하기
+                  </button>
+                </div>
+              </article>
+
+              <article class="card-field">
+                <div class="progress-project-detail">
+                  <p class="project-title">스타트업 뉴스레터 기획 및 발행</p>
+                  <p class="project-status">진행중</p>
+                  <p class="project-info">
+                    콘텐츠 기획 · 재택 · 주 12시간 · 보수 금액 23,000원
+                  </p>
+                  <p class="project-des">2026.06.28 시작 · D-10</p>
+                </div>
+
+                <div class="progress-project-participant">
+                  <p class="participant-title">참여 인원</p>
+                  <div class="participant-group">
+                    <article class="participant">
+                      <div class="participant-profile">김</div>
+                      <p class="participant-name">김리브</p>
+                    </article>
+                    <article class="participant">
+                      <div class="participant-profile">박</div>
+                      <p class="participant-name">박하늘</p>
+                    </article>
+                  </div>
+                </div>
+
+                <div class="progress-project-btns">
+                  <a href="project_progress_detail.html" class="detail-btn"
+                    >상세 보기</a
+                  >
+                  <button class="complete-project-btn">
+                    프로젝트 마감하기
+                  </button>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- 완료 탭 -->
+        <section class="tab-content" id="tab-completed" style="display: none">
+          <div class="tab-header">
+            <p class="title">완료된 프로젝트</p>
+            <p class="caption">
+              완료한 프로젝트를 클릭해 참여 인원을 확인하세요
+            </p>
+          </div>
+
+          <div class="tab-body">
+            <!-- 완료된 프로젝트 리스트 -->
+            <div class="completed-project-list">
+              <!-- TPL: 완료 프로젝트 카드 아이템 article 반복-->
+              <article class="card-field">
+                <!-- 프로젝트 상세 설명 -->
+                <div class="completed-project-detail">
+                  <!-- TPL: 프로젝트명 -->
+                  <p class="project-title">
+                    커머스 앱 상세페이지 UX 기획 및 문구 교정
+                  </p>
+                  <!-- TPL: 프로젝트 정보 -->
+                  <p class="project-info">
+                    콘텐츠 기획 · 재택 · 주 12시간 · 보수 금액 23,000원 ·
+                    2026.05.02 ~ 2026.06.15
+                  </p>
+                </div>
+
+                <!-- 프로젝트 상태(완료 고정) -->
+                <div class="project-status">완료</div>
+              </article>
+
+              <article class="card-field">
+                <div class="completed-project-detail">
+                  <!-- TPL: 프로젝트명 -->
+                  <p class="project-title">
+                    커머스 앱 상세페이지 UX 기획 및 문구 교정
+                  </p>
+                  <!-- TPL: 프로젝트 정보 -->
+                  <p class="project-info">
+                    콘텐츠 기획 · 재택 · 주 12시간 · 보수 금액 23,000원 ·
+                    2026.05.02 ~ 2026.06.15
+                  </p>
+                </div>
+
+                <div class="project-status">완료</div>
+              </article>
+            </div>
+
+            <div class="divider"></div>
+            <p class="title">완료된 프로젝트 참여 인원</p>
+
+            <!-- 완료된 프로젝트 참여 인원 리스트 -->
+            <div class="participant-list">
+              <!-- TPL: 완료 프로젝트 참여자 article 반복-->
+              <article class="card-field">
+                <!-- TPL: 참여자 프로필 -->
+                <div class="participant-profile">김</div>
+
+                <div class="participant-detail">
+                  <!-- TPL: 참여자 이름 -->
+                  <p class="participant-name-second">김리브</p>
+                  <!-- TPL: 참여자 설명 -->
+                  <p class="participant-des">커머스 상세페이지 UX 기획 완료</p>
+                </div>
+
+                <button class="open-returnship-btn">리턴십 제안하기</button>
+              </article>
+
+              <article class="card-field">
+                <div class="participant-profile">박</div>
+                <div class="participant-detail">
+                  <p class="participant-name-second">박하늘</p>
+                  <p class="participant-des">커머스 상세페이지 UX 기획 완료</p>
+                </div>
+                <button class="open-returnship-btn">리턴십 제안하기</button>
+              </article>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- 리턴십 제안 모달 (리턴십 제안하기 버튼 클릭 시 출력) -->
+      <div class="modal-overlay" id="returnship-modal" style="display: none">
+        <div class="modal-box">
+          <div class="modal-header">
+            <span class="title">리턴십 제안</span>
+            <button class="close-modal-btn">
+              <img src="../../static/img/close.svg" alt="close" />
+            </button>
+          </div>
+
+          <!-- TPL: 리턴십 제안 보내기 폼 -->
+          <div class="modal-body">
+            <!-- TPL: 제안 직무 입력창 name, type 확인 필요 -->
+            <input
+              type="text"
+              name="returnship-title"
+              id="returnship-title"
+              placeholder="제안 직무를 입력하세요"
+              required
+            />
+            <!-- TPL: 제안 메세지 입력창 name, type 확인 필요 -->
+            <textarea
+              name="returnship-detail"
+              id="returnship-detail"
+              placeholder="제안 내용을 입력하세요"
+              required
+            ></textarea>
+          </div>
+
+          <div class="modal-footer">
+            <button class="submit-returnship-btn" disabled>제안 보내기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../../static/js/project_manage.js"></script>
+  </body>
+</html>
