@@ -134,12 +134,12 @@
                         · {{ project.get_weekly_hours_display }}
                         · 보수 금액 {{ project.compensation_amount }}원
 
-                        {% if project.required_skill_names %}
-                          ·
-                          {% for skill_name in project.required_skill_names %}
-                            {{ skill_name }}{% if not forloop.last %}, {% endif %}
-                          {% endfor %}
-                        {% endif %}
+                          {% if project.project_skills.all %}
+                            ·
+                            {% for relation in project.project_skills.all %}
+                              {{ relation.skill.name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                          {% endif %}
                       </p>
 
                       {% if project.status == 'OPEN' %}
