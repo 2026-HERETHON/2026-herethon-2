@@ -223,9 +223,9 @@
 
                   <!-- 매칭률 -->
                   <div
-                    class="matching-rate-item {% if application.match_score >= 80 %}heart{% else %}good{% endif %}"
+                    class="matching-rate-item {% if application.match_score >= 70 %}heart{% else %}good{% endif %}"
                   >
-                    {% if application.match_score >= 80 %}
+                    {% if application.match_score >= 70 %}
                       <img
                         class="matching-state-img"
                         src="{% static 'img/heart-filled.svg' %}"
@@ -240,7 +240,7 @@
                     {% endif %}
 
                     <span
-                      class="matching-rate {% if application.match_score >= 80 %}heart{% else %}good{% endif %}"
+                      class="matching-rate {% if application.match_score >= 70 %}heart{% else %}good{% endif %}"
                     >
                       {{ application.match_score }}%
                     </span>

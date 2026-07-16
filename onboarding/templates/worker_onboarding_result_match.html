@@ -64,7 +64,7 @@
           </h2>
 
           <small class="match-desc">
-            매칭률 80% 이상인 프로젝트가
+            매칭률 70% 이상인 프로젝트가
             {{ high_match_count }}개 있어요
           </small>
 
@@ -141,7 +141,7 @@
 
               {% if is_warmup_mode and project.description %}
                 <p class="project-description">
-                  {{ project.description|truncatechars:80 }}
+                  {{ project.description|truncatechars:70 }}
                 </p>
               {% endif %}
 
