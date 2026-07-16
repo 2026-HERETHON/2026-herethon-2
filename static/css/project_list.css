@@ -179,6 +179,7 @@ fieldset {
 .bar-left {
   gap: 8px;
   margin-bottom: 12px;
+  width: 300px;
 }
 
 .bar-left h4 {
@@ -193,6 +194,7 @@ fieldset {
   font-size: 0.8125rem;
   font-weight: 400;
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
 /* 프로젝트 정렬 */
@@ -392,5 +394,3 @@ a {
   font-weight: 400;
   color: var(--color-text-secondary);
 }
-
-

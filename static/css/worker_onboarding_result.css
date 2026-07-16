@@ -126,6 +126,7 @@ article {
   height: 50px;
   margin: 0px 16px;
   color: var(--color-primary);
+  transform: scale(3.5);
 }
 .next-btn {
   white-space: nowrap;

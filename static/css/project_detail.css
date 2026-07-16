@@ -506,6 +506,12 @@ section > ul {
   color: var(--color-text-disabled);
 }
 
+.btn-submit.attached {
+  border: 1px solid var(--color-bg-guide);
+  background-color: var(--color-bg-guide);
+  color: var(--color-text-primary);
+}
+
 .btn-wrap button:hover {
   background-color: var(--color-primary-light);
   border: 1px solid var(--color-primary);
@@ -557,6 +563,7 @@ section > ul {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
   height: 40px;
   margin: 20px 0px;
 
@@ -571,4 +578,63 @@ section > ul {
 
 .hidden {
   display: none;
+}
+
+/* 파일별 아이콘 */
+
+.file-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 20px;
+  padding: 0 4px;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  margin-right: 8px;
+  text-transform: uppercase;
+  background-color: #999; /* 기본값 */
+}
+
+.file-icon::before {
+  content: attr(data-ext);
+}
+
+/* 확장자별 색상 */
+.file-icon[data-ext="pdf"] {
+  background-color: #e5252a;
+}
+.file-icon[data-ext="ppt"],
+.file-icon[data-ext="pptx"] {
+  background-color: var(--color-primary);
+}
+.file-icon[data-ext="jpg"],
+.file-icon[data-ext="jpeg"] {
+  background-color: #ff67cc;
+}
+.file-icon[data-ext="png"] {
+  background-color: #ff67cc;
+}
+
+#fileList li {
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.file-info {
+  display: flex;
+  justify-content: center;
+  vertical-align: middle;
+  flex-direction: column;
+  gap: 2px;
+  margin-right: auto;
+}
+
+.file-meta {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  margin: 0 !important;
 }

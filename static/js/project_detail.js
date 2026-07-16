@@ -8,18 +8,12 @@ const fileInput = document.getElementById("fileInput");
 const fileList = document.getElementById("fileList");
 const attachCount = document.querySelector(".attach-count");
 const plusFile = document.querySelector(".plus-file");
+const submitFileBtn = document.querySelector(".btn-submit");
 
 const MAX_FILES = 5;
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
 
-const allowedExtensions = [
-  ".pdf",
-  ".ppt",
-  ".pptx",
-  ".jpg",
-  ".jpeg",
-  ".png",
-];
+const allowedExtensions = [".pdf", ".ppt", ".pptx", ".jpg", ".jpeg", ".png"];
 
 let files = []; // 첨부된 파일들 저장
 
@@ -52,11 +46,7 @@ modal?.addEventListener("click", (event) => {
 });
 
 document.addEventListener("keydown", (event) => {
-  if (
-    event.key === "Escape" &&
-    modal &&
-    !modal.classList.contains("hidden")
-  ) {
+  if (event.key === "Escape" && modal && !modal.classList.contains("hidden")) {
     closeModal();
   }
 });
@@ -99,6 +89,13 @@ function getExtension(filename) {
   }
 
   return filename.slice(lastDotIndex).toLowerCase();
+}
+
+function formatFileSize(bytes) {
+  if (bytes < 1024 * 1024) {
+    return `${Math.round(bytes / 1024)}KB`;
+  }
+  return `${(bytes / (1024 * 1024)).toFixed(1)}MB`;
 }
 
 function isDuplicateFile(newFile) {
@@ -170,22 +167,37 @@ function renderFileList() {
   files.forEach((file, index) => {
     const item = document.createElement("li");
 
+    //파일 아이콘
+    const icon = document.createElement("span");
+    icon.className = "file-icon";
+    icon.dataset.ext = getExtension(file.name).slice(1);
+
+    // 파일명 + 메타정보 묶음
+    const fileInfo = document.createElement("div");
+    fileInfo.className = "file-info";
+
     const filename = document.createElement("span");
+    filename.className = "file-name";
     filename.textContent = file.name;
+
+    const fileMeta = document.createElement("small");
+    fileMeta.className = "file-meta";
+    fileMeta.textContent = `${formatFileSize(file.size)} · 업로드 완료`;
+
+    fileInfo.appendChild(filename);
+    fileInfo.appendChild(fileMeta);
 
     const removeButton = document.createElement("button");
     removeButton.type = "button";
     removeButton.textContent = "×";
-    removeButton.setAttribute(
-      "aria-label",
-      `${file.name} 삭제`
-    );
+    removeButton.setAttribute("aria-label", `${file.name} 삭제`);
 
     removeButton.addEventListener("click", () => {
       removeFile(index);
     });
 
-    item.appendChild(filename);
+    item.appendChild(icon);
+    item.appendChild(fileInfo);
     item.appendChild(removeButton);
     fileList.appendChild(item);
   });
@@ -195,9 +207,11 @@ function renderFileList() {
   if (files.length > 0) {
     attachBox?.classList.add("hidden");
     plusFile?.classList.remove("hidden");
+    submitFileBtn?.classList.add("attached");
   } else {
     attachBox?.classList.remove("hidden");
     plusFile?.classList.add("hidden");
+    submitFileBtn?.classList.remove("attached");
   }
 
   if (files.length >= MAX_FILES) {
