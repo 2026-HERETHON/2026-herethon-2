@@ -14,7 +14,6 @@ MATCH_WEIGHTS = {
 }
 
 
-# 경력 기간 비교 순위
 CAREER_RANK = {
     'ONE_TO_THREE': 1,
     'THREE_TO_FIVE': 2,
@@ -23,7 +22,6 @@ CAREER_RANK = {
 }
 
 
-# 주당 근무 가능 시간 비교 순위
 WEEKLY_HOURS_RANK = {
     'UNDER_15': 1,
     'FIFTEEN_TO_25': 2,
@@ -32,7 +30,7 @@ WEEKLY_HOURS_RANK = {
 
 
 def _weighted_ratio(matched_count, total_count, weight):
-    # 일치한 항목의 비율에 따라 점수를 계산 - 프로젝트가 해당 조건을 지정하지 않은 경우에는 사용자에게 불이익을 주지 않도록 만점을 부여함
+    # 프로젝트가 해당 조건을 지정하지 않은 경우 만점 처리
     if total_count == 0:
         return weight
 
@@ -40,8 +38,6 @@ def _weighted_ratio(matched_count, total_count, weight):
 
 
 def score_project_match(worker_profile, project):
-    # 경력자 프로필과 프로젝트 공고 비교
-
     # 경력자가 보유한 스킬 ID
     worker_skill_ids = {
         worker_skill.skill_id
@@ -52,7 +48,7 @@ def score_project_match(worker_profile, project):
         )
     }
 
-    # 경력자의 공백기 활동에서 분류된 숨은 능력 ID
+    # 경력자의 숨은 능력 ID
     worker_hidden_ability_ids = {
         activity.hidden_ability_id
         for activity in (
@@ -69,29 +65,26 @@ def score_project_match(worker_profile, project):
         for preferred_scale in worker_profile.preferred_scales.all()
     }
 
-    # 프로젝트 정보 조회
-
+    # 프로젝트 스킬 전체
     project_skill_relations = list(
         project.project_skills
         .select_related('skill')
         .all()
     )
 
-    # 프로젝트 필수 스킬
-    required_skills = [
-        relation
-        for relation in project_skill_relations
-        if relation.priority == ProjectSkill.Priority.NORMAL
-    ]
+    # 전체 요구 스킬
+    # NORMAL + PREFERRED 모두 기본 스킬 점수에 포함
+    required_skills = project_skill_relations
 
-    # 프로젝트 우대 스킬
+    # 전체 요구 스킬 중 우대 스킬
+    # PREFERRED는 기본 점수에 포함되면서 우대 가산점도 받음
     preferred_skills = [
         relation
         for relation in project_skill_relations
         if relation.priority == ProjectSkill.Priority.PREFERRED
     ]
 
-    # 프로젝트가 요구하는 숨은 능력
+    # 프로젝트 숨은 능력
     project_hidden_relations = list(
         project.hidden_abilities
         .select_related('hidden_ability')
@@ -110,8 +103,6 @@ def score_project_match(worker_profile, project):
         for scale in project.preferred_scales.all()
     }
 
-    # 매칭 점수 계산
-
     # 희망 직무: 최대 30점
     job_category_score = (
         MATCH_WEIGHTS['job_category']
@@ -126,7 +117,7 @@ def score_project_match(worker_profile, project):
         else 0
     )
 
-    # 필수 스킬: 최대 25점
+    # 전체 요구 스킬: 최대 25점
     required_skill_matches = sum(
         1
         for relation in required_skills
@@ -183,8 +174,7 @@ def score_project_match(worker_profile, project):
         else 0
     )
 
-    # 업무 규모: 하나 이상 일치하면 최대 3점
-    # 프로젝트가 규모를 선택하지 않은 경우 만점
+    # 업무 규모: 최대 3점
     project_scale_score = (
         MATCH_WEIGHTS['project_scale']
         if (
@@ -194,7 +184,7 @@ def score_project_match(worker_profile, project):
         else 0
     )
 
-    # 경력 연차: 사용자 경력이 프로젝트 요구 경력 이상이면 최대 2점
+    # 경력 연차: 최대 2점
     worker_career_rank = CAREER_RANK.get(
         worker_profile.career_years,
         0,
@@ -210,7 +200,7 @@ def score_project_match(worker_profile, project):
         else 0
     )
 
-    # 총점 계산
+    # 총점
     total_score = (
         job_category_score
         + work_style_score
@@ -222,10 +212,7 @@ def score_project_match(worker_profile, project):
         + career_years_score
     )
 
-    # 혹시나 화면에 100% 초과 뜨지 않도록 처리
-    total_score = min(total_score, 100)
-
-    project.match_score = total_score
+    project.match_score = min(total_score, 100)
 
     project.match_breakdown = {
         'job_category': job_category_score,
@@ -238,7 +225,7 @@ def score_project_match(worker_profile, project):
         'career_years': career_years_score,
     }
 
-    # 필수 스킬 매칭 정보
+    # 전체 요구 스킬 매칭 정보
     project.required_skill_total = len(required_skills)
     project.required_skill_matches = required_skill_matches
 
@@ -246,14 +233,12 @@ def score_project_match(worker_profile, project):
     project.preferred_skill_total = len(preferred_skills)
     project.preferred_skill_matches = preferred_skill_matches
 
-    # 프로젝트가 요구하는 숨은 능력 목록
     project.project_hidden_abilities_list = [
         relation.hidden_ability
         for relation in project_hidden_relations
         if relation.hidden_ability is not None
     ]
 
-    # 사용자가 실제로 보유한 프로젝트 요구 숨은 능력
     project.matched_hidden_abilities_list = [
         hidden_ability
         for hidden_ability in project.project_hidden_abilities_list
