@@ -111,7 +111,7 @@
                   class="matching-rate {% if project.match_score < 70 %}low{% endif %}"
                 >
                   <img
-                    src="{% static 'img/heart-filled.svg' %}"
+                    src="{% if project.match_score < 70 %}{% static 'img/good.svg' %}{% else %}{% static 'img/heart-filled.svg' %}{% endif %}"
                     alt="매칭률"
                   />
 
