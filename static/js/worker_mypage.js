@@ -138,16 +138,16 @@ const selectedSkillTagList = document.getElementById("skill-tag-list");
 //   });
 // }
 
-// 직무 변경 시 보유 스킬 초기화 (임시: 데이터 전까지는 그냥 다 비우기만)
-const jobSelect = document.querySelector('select[name="job_category"]');
+// // 직무 변경 시 보유 스킬 초기화 (임시: 데이터 전까지는 그냥 다 비우기만)
+// const jobSelect = document.querySelector('select[name="job_category"]');
 
-jobSelect.addEventListener("change", () => {
-  selectedSkillTagList.innerHTML = "";
-  skillUnselectedList.innerHTML = "";
-  alert("희망 직무를 변경하면 기존 보유 스킬 선택이 초기화돼요.");
+// jobSelect.addEventListener("change", () => {
+//   selectedSkillTagList.innerHTML = "";
+//   skillUnselectedList.innerHTML = "";
+//   alert("희망 직무를 변경하면 기존 보유 스킬 선택이 초기화돼요.");
 
-  // resetSkillListsForJob(jobSelect.value); // 백엔드 데이터 오면 이 줄로 교체
-});
+//   // resetSkillListsForJob(jobSelect.value); // 백엔드 데이터 오면 이 줄로 교체
+// });
 
 // 1. 모달 열기
 openSkillBtn.addEventListener("click", () => openModal(skillModal));
