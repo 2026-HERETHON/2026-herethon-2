@@ -60,23 +60,14 @@
         <div class="weeklys-wrap">
           {% for value, label in weekly_hours_choices %}
           <input
-            type="radio"
-            name="weekly_hours"
-            id="weekly_{{ value }}"
-            value="{{ value }}"
-            {%
-            if
-            selected_weekly_hours=""
-            ="value"
-            %}
-            checked
-            {%
-            endif
-            %}
+              type="radio"
+              name="weekly_hours"
+              id="weekly_{{ value }}"
+              value="{{ value }}"
+              {% if selected_weekly_hours == value %}checked{% endif %}
           />
-
           <label for="weekly_{{ value }}" class="btn-hover">
-            {{ label }}
+              {{ label }}
           </label>
           {% endfor %}
         </div>
@@ -98,16 +89,7 @@
             name="core_times"
             id="time_{{ slot.id }}"
             value="{{ slot.id }}"
-            {%
-            if
-            slot.id
-            in
-            selected_core_times
-            %}
-            checked
-            {%
-            endif
-            %}
+            {% if slot.id in selected_core_times %}checked{% endif %}
           />
 
           <label for="time_{{ slot.id }}" class="btn-hover">
@@ -134,15 +116,7 @@
             name="preferred_work_style"
             id="work_{{ value }}"
             value="{{ value }}"
-            {%
-            if
-            selected_work_style=""
-            ="value"
-            %}
-            checked
-            {%
-            endif
-            %}
+            {% if selected_work_style == value %}checked{% endif %}
           />
 
           <label for="work_{{ value }}" class="btn-hover"> {{ label }} </label>
@@ -166,16 +140,7 @@
             name="preferred_scales"
             id="scale_{{ value }}"
             value="{{ value }}"
-            {%
-            if
-            value
-            in
-            selected_scales
-            %}
-            checked
-            {%
-            endif
-            %}
+            {% if value in selected_scales %}checked{% endif %}
           />
 
           <label for="scale_{{ value }}" class="btn-hover"> {{ label }} </label>

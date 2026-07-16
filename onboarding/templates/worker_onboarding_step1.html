@@ -71,8 +71,8 @@
               name="job_category"
               id="job_{{ job.id }}"
               value="{{ job.id }}"
-              {% if selected_id|stringformat:"s" == job.id|stringformat:"s" %}
-                checked
+              {% if selected_id == job.id %}
+                  checked
               {% endif %}
             />
 

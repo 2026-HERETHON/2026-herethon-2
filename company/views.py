@@ -1,6 +1,7 @@
 import json
  
 from django.contrib import messages
+from django.db.models import Prefetch
 from django.db import transaction
 from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import get_object_or_404, render, redirect
@@ -10,6 +11,7 @@ from django.core.exceptions import ValidationError
 from django.urls import reverse
  
 from accounts.decorators import role_required, onboarding_required
+from worker.services.matching import rank_projects_for_worker
 from .models import CompanyProfile
 from core.models import (
     HiddenAbility,
@@ -384,111 +386,206 @@ def project_create(request):
  
 def _sync_deadline_status(projects):
     # 마감일이 지난 OPEN 프로젝트를 SELECTING으로 자동 전환.
-
     today = timezone.localdate()
-    to_update = [
-        project for project in projects
-        if project.status == Project.Status.OPEN and project.deadline < today
+
+    target_projects = [
+        project
+        for project in projects
+        if (
+            project.status == Project.Status.OPEN
+            and project.deadline < today
+        )
     ]
-    if to_update:
-        for project in to_update:
-            project.status = Project.Status.SELECTING
-        Project.objects.bulk_update(to_update, ['status'])
+
+    if not target_projects:
+        return
+
+    for project in target_projects:
+        project.status = Project.Status.SELECTING
+
+    Project.objects.bulk_update(
+        target_projects,
+        ['status'],
+    )
+
  
  
 @role_required('COMPANY')
 @onboarding_required
 def project_manage(request):
     tab = request.GET.get('tab', 'recruiting')
- 
-    all_projects = list(
-        Project.objects.filter(company_profile=request.user.company_profile)
-        .select_related('company_profile', 'job_category')
+
+    valid_tabs = {
+        'recruiting',
+        'progress',
+        'completed',
+    }
+
+    if tab not in valid_tabs:
+        tab = 'recruiting'
+
+    project_skill_queryset = (
+        ProjectSkill.objects
+        .select_related('skill')
+        .order_by('id')
     )
-    _sync_deadline_status(all_projects)  # 마감일 지나면 자동으로 선발중 전환
- 
+
+    application_queryset = (
+        Application.objects
+        .select_related(
+            'worker_profile__user',
+            'worker_profile__job_category',
+        )
+        .order_by('-id')
+    )
+
+    all_projects = list(
+        Project.objects
+        .filter(
+            company_profile=request.user.company_profile,
+            project_type=Project.ProjectType.REAL,
+        )
+        .select_related(
+            'company_profile',
+            'job_category',
+        )
+        .prefetch_related(
+            Prefetch(
+                'project_skills',
+                queryset=project_skill_queryset,
+            ),
+            Prefetch(
+                'applications',
+                queryset=application_queryset,
+            ),
+        )
+        .order_by('-id')
+    )
+
+    _sync_deadline_status(all_projects) # 마감일 지나면 자동으로 선발중 전환
+
     if tab == 'recruiting':
         # 모집 중 탭은 OPEN + SELECTING을 같이 보여줌
         projects = [
-            p for p in all_projects
-            if p.status in (Project.Status.OPEN, Project.Status.SELECTING)
+            project
+            for project in all_projects
+            if project.status in {
+                Project.Status.OPEN,
+                Project.Status.SELECTING,
+            }
         ]
+
     elif tab == 'progress':
-        projects = [p for p in all_projects if p.status == Project.Status.IN_PROGRESS]
-    elif tab == 'completed':
-        projects = [p for p in all_projects if p.status == Project.Status.COMPLETED]
+        projects = [
+            project
+            for project in all_projects
+            if project.status == Project.Status.IN_PROGRESS
+        ]
+
     else:
-        projects = all_projects
- 
-    projects.sort(key=lambda p: -p.id)
- 
+        projects = [
+            project
+            for project in all_projects
+            if project.status == Project.Status.COMPLETED
+        ]
+
     today = timezone.localdate()
- 
+
     for project in projects:
-        project.applicant_count = project.applications.count()
- 
+        applications = list(project.applications.all())
+
+        project.applicant_count = len(applications)
         # D-day 계산 (마감일 당일은 D-DAY, 지난 건 "마감"으로 표시)
         days_left = (project.deadline - today).days
+
         if days_left > 0:
             project.d_day_label = f'D-{days_left}'
         elif days_left == 0:
             project.d_day_label = 'D-DAY'
         else:
             project.d_day_label = '마감'
- 
+
         # 필수 스킬 이름 목록 (표시용)
-        required_skills = (
-            project.project_skills
-            .filter(priority=ProjectSkill.Priority.NORMAL)
-            .select_related('skill')
-        )
-        project.required_skill_names = [rel.skill.name for rel in required_skills]
- 
+        project.required_skill_names = [
+            relation.skill.name
+            for relation in project.project_skills.all()
+            if relation.priority == ProjectSkill.Priority.NORMAL
+        ]
+
+        project.preferred_skill_names = [
+            relation.skill.name
+            for relation in project.project_skills.all()
+            if relation.priority == ProjectSkill.Priority.PREFERRED
+        ]
+
         # 진행중 프로젝트는 지원자 확인 대신 수락된 참여자 이름만 표시
-        if project.status == Project.Status.IN_PROGRESS:
-            accepted = (
-                project.applications
-                .filter(status=Application.Status.ACCEPTED)
-                .select_related('worker_profile__user')
-            )
-            project.participant_names = [
-                app.worker_profile.user.name for app in accepted
-            ]
+        project.participants = [
+            application
+            for application in applications
+            if application.status == Application.Status.ACCEPTED
+        ]
 
     # "완료된 프로젝트" 탭에서는 목록 위에서 클릭한 프로젝트의 참여인원을 아래에 보여줌
     selected_project = None
-    participants = []
+    participants = (
+        Application.objects
+        .filter(
+            project=selected_project,
+            status=Application.Status.ACCEPTED,
+        )
+        .select_related(
+            'worker_profile__user',
+            'worker_profile__job_category',
+            'returnship',
+        )
+    )
+
     if tab == 'completed':
         selected_id = request.GET.get('selected')
+
         if selected_id:
             selected_project = next(
-                (p for p in projects if str(p.id) == selected_id), None
+                (
+                    project
+                    for project in projects
+                    if str(project.id) == selected_id
+                ),
+                None,
             )
-        elif projects:
-            selected_project = projects[0]  # 기본값: 첫 번째 완료 프로젝트
+
+        if selected_project is None and projects:
+            selected_project = projects[0] # 기본값: 첫 번째 완료 프로젝트
 
         if selected_project:
-            applications = list(
-                Application.objects
-                .filter(project=selected_project, status=Application.Status.ACCEPTED)
-                .select_related('worker_profile__user')
-            )
+            participants = [
+                application
+                for application
+                in selected_project.applications.all()
+                if application.status == Application.Status.ACCEPTED
+            ]
 
             returnship_map = {
-                r.application_id: r
-                for r in Returnship.objects.filter(application__in=applications)
+                returnship.application_id: returnship
+                for returnship in Returnship.objects.filter(
+                    application__in=participants,
+                )
             }
-            for application in applications:
-                application.returnship = returnship_map.get(application.id)
 
-            participants = applications
+            for application in participants:
+                application.returnship = returnship_map.get(
+                    application.id
+                )
 
-    return render(request, 'b_project_manage.html', {
-        'projects': projects,
-        'tab': tab,
-        'selected_project': selected_project,
-        'participants': participants,
-    })
+    return render(
+        request,
+        'project_manage.html',
+        {
+            'projects': projects,
+            'tab': tab,
+            'selected_project': selected_project,
+            'participants': participants,
+        },
+    )
  
  
 @role_required('COMPANY')
@@ -515,42 +612,117 @@ def project_delete(request, project_id):
 @onboarding_required
 def project_applicants(request, project_id):
     project = get_object_or_404(
-        Project, id=project_id, company_profile=request.user.company_profile
+        Project.objects
+        .select_related(
+            'company_profile',
+            'job_category',
+        )
+        .prefetch_related(
+            'project_skills__skill',
+        ),
+        id=project_id,
+        company_profile=request.user.company_profile,
     )
-    applications = (
+
+    # 사용자가 지원자 화면을 직접 새로고침해도 마감일이 지났으면 선발중으로 전환
+    _sync_deadline_status([project])
+
+    applications = list(
         Application.objects
         .filter(project=project)
-        .select_related('worker_profile__user', 'worker_profile__job_category')
+        .select_related(
+            'worker_profile__user',
+            'worker_profile__job_category',
+        )
+        .prefetch_related(
+            'worker_profile__worker_skills__skill',
+            'worker_profile__hidden_activities__hidden_ability',
+        )
         .order_by('-id')
     )
- 
-    return render(request, 'b_project_applicants.html', {
-        'project': project,
-        'applications': applications,
-        # 모집 중(OPEN)일 때는 수락/거절 자체를 못 함. 선발중부터 가능해짐
-        'can_decide': project.status == Project.Status.SELECTING,
-    })
- 
- 
-@role_required('COMPANY')
-@onboarding_required
-def project_applicant_detail(request, project_id, application_id):
-    project = get_object_or_404(
-        Project, id=project_id, company_profile=request.user.company_profile
+
+    for application in applications:
+        worker_profile = application.worker_profile
+
+        ranked = rank_projects_for_worker(
+            worker_profile,
+            [project],
+        )
+
+        application.match_score = (
+            getattr(ranked[0], 'match_score', 0)
+            if ranked
+            else 0
+        )
+
+        application.skill_names = [
+            worker_skill.skill.name
+            for worker_skill
+            in worker_profile.worker_skills.all()
+        ]
+
+        application.hidden_ability_names = list(dict.fromkeys(
+            activity.hidden_ability.name
+            for activity
+            in worker_profile.hidden_activities.all()
+            if activity.hidden_ability
+        ))
+
+        application.in_progress_projects = list(
+            Project.objects.filter(
+                applications__worker_profile=worker_profile,
+                applications__status=Application.Status.ACCEPTED,
+                status=Project.Status.IN_PROGRESS,
+            )
+            .select_related(
+                'company_profile',
+                'job_category',
+            )
+            .distinct()
+        )
+
+        application.completed_projects = list(
+            Project.objects.filter(
+                applications__worker_profile=worker_profile,
+                applications__status=Application.Status.ACCEPTED,
+                status=Project.Status.COMPLETED,
+            )
+            .select_related(
+                'company_profile',
+                'job_category',
+            )
+            .distinct()
+        )
+
+    today = timezone.localdate()
+    days_left = (project.deadline - today).days
+
+    if days_left > 0:
+        project.d_day_label = f'D-{days_left}'
+    elif days_left == 0:
+        project.d_day_label = 'D-DAY'
+    else:
+        project.d_day_label = '마감'
+
+    project.required_skill_names = [
+        relation.skill.name
+        for relation in project.project_skills.all()
+        if relation.priority == ProjectSkill.Priority.NORMAL
+    ]
+
+    return render(
+        request,
+        'project_applicants.html',
+        {
+            'project': project,
+            'applications': applications,
+            'applicant_count': len(applications),
+            'can_decide': (
+                project.status
+                == Project.Status.SELECTING
+            ),
+        },
     )
-    application = get_object_or_404(
-        Application.objects.select_related('worker_profile__user', 'worker_profile__job_category'),
-        id=application_id, project=project,
-    )
-    worker_profile = application.worker_profile
- 
-    return render(request, 'b_project_applicant_detail.html', {
-        'project': project,
-        'application': application,
-        'worker_profile': worker_profile,
-        'can_decide': project.status == Project.Status.SELECTING,
-    })
- 
  
 @role_required('COMPANY')
 @onboarding_required
@@ -566,7 +738,7 @@ def application_decide(request, project_id, application_id):
     if project.status != Project.Status.SELECTING:
         messages.error(request, '선발중 상태에서만 수락/거절이 가능해요.')
         return redirect(
-            'company:project_applicant_detail',
+            'company:project_applicantsl',
             project_id=project.id, application_id=application.id,
         )
  
@@ -616,9 +788,69 @@ def project_start(request, project_id):
 def project_progress_detail(request, project_id):
     # 진행중 프로젝트 상세보기
     project = get_object_or_404(
-        Project, id=project_id, company_profile=request.user.company_profile
+        Project.objects
+        .select_related(
+            'company_profile',
+            'job_category',
+        )
+        .prefetch_related(
+            'project_skills__skill',
+            'core_times__time_slot',
+            'preferred_scales',
+            'hidden_abilities__hidden_ability',
+        ),
+        id=project_id,
+        company_profile=request.user.company_profile,
     )
-    return render(request, 'b_project_progress_detail.html', {'project': project})
+
+    if project.status != Project.Status.IN_PROGRESS:
+        messages.error(
+            request,
+            '진행중인 프로젝트만 상세 내용을 확인할 수 있어요.',
+        )
+        return redirect(
+            f"{reverse('company:project_manage')}?tab=progress"
+        )
+
+    participants = list(
+        Application.objects
+        .filter(
+            project=project,
+            status=Application.Status.ACCEPTED,
+        )
+        .select_related(
+            'worker_profile__user',
+            'worker_profile__job_category',
+        )
+        .prefetch_related(
+            'worker_profile__worker_skills__skill',
+            'worker_profile__hidden_activities__hidden_ability',
+            'worker_profile__core_times__time_slot',
+            'worker_profile__preferred_scales',
+        )
+        .order_by('id')
+    )
+
+    for application in participants:
+        ranked_projects = rank_projects_for_worker(
+            application.worker_profile,
+            [project],
+        )
+
+        application.match_score = (
+            getattr(ranked_projects[0], 'match_score', 0)
+            if ranked_projects
+            else 0
+        )
+
+    return render(
+        request,
+        'project_progress_detail.html',
+        {
+            'project': project,
+            'participants': participants,
+        },
+    )
  
  
 @role_required('COMPANY')
@@ -626,22 +858,150 @@ def project_progress_detail(request, project_id):
 def project_edit(request, project_id):
     # 진행중 상태에서만 제목/상세내용만 수정 가능
     project = get_object_or_404(
-        Project, id=project_id, company_profile=request.user.company_profile
+        Project.objects
+        .select_related(
+            'company_profile',
+            'job_category',
+        )
+        .prefetch_related(
+            'project_skills__skill',
+            'core_times__time_slot',
+            'preferred_scales',
+            'hidden_abilities__hidden_ability',
+        ),
+        id=project_id,
+        company_profile=request.user.company_profile,
     )
- 
+
     if project.status != Project.Status.IN_PROGRESS:
-        messages.error(request, '진행중 상태에서만 수정할 수 있어요.')
-        return redirect('company:project_progress_detail', project_id=project.id)
- 
+        messages.error(
+            request,
+            '진행중 상태에서만 수정할 수 있어요.',
+        )
+
+        return redirect(
+            'company:project_progress_detail',
+            project_id=project.id,
+        )
+
     if request.method == 'POST':
-        project.title = request.POST.get('title', project.title)
-        project.description = request.POST.get('description', project.description)
-        project.save(update_fields=['title', 'description'])
-        messages.success(request, '프로젝트 정보를 수정했어요.')
-        return redirect('company:project_progress_detail', project_id=project.id)
- 
-    return render(request, 'b_project_edit.html', {'project': project})
- 
+        title = request.POST.get(
+            'title',
+            '',
+        ).strip()
+
+        description = request.POST.get(
+            'description',
+            '',
+        ).strip()
+
+        if not title:
+            messages.error(
+                request,
+                '프로젝트명을 입력해주세요.',
+            )
+
+        elif not description:
+            messages.error(
+                request,
+                '상세 내용을 입력해주세요.',
+            )
+
+        else:
+            project.title = title
+            project.description = description
+
+            project.save(
+                update_fields=[
+                    'title',
+                    'description',
+                    'updated_at',
+                ]
+            )
+
+            messages.success(
+                request,
+                '프로젝트 정보를 수정했어요.',
+            )
+
+            return redirect(
+                'company:project_progress_detail',
+                project_id=project.id,
+            )
+
+    required_skills = []
+    preferred_skills = []
+
+    for relation in project.project_skills.all():
+        if (
+            relation.priority
+            == ProjectSkill.Priority.NORMAL
+        ):
+            required_skills.append(relation.skill)
+
+        elif (
+            relation.priority
+            == ProjectSkill.Priority.PREFERRED
+        ):
+            preferred_skills.append(relation.skill)
+
+    selected_core_time_ids = [
+        relation.time_slot_id
+        for relation in project.core_times.all()
+    ]
+
+    selected_scales = [
+        relation.scale_type
+        for relation in project.preferred_scales.all()
+    ]
+
+    hidden_abilities = [
+        relation.hidden_ability
+        for relation in project.hidden_abilities.all()
+    ]
+
+    context = {
+        'project': project,
+
+        'job_categories':
+            JobCategory.objects.all(),
+
+        'time_slots':
+            _get_time_slots_for_display(),
+
+        'work_style_choices':
+            Project.WorkStyle.choices,
+
+        'weekly_hours_choices':
+            Project.WeeklyHours.choices,
+
+        'career_years_choices':
+            Project.CareerYears.choices,
+
+        'scale_choices':
+            ProjectPreferredScale.ScaleType.choices,
+
+        'required_skills':
+            required_skills,
+
+        'preferred_skills':
+            preferred_skills,
+
+        'selected_core_time_ids':
+            selected_core_time_ids,
+
+        'selected_scales':
+            selected_scales,
+
+        'hidden_abilities':
+            hidden_abilities,
+    }
+
+    return render(
+        request,
+        'project_edit.html',
+        context,
+    )
  
 @role_required('COMPANY')
 @onboarding_required
@@ -666,28 +1026,68 @@ def project_complete(request, project_id):
 
 @role_required('COMPANY')
 @onboarding_required
-def returnship_create(request, project_id, application_id):
+def returnship_create(
+    request,
+    project_id,
+    application_id,
+):
     project = get_object_or_404(
-        Project, id=project_id, company_profile=request.user.company_profile
+        Project,
+        id=project_id,
+        company_profile=request.user.company_profile,
+        status=Project.Status.COMPLETED,
     )
-    application = get_object_or_404(Application, id=application_id, project=project)
 
-    if request.method == 'POST':
-        title = request.POST.get('title', '')
-        content = request.POST.get('content', '')
+    application = get_object_or_404(
+        Application.objects.select_related(
+            'worker_profile__user',
+        ),
+        id=application_id,
+        project=project,
+        status=Application.Status.ACCEPTED,
+    )
 
-        try:
-            create_returnship_offer(application=application, title=title, content=content)
-        except ValidationError as error:
-            message = error.messages[0] if hasattr(error, 'messages') else str(error)
-            messages.error(request, message)
-        else:
-            messages.success(request, '리턴십을 제안했어요.')
+    redirect_url = (
+        f"{reverse('company:project_manage')}"
+        f"?tab=completed&selected={project.id}"
+    )
 
-        redirect_url = f"{reverse('company:project_manage')}?tab=completed&selected={project.id}"
+    if request.method != 'POST':
         return redirect(redirect_url)
 
-    return render(request, 'b_returnship_create.html', {
-        'project': project,
-        'application': application,
-    })
+    title = request.POST.get(
+        'title',
+        '',
+    ).strip()
+
+    content = request.POST.get(
+        'content',
+        '',
+    ).strip()
+
+    try:
+        create_returnship_offer(
+            application=application,
+            title=title,
+            content=content,
+        )
+
+    except ValidationError as error:
+        message = (
+            error.messages[0]
+            if hasattr(error, 'messages')
+            else str(error)
+        )
+
+        messages.error(
+            request,
+            message,
+        )
+
+    else:
+        messages.success(
+            request,
+            '리턴십을 제안했어요.',
+        )
+
+    return redirect(redirect_url)
