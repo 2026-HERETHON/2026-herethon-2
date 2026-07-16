@@ -316,7 +316,8 @@ function renderHiddenAbilities() {
 function validateModalButton() {
   if (!hiddenAbilityAddButton) return;
 
-  hiddenAbilityAddButton.disabled = selectedHiddenAbilities.size === 0;
+  // hiddenAbilityAddButton.disabled = selectedHiddenAbilities.size === 0;
+  hiddenAbilityAddButton.disabled = false; // 항상 활성화
 }
 
 modalCloseButton?.addEventListener("click", () => {
