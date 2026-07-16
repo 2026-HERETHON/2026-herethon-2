@@ -831,7 +831,7 @@ def match_top3_result(request):
         high_match_count = sum(
             1
             for project in ranked_projects
-            if getattr(project, 'match_score', 0) >= 80
+            if getattr(project, 'match_score', 0) >= 70
         )
 
     for project in top_projects:

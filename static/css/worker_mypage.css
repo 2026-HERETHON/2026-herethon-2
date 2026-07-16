@@ -465,7 +465,7 @@
   color: #dc2626;
 }
 
-.btn-cancel-application {
+.cancel-application-btn {
   width: 100%;
   height: 1.5625rem;
   color: var(--color-text-inverse);

@@ -264,12 +264,21 @@ def score_project_match(worker_profile, project):
 
 
 def rank_projects_for_worker(worker_profile, projects):
-    # 모든 프로젝트의 매칭 점수를 계산한 뒤 정렬
+    # 모든 프로젝트의 매칭 점수를 계산
     ranked_projects = [
         score_project_match(worker_profile, project)
         for project in projects
     ]
 
+    # 매칭률에 따른 CSS 클래스 지정
+    for project in ranked_projects:
+        project.match_class = (
+            'heart'
+            if project.match_score >= 70
+            else 'good'
+        )
+
+    # 매칭률 -> 마감일 -> 최신 등록순 정렬
     ranked_projects.sort(
         key=lambda project: (
             -project.match_score,
