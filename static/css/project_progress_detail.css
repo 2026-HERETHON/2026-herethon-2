@@ -419,3 +419,51 @@
   color: #fff;
   background-color: #ef4444;
 }
+
+/* 참여자가 여러 명일 때 카드 반복 배치 */
+.participant-list {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(13rem, 1fr)
+  );
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+/* 기존 participant-card 디자인은 유지하고 여러 카드의 높이만 맞춤 */
+.participant-card {
+  min-width: 0;
+  height: 100%;
+}
+
+/* 참여자가 많아져도 상세 페이지가 지나치게 길어지지 않도록 스크롤 */
+.participant-list:has(.participant-card:nth-child(7)) {
+  max-height: 34rem;
+  padding-right: 0.35rem;
+  overflow-y: auto;
+}
+
+/* 메시지 기능 미연동 버튼 */
+.send-msg-btn {
+  cursor: pointer;
+}
+
+/* 참여 인원이 없을 때 */
+.empty-participant {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 1.5rem;
+
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  text-align: center;
+
+  background-color: var(--color-bg-subtle);
+  border-radius: 0.75rem;
+}
+
+.project-close-form {
+  display: flex;
+  margin: 0;
+}

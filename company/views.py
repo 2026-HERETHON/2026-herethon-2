@@ -777,9 +777,69 @@ def project_start(request, project_id):
 def project_progress_detail(request, project_id):
     # 진행중 프로젝트 상세보기
     project = get_object_or_404(
-        Project, id=project_id, company_profile=request.user.company_profile
+        Project.objects
+        .select_related(
+            'company_profile',
+            'job_category',
+        )
+        .prefetch_related(
+            'project_skills__skill',
+            'core_times__time_slot',
+            'preferred_scales',
+            'hidden_abilities__hidden_ability',
+        ),
+        id=project_id,
+        company_profile=request.user.company_profile,
     )
-    return render(request, 'b_project_progress_detail.html', {'project': project})
+
+    if project.status != Project.Status.IN_PROGRESS:
+        messages.error(
+            request,
+            '진행중인 프로젝트만 상세 내용을 확인할 수 있어요.',
+        )
+        return redirect(
+            f"{reverse('company:project_manage')}?tab=progress"
+        )
+
+    participants = list(
+        Application.objects
+        .filter(
+            project=project,
+            status=Application.Status.ACCEPTED,
+        )
+        .select_related(
+            'worker_profile__user',
+            'worker_profile__job_category',
+        )
+        .prefetch_related(
+            'worker_profile__worker_skills__skill',
+            'worker_profile__hidden_activities__hidden_ability',
+            'worker_profile__core_times__time_slot',
+            'worker_profile__preferred_scales',
+        )
+        .order_by('id')
+    )
+
+    for application in participants:
+        ranked_projects = rank_projects_for_worker(
+            application.worker_profile,
+            [project],
+        )
+
+        application.match_score = (
+            getattr(ranked_projects[0], 'match_score', 0)
+            if ranked_projects
+            else 0
+        )
+
+    return render(
+        request,
+        'project_progress_detail.html',
+        {
+            'project': project,
+            'participants': participants,
+        },
+    )
  
  
 @role_required('COMPANY')
