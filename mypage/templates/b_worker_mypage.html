@@ -39,10 +39,13 @@
       </div>
       <div class="header-right-group">
         <!-- TPL: 로그아웃 후 랜딩으로 이동 -->
-        <a href="" class="logout-btn">로그아웃</a>
-        <div class="header-profile">
-          <a>{{ user.name|slice:":1" }}</a>
-        </div>
+          <form action="{% url 'accounts:logout' %}" method="post" class="logout-form">
+              {% csrf_token %}
+            <button type="submit" class="logout-btn">로그아웃</button>
+          </form>
+          <div class="header-profile">
+        <a>{{ user.name|slice:":1" }}</a>
+  </div>
       </div>
     </header>
 
