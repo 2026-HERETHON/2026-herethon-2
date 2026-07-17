@@ -37,6 +37,7 @@
         type="button"
         class="back-btn"
         onclick="history.back()"
+        id="step1-back-btn"
       >
         ← 이전
         <span class="ellipse hidden"></span>
@@ -51,50 +52,42 @@
 
       <small class="step-tatus">1/4단계</small>
 
-      <h1 class="step1-desc">
-        희망하시는 직무를 선택해주세요
-      </h1>
+      <h1 class="step1-desc">희망하시는 직무를 선택해주세요</h1>
 
       <p class="select-desc">단일 선택 가능해요</p>
 
       <form method="post" id="step1-form">
-        {% csrf_token %}
-
-        {% if error %}
-          <p class="form-error">{{ error }}</p>
+        {% csrf_token %} {% if error %}
+        <p class="form-error">{{ error }}</p>
         {% endif %}
 
         <div class="career-wrap">
           {% for job in job_categories %}
-            <input
-              type="radio"
-              name="job_category"
-              id="job_{{ job.id }}"
-              value="{{ job.id }}"
-              {% if selected_id == job.id %}
-                  checked
-              {% endif %}
-            />
+          <input
+            type="radio"
+            name="job_category"
+            id="job_{{ job.id }}"
+            value="{{ job.id }}"
+            {%
+            if
+            selected_id=""
+            ="job.id"
+            %}
+            checked
+            {%
+            endif
+            %}
+          />
 
-            <label
-              for="job_{{ job.id }}"
-              class="btn-hover"
-            >
-              {{ job.name }}
-            </label>
+          <label for="job_{{ job.id }}" class="btn-hover">
+            {{ job.name }}
+          </label>
           {% empty %}
-            <p class="empty-message">
-              선택 가능한 직무가 없습니다.
-            </p>
+          <p class="empty-message">선택 가능한 직무가 없습니다.</p>
           {% endfor %}
         </div>
 
-        <button
-          type="submit"
-          id="next-btn"
-          class="next-btn btn-hover"
-          disabled
-        >
+        <button type="submit" id="next-btn" class="next-btn btn-hover" disabled>
           다음
         </button>
       </form>
@@ -102,20 +95,20 @@
 
     <script>
       const jobCategoryRadios = document.querySelectorAll(
-        'input[name="job_category"]'
+        'input[name="job_category"]',
       );
-      const nextButton = document.getElementById('next-btn');
+      const nextButton = document.getElementById("next-btn");
 
       function updateNextButton() {
         const selectedJob = document.querySelector(
-          'input[name="job_category"]:checked'
+          'input[name="job_category"]:checked',
         );
 
         nextButton.disabled = !selectedJob;
       }
 
       jobCategoryRadios.forEach((radio) => {
-        radio.addEventListener('change', updateNextButton);
+        radio.addEventListener("change", updateNextButton);
       });
 
       updateNextButton();
