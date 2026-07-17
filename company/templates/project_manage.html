@@ -40,10 +40,14 @@
         </div>
       </div>
 
-      <div class="header-profile">
+      <div class="header-right-group">
+        <!-- TPL: 로그아웃 후 랜딩으로 이동 -->
+        <a href="" class="logout-btn">로그아웃</a>
+        <div class="header-profile">
         <a>
           {{ request.user.company_profile.company_name|slice:":1" }}
         </a>
+      </div>
       </div>
     </header>
 
