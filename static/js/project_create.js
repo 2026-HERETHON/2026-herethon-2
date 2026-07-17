@@ -202,7 +202,7 @@ hiddenAbilityButton?.addEventListener("click", () => {
     `숨은 능력 매칭 항목 추가_${selectedJobName}`;
 
   document.querySelector(".modal-caption").textContent =
-    `${selectedJobName} 직무와 관련된 숨은 능력을 선택하면 매칭에 반영돼요`;
+    `${selectedJobName} 직무와 관련된 숨은 능력을 선택하면 매칭률에 반영돼요`;
 
   renderHiddenAbilities();
 

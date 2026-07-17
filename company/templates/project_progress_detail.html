@@ -23,7 +23,8 @@
   <body>
     <!-- 헤더 영역 -->
     <header>
-      <div class="header-logo">
+      <!-- TPL: (유저 화면) 로고 클릭 시 프로젝트 찾기 화면으로 이동 project_list.html -->
+      <a href="{% url 'company:project_manage' %}" class="header-logo">
         <img
           class="header-logo-img"
           src="{% static 'img/logo.svg' %}"
@@ -37,13 +38,17 @@
             <span class="RE">RE</span><span class="colon">:</span>Bridge
           </span>
         </div>
-      </div>
+      </a>
 
-      <div class="header-profile">
+      <div class="header-right-group">
+        <!-- TPL: 로그아웃 후 랜딩으로 이동 -->
+        <a href="" class="logout-btn">로그아웃</a>
+        <div class="header-profile">
         <!-- TPL: 기업 프로필 이름 -->
-        <a>
-          {{ request.user.company_profile.company_name|slice:":1" }}
-        </a>
+          <a>
+            {{ request.user.company_profile.company_name|slice:":1" }}
+          </a>
+        </div>
       </div>
     </header>
 
@@ -63,10 +68,6 @@
         data-label="프로젝트 관리하기"
       >
         프로젝트 관리하기
-      </a>
-
-      <a href="#" class="nav-menu" data-label="기업 정보">
-        기업 정보
       </a>
     </nav>
 
