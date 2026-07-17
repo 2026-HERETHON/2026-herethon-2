@@ -126,4 +126,12 @@ python manage.py runserver
 | `docs` | 문서 수정 |
 | `test` | 테스트 |
 
+<br/>
+
+2026-herethon-2
+-
+2026 여기톤 : HE:REthon 2팀
+
+
+
 
