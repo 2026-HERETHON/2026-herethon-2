@@ -17,6 +17,50 @@ const allowedExtensions = [".pdf", ".ppt", ".pptx", ".jpg", ".jpeg", ".png"];
 
 let files = []; // 첨부된 파일들 저장
 
+// 헤더 active 클래스 추가
+const menuLinks = document.querySelectorAll(".header-menu a");
+console.log(menuLinks);
+const currentPath = window.location.pathname;
+
+let bestMatch = null;
+
+menuLinks.forEach((link) => {
+  link.classList.remove("active");
+  const linkPath = new URL(link.href).pathname;
+  console.log(`currentPath: ${currentPath}`);
+  console.log(`currentPath.startsWith(): ${currentPath.startsWith(linkPath)}`);
+  console.log(`linkPath: ${linkPath}`);
+
+  if (
+    currentPath === linkPath ||
+    (linkPath !== "/" && currentPath.startsWith(linkPath))
+  ) {
+    if (
+      !bestMatch ||
+      linkPath.length > new URL(bestMatch.href).pathname.length
+    ) {
+      bestMatch = link;
+    }
+  }
+});
+
+if (bestMatch) {
+  bestMatch.classList.add("active");
+  console.log(`classList: ${bestMatch.classList}`);
+}
+
+// menuLinks.forEach((link) => {
+//   link.classList.remove("active");
+
+//   const linkPath = new URL(link.href).pathname;
+//   console.log(`currentPath: ${currentPath}`);
+//   console.log(`linkPath: ${linkPath}`);
+//   if (linkPath === currentPath) {
+//     link.classList.add("active");
+//     console.log(link.classList);
+//   }
+// });
+
 function openModal() {
   if (!modal) return;
 

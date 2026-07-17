@@ -18,7 +18,8 @@
   border-bottom: 3px solid transparent;
 }
 
-.header-menu a:hover {
+.header-menu a:hover,
+.header-menu a.active {
   color: var(--color-primary);
   font-weight: bold;
   border-bottom: 3px solid var(--color-primary);
