@@ -64,7 +64,7 @@
           </h2>
 
           <small class="match-desc">
-            매칭률 70% 이상인 프로젝트가
+            매칭률 80% 이상인 프로젝트가
             {{ high_match_count }}개 있어요
           </small>
 
@@ -108,10 +108,10 @@
                 </div>
               {% else %}
                 <div
-                  class="matching-rate {% if project.match_score < 70 %}low{% endif %}"
+                  class="matching-rate {% if project.match_score < 80 %}low{% endif %}"
                 >
                   <img
-                    src="{% if project.match_score < 70 %}{% static 'img/good-one.svg' %}{% else %}{% static 'img/heart-filled.svg' %}{% endif %}"
+                    src="{% if project.match_score < 80 %}{% static 'img/good-one.svg' %}{% else %}{% static 'img/heart-filled.svg' %}{% endif %}"
                     alt="매칭률"
                   />
 
@@ -141,20 +141,17 @@
 
               {% if is_warmup_mode and project.description %}
                 <p class="project-description">
-                  {{ project.description|truncatechars:70 }}
+                  {{ project.description|truncatechars:80 }}
                 </p>
               {% endif %}
 
               <div class="type-keyword-wrap">
-                {% for skill in project.required_skills_list|slice:":3" %}
+                {% for relation in project.project_skills.all|slice:":3" %}
                   <span class="type-keyword">
-                    {{ skill.name }}
+                    {{ relation.skill.name }}
                   </span>
                 {% empty %}
                   {% if is_warmup_mode %}
-                    <span class="type-keyword">
-                      기초 실무 체험
-                    </span>
                   {% else %}
                     <span class="type-keyword">
                       필수 스킬 없음

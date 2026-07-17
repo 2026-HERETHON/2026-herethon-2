@@ -6,8 +6,8 @@ from django.contrib import messages
 from projects.models import Application, Project, Returnship
 from worker.services.matching import rank_projects_for_worker
 from worker.models import WorkerProfile, WorkerSkill
-from core.models import JobCategory, Skill
-
+from core.models import JobCategory, Skill, JobSkill
+from collections import defaultdict
 
 # [공통] 상단 프로필 요약
 def _get_mypage_context(request):
@@ -86,6 +86,15 @@ def mypage_dashboard(request):
     #워밍업추가
     context['work_style_choices'] = WorkerProfile.WorkStyle.choices
     context['application_type_choices'] = WorkerProfile.ApplicationType.choices
+    
+    context['all_skills_json'] = [
+        {'id': s.id, 'name': s.name} for s in context['skills']
+    ]
+
+    job_skill_map = defaultdict(list)
+    for js in JobSkill.objects.all():
+        job_skill_map[js.job_category_id].append(js.skill_id)
+    context['job_skill_map_json'] = dict(job_skill_map)
     
     return render(request, 'b_worker_mypage.html', context)
 
