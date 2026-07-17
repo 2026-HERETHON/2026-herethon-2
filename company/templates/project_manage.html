@@ -22,7 +22,8 @@
 
   <body>
     <header>
-      <div class="header-logo">
+      <!-- TPL: (유저 화면) 로고 클릭 시 프로젝트 찾기 화면으로 이동 project_list.html -->
+      <a href="{% url 'company:project_manage' %}" class="header-logo">
         <img
           class="header-logo-img"
           src="{% static 'img/logo.svg' %}"
@@ -38,7 +39,7 @@
             <span class="RE">RE</span><span class="colon">:</span>Bridge
           </span>
         </div>
-      </div>
+      </a>
 
       <div class="header-right-group">
         <!-- TPL: 로그아웃 후 랜딩으로 이동 -->

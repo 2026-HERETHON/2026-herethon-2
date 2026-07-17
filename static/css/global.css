@@ -69,6 +69,7 @@ header {
 .header-logo {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .header-logo-text {

@@ -12,7 +12,8 @@
   <body>
     <!-- 헤더 영역 -->
     <header>
-      <div class="header-logo">
+      <!-- TPL: (유저 화면) 로고 클릭 시 프로젝트 찾기 화면으로 이동 project_list.html -->
+      <a href="{% url 'worker:project_list' %}" class="header-logo">
         <img
           class="header-logo-img"
           src="{% static 'img/logo.svg' %}"
@@ -24,7 +25,7 @@
             ><span class="RE">RE</span><span class="colon">:</span>Bridge</span
           >
         </div>
-      </div>
+      </a>
       <div class="header-menu">
         <a
           href="{% url 'worker:project_list' %}"
