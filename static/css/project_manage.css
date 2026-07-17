@@ -103,6 +103,15 @@
   line-height: normal;
 }
 
+.empty-participant {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
 /* 메인 프로젝트 관리하기 영역 */
 /* 모집중 탭 */
 #tab-recruiting {
@@ -414,7 +423,7 @@
   height: 2.25rem;
 
   flex: 0 0 auto;
-  align-self: center;
+  margin-top: 2.06rem;
 }
 
 .detail-btn {
