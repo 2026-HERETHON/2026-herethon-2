@@ -1,3 +1,6 @@
+2026-herethon-2
+-
+2026 여기톤 : HE:REthon 2팀
 
 <img src="static/img/readme.svg" width="510" /> 
  
@@ -127,11 +130,3 @@ python manage.py runserver
 | `test` | 테스트 |
 
 <br/>
-
-2026-herethon-2
--
-2026 여기톤 : HE:REthon 2팀
-
-
-
-
