@@ -392,6 +392,9 @@
           희망 직무·보유 스킬·근무 형태를 수정하면 매칭 정확도가 올라가요
         </p>
 
+        {{ all_skills_json|json_script:"all-skills" }}
+        {{ job_skill_map_json|json_script:"job-skill-map" }}
+
         <form
           method="post"
           action="{% url 'mypage:work_conditions' %}"
