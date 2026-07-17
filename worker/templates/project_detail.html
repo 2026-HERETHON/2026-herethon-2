@@ -75,10 +75,10 @@
               <div
                 class="
                   matching-rate
-                  {% if project.match_score < 70 %}low{% endif %}
+                  {% if project.match_score < 80 %}low{% endif %}
                 "
               >
-                {% if project.match_score >= 70 %}
+                {% if project.match_score >= 80 %}
                   <img
                     src="{% static 'img/heart-filled.svg' %}"
                     alt="매칭률"
