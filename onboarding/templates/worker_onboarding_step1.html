@@ -57,31 +57,29 @@
       <p class="select-desc">단일 선택 가능해요</p>
 
       <form method="post" id="step1-form">
-        {% csrf_token %} {% if error %}
+        {% csrf_token %} 
+        {% if error %}
         <p class="form-error">{{ error }}</p>
         {% endif %}
 
         <div class="career-wrap">
           {% for job in job_categories %}
-          <input
-            type="radio"
-            name="job_category"
-            id="job_{{ job.id }}"
-            value="{{ job.id }}"
-            {%
-            if
-            selected_id=""
-            ="job.id"
-            %}
-            checked
-            {%
-            endif
-            %}
-          />
+                     <input
+              type="radio"
+              name="job_category"
+              id="job_{{ job.id }}"
+              value="{{ job.id }}"
+              {% if selected_id == job.id %}
+                  checked
+              {% endif %}
+            />
 
-          <label for="job_{{ job.id }}" class="btn-hover">
-            {{ job.name }}
-          </label>
+            <label
+              for="job_{{ job.id }}"
+              class="btn-hover"
+            >
+              {{ job.name }}
+            </label>
           {% empty %}
           <p class="empty-message">선택 가능한 직무가 없습니다.</p>
           {% endfor %}
