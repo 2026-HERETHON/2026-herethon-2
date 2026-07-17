@@ -59,14 +59,46 @@
 <br/>
 
 ## 👩‍💻 팀원
- 
-| 이름 | 역할 | GitHub |
-|------|------|--------|
-| 시원 | 기획/디자인 | [@co0000oo000l](https://github.com/co0000oo000l) |
-| 지민 | Frontend | [@jiminxha](https://github.com/jiminxha) |
-| 수빈 | Frontend | [@chubin925](https://github.com/아이디) |
-| 현주 | Backend | [@0hyunj](https://github.com/0hyunj) |
-| 가윤 | Backend | [@riveryunny](https://github.com/riveryunny) |
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/co0000oo000l">
+        <img src="https://github.com/co0000oo000l.png" width="100" style="border-radius:50%"><br>
+        <b>시원</b>
+      </a><br>
+      기획/디자인
+    </td>
+    <td align="center">
+      <a href="https://github.com/jiminxha">
+        <img src="https://github.com/jiminxha.png" width="100" style="border-radius:50%"><br>
+        <b>지민</b>
+      </a><br>
+      Frontend
+    </td>
+    <td align="center">
+      <a href="https://github.com/chubin925">
+        <img src="https://github.com/chubin925.png" width="100" style="border-radius:50%"><br>
+        <b>수빈</b>
+      </a><br>
+      Frontend
+    </td>
+    <td align="center">
+      <a href="https://github.com/0hyunj">
+        <img src="https://github.com/0hyunj.png" width="100" style="border-radius:50%"><br>
+        <b>현주</b>
+      </a><br>
+      Backend
+    </td>
+    <td align="center">
+      <a href="https://github.com/riveryunny">
+        <img src="https://github.com/riveryunny.png" width="100" style="border-radius:50%"><br>
+        <b>가윤</b>
+      </a><br>
+      Backend
+    </td>
+  </tr>
+</table>
 
 
 
