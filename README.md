@@ -2,6 +2,8 @@
 -
 2026 여기톤 : HE:REthon 2팀
 
+<br/>
+
 <img src="static/img/readme.svg" width="510" /> 
  
 > 경력단절 여성을 위한, 프로젝트 매칭 서비스 RE:Bridge입니다.
