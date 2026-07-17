@@ -426,3 +426,8 @@ input:checked + .btn-hover {
   line-height: 1.4;
   font-weight: 400;
 }
+
+#step1-back-btn {
+  opacity: 0;
+  visibility: hidden;
+}
