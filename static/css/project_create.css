@@ -345,7 +345,7 @@ input[type="radio"] {
 }
 
 #hidden-ability {
-  height: 12.75rem;
+  height: 10.5625rem;
   padding: 0.81rem 1.25rem 1.75rem;
   margin-top: 1rem;
 }
@@ -381,12 +381,12 @@ input[type="radio"] {
 }
 
 .card-des--first {
-  margin-bottom: 0.56rem;
+  margin-bottom: 1.44rem;
 }
 
-.card-des--second {
+/* .card-des--second {
   margin-bottom: 0.19rem;
-}
+} */
 
 .form-card textarea {
   border: none;
@@ -443,9 +443,9 @@ input[type="radio"] {
 
   width: 100%;
   height: 2.25rem;
+  padding: 0.69rem 0;
   background-color: var(--color-border-light);
   border-radius: 0.5rem;
-  margin-top: 0.56rem;
 
   color: var(--color-text-muted);
   text-align: center;

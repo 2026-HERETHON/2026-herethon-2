@@ -7,6 +7,31 @@ header {
 }
 
 /* 헤더 */
+.header-right-group {
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logout-btn {
+  width: 6.375rem;
+  height: 2rem;
+  border-radius: 1.875rem;
+  border: 1px solid #9ca3af;
+
+  color: #4b5563;
+  font-family: Inter;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .header-profile {
   display: inline-block;
   justify-content: center;
