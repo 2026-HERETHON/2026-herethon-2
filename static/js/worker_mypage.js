@@ -1,3 +1,20 @@
+// 헤더 active 클래스 추가
+const menuLinks = document.querySelectorAll(".header-menu a");
+console.log(menuLinks);
+const currentPath = window.location.pathname;
+
+menuLinks.forEach((link) => {
+  link.classList.remove("active");
+
+  const linkPath = new URL(link.href).pathname;
+  console.log(`currentPath: ${currentPath}`);
+  console.log(`linkPath: ${linkPath}`);
+  if (linkPath === currentPath) {
+    link.classList.add("active");
+    console.log(link.classList);
+  }
+});
+
 // 탭 네비게이션 설정
 const tabBtns = document.querySelectorAll(".tab-btn");
 const tabContents = document.querySelectorAll(".tab-content");
@@ -98,6 +115,62 @@ const closeSkillBtn = document.getElementById("done-skill-modal");
 const skillUnselectedList = document.getElementById("skill-unselected-list");
 const selectedSkillTagList = document.getElementById("skill-tag-list");
 
+const jobSkillMap = JSON.parse(
+  document.getElementById("job-skill-map").textContent,
+);
+const allSkills = JSON.parse(document.getElementById("all-skills").textContent);
+
+const jobSelect = document.querySelector('select[name="job_category"]');
+
+// 페이지 로드 시: 이미 선택된 스킬은 유지하고, 미선택 리스트만 현재 직무 기준으로 필터링
+function initSkillUnselectedList() {
+  const selectedIds = Array.from(
+    selectedSkillTagList.querySelectorAll('input[name="skills"]'),
+  ).map((input) => input.value);
+
+  const allowedSkillIds = (jobSkillMap[jobSelect.value] || []).map(String);
+
+  skillUnselectedList.innerHTML = "";
+
+  allSkills.forEach((skill) => {
+    const skillId = String(skill.id);
+    if (allowedSkillIds.includes(skillId) && !selectedIds.includes(skillId)) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "unselected-tag";
+      btn.dataset.value = skill.id;
+      btn.textContent = `${skill.name} +`;
+      skillUnselectedList.appendChild(btn);
+    }
+  });
+}
+
+// 페이지 로드 시 1회 실행
+initSkillUnselectedList();
+
+function resetSkillListsForJob(selectedJobId) {
+  const allowedSkillIds = jobSkillMap[selectedJobId] || [];
+  // 보유 스킬 목록과 미선택 스킬 목록 모두 비우기
+  selectedSkillTagList.innerHTML = "";
+  skillUnselectedList.innerHTML = "";
+
+  allSkills.forEach((skill) => {
+    if (allowedSkillIds.includes(skill.id)) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "unselected-tag";
+      btn.dataset.value = skill.id;
+      btn.textContent = `${skill.name} +`;
+      skillUnselectedList.appendChild(btn);
+    }
+  });
+}
+
+// 직무 변경 시 보유 스킬 초기화 (임시: 데이터 전까지는 그냥 다 비우기만)
+jobSelect.addEventListener("change", () => {
+  resetSkillListsForJob(jobSelect.value); // 백엔드 데이터 오면 이 줄로 교체
+});
+
 // 1. 모달 열기
 openSkillBtn.addEventListener("click", () => openModal(skillModal));
 
@@ -181,7 +254,7 @@ allModals.forEach((modal) => {
 
 // --- URL 파라미터를 읽어서 해당 탭 유지하기  ---
 const urlParams = new URLSearchParams(window.location.search);
-const activeTab = urlParams.get('tab');
+const activeTab = urlParams.get("tab");
 
 if (activeTab) {
   const targetBtn = document.querySelector(`.tab-btn[data-tab="${activeTab}"]`);

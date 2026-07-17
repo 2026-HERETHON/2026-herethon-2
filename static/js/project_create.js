@@ -1,39 +1,24 @@
 const form = document.getElementById("project-create-form");
 const submitButton = document.querySelector(".create-project-btn");
 
-const requiredGuide = document.getElementById(
-  "required-skill-guide",
-);
-const preferredGuide = document.getElementById(
-  "preferred-skill-guide",
-);
+const requiredGuide = document.getElementById("required-skill-guide");
+const preferredGuide = document.getElementById("preferred-skill-guide");
 
-const requiredWrapper = document.getElementById(
-  "required-skill-wrapper",
-);
-const preferredWrapper = document.getElementById(
-  "preferred-skill-wrapper",
-);
+const requiredWrapper = document.getElementById("required-skill-wrapper");
+const preferredWrapper = document.getElementById("preferred-skill-wrapper");
 
-const hiddenAbilityButton = document.getElementById(
-  "hidden-ability-open-btn",
-);
-const hiddenAbilitiesInput = document.getElementById(
-  "hidden-abilities-input",
-);
+const hiddenAbilityButton = document.getElementById("hidden-ability-open-btn");
+const hiddenAbilitiesInput = document.getElementById("hidden-abilities-input");
 
 const modalOverlay = document.querySelector(".modal-overlay");
 const modalBody = document.querySelector(".modal-body");
-const modalCloseButton = document.querySelector(
-  ".modal-close-btn",
-);
+const modalCloseButton = document.querySelector(".modal-close-btn");
 const hiddenAbilityAddButton = document.querySelector(
   ".hidden-ability-add-btn",
 );
 
 const skillsByJob = window.skillsByJob || {};
-const hiddenAbilitiesByJob =
-  window.hiddenAbilitiesByJob || {};
+const hiddenAbilitiesByJob = window.hiddenAbilitiesByJob || {};
 
 const staticImages = window.staticImages || {};
 
@@ -52,37 +37,36 @@ let selectedHiddenAbilities = new Set(
   (window.initialHiddenAbilities || []).map(String),
 );
 
+let confirmedHiddenAbilities = new Set(selectedHiddenAbilities);
+
 /* 직무 선택 */
-document
-  .querySelectorAll('input[name="job_category"]')
-  .forEach((radio) => {
-    radio.addEventListener("change", () => {
-      selectedJobId = String(radio.value);
+document.querySelectorAll('input[name="job_category"]').forEach((radio) => {
+  radio.addEventListener("change", () => {
+    selectedJobId = String(radio.value);
 
-      selectedJobName =
-        radio.dataset.jobName ||
-        radio.closest("label")?.textContent.trim() ||
-        "";
+    selectedJobName =
+      radio.dataset.jobName || radio.closest("label")?.textContent.trim() || "";
 
-      // 직무 변경 시 기존 선택값 초기화
-      selectedRequiredSkills.clear();
-      selectedPreferredSkills.clear();
-      selectedHiddenAbilities.clear();
+    // 직무 변경 시 기존 선택값 초기화
+    selectedRequiredSkills.clear();
+    selectedPreferredSkills.clear();
+    selectedHiddenAbilities.clear();
+    confirmedHiddenAbilities.clear();
 
-      syncHiddenAbilitiesInput();
+    syncHiddenAbilitiesInput();
 
-      // 숨은 능력 버튼 문구도 초기화
-      hiddenAbilityButton.textContent = "추가하기";
+    // 숨은 능력 버튼 문구도 초기화
+    hiddenAbilityButton.textContent = "추가하기";
 
-      renderRequiredSkills();
-      renderPreferredSkills();
+    renderRequiredSkills();
+    renderPreferredSkills();
 
-      requiredGuide.style.display = "none";
-      hiddenAbilityButton.disabled = false;
+    requiredGuide.style.display = "none";
+    hiddenAbilityButton.disabled = false;
 
-      validateForm();
-    });
+    validateForm();
   });
+});
 
 /* 필수 스킬 출력 */
 function renderRequiredSkills() {
@@ -95,12 +79,10 @@ function renderRequiredSkills() {
 
   requiredGuide.style.display = "none";
 
-  const skills =
-    skillsByJob[String(selectedJobId)] || [];
+  const skills = skillsByJob[String(selectedJobId)] || [];
 
   if (skills.length === 0) {
-    requiredGuide.textContent =
-      "해당 직무에 등록된 스킬이 없습니다.";
+    requiredGuide.textContent = "해당 직무에 등록된 스킬이 없습니다.";
     requiredGuide.style.display = "block";
     return;
   }
@@ -119,8 +101,7 @@ function renderRequiredSkills() {
     input.type = "checkbox";
     input.name = "skill_required";
     input.value = skillId;
-    input.checked =
-      selectedRequiredSkills.has(skillId);
+    input.checked = selectedRequiredSkills.has(skillId);
 
     input.addEventListener("change", () => {
       if (input.checked) {
@@ -137,9 +118,7 @@ function renderRequiredSkills() {
     });
 
     label.appendChild(input);
-    label.appendChild(
-      document.createTextNode(skill.name),
-    );
+    label.appendChild(document.createTextNode(skill.name));
 
     group.appendChild(label);
   });
@@ -152,23 +131,20 @@ function renderPreferredSkills() {
   preferredWrapper.innerHTML = "";
 
   if (!selectedJobId) {
-    preferredGuide.textContent =
-      "직무를 먼저 선택해주세요.";
+    preferredGuide.textContent = "직무를 먼저 선택해주세요.";
     preferredGuide.style.display = "block";
     return;
   }
 
   if (selectedRequiredSkills.size === 0) {
-    preferredGuide.textContent =
-      "필수 스킬을 먼저 선택해주세요.";
+    preferredGuide.textContent = "필수 스킬을 먼저 선택해주세요.";
     preferredGuide.style.display = "block";
     return;
   }
 
   preferredGuide.style.display = "none";
 
-  const skills =
-    skillsByJob[String(selectedJobId)] || [];
+  const skills = skillsByJob[String(selectedJobId)] || [];
 
   const selectedSkills = skills.filter((skill) =>
     selectedRequiredSkills.has(String(skill.id)),
@@ -188,8 +164,7 @@ function renderPreferredSkills() {
     input.type = "checkbox";
     input.name = "skill_preferred";
     input.value = skillId;
-    input.checked =
-      selectedPreferredSkills.has(skillId);
+    input.checked = selectedPreferredSkills.has(skillId);
 
     input.addEventListener("change", () => {
       if (input.checked) {
@@ -200,9 +175,7 @@ function renderPreferredSkills() {
     });
 
     label.appendChild(input);
-    label.appendChild(
-      document.createTextNode(skill.name),
-    );
+    label.appendChild(document.createTextNode(skill.name));
 
     group.appendChild(label);
   });
@@ -239,11 +212,9 @@ hiddenAbilityButton?.addEventListener("click", () => {
 function renderHiddenAbilities() {
   modalBody.innerHTML = "";
 
-  const abilities =
-    hiddenAbilitiesByJob[String(selectedJobId)] || [];
+  const abilities = hiddenAbilitiesByJob[String(selectedJobId)] || [];
 
-  const originalActivities =
-    originalActivitiesByJob[selectedJobName] || [];
+  const originalActivities = originalActivitiesByJob[selectedJobName] || [];
 
   const list = document.createElement("div");
   list.className = "hidden-ability-list";
@@ -252,8 +223,7 @@ function renderHiddenAbilities() {
   if (abilities.length === 0) {
     const emptyMessage = document.createElement("p");
     emptyMessage.className = "skill-guide-msg";
-    emptyMessage.textContent =
-      "해당 직무에 등록된 숨은 능력이 없습니다.";
+    emptyMessage.textContent = "해당 직무에 등록된 숨은 능력이 없습니다.";
 
     modalBody.appendChild(emptyMessage);
     validateModalButton();
@@ -262,27 +232,22 @@ function renderHiddenAbilities() {
 
   abilities.forEach((ability, index) => {
     const abilityId = String(ability.id);
-    const isChecked =
-      selectedHiddenAbilities.has(abilityId);
+    const isChecked = selectedHiddenAbilities.has(abilityId);
 
-    const originalText =
-      originalActivities[index] ||
-      "관련 활동 경험";
+    const originalText = originalActivities[index] || "관련 활동 경험";
 
     const item = document.createElement("div");
     item.className = "hidden-ability-item";
 
     // 체크박스 버튼
-    const checkboxButton =
-      document.createElement("button");
+    const checkboxButton = document.createElement("button");
 
     checkboxButton.type = "button";
     checkboxButton.className = "checkbox";
     checkboxButton.dataset.key = abilityId;
     checkboxButton.dataset.checked = String(isChecked);
 
-    const checkboxImage =
-      document.createElement("img");
+    const checkboxImage = document.createElement("img");
 
     checkboxImage.src = isChecked
       ? staticImages.checkboxChecked
@@ -293,41 +258,33 @@ function renderHiddenAbilities() {
     checkboxButton.appendChild(checkboxImage);
 
     // 변환 전 활동
-    const originalAbility =
-      document.createElement("div");
+    const originalAbility = document.createElement("div");
 
-    originalAbility.className =
-      "hidden-ability-text original";
+    originalAbility.className = "hidden-ability-text original";
 
     originalAbility.textContent = originalText;
 
     // 화살표
-    const rightArrow =
-      document.createElement("img");
+    const rightArrow = document.createElement("img");
 
     rightArrow.className = "right-arrow-img";
     rightArrow.src = staticImages.rightArrow;
     rightArrow.alt = "숨은 능력 변환";
 
     // 변환된 숨은 능력
-    const translatedAbility =
-      document.createElement("div");
+    const translatedAbility = document.createElement("div");
 
-    translatedAbility.className =
-      "hidden-ability-text translated";
+    translatedAbility.className = "hidden-ability-text translated";
 
-    const greenIcon =
-      document.createElement("img");
+    const greenIcon = document.createElement("img");
 
     greenIcon.className = "green-icon";
     greenIcon.src = staticImages.greenEllipse;
     greenIcon.alt = "";
 
-    const translatedText =
-      document.createElement("span");
+    const translatedText = document.createElement("span");
 
-    translatedText.className =
-      "translated-text";
+    translatedText.className = "translated-text";
 
     translatedText.textContent = ability.name;
 
@@ -359,46 +316,40 @@ function renderHiddenAbilities() {
 function validateModalButton() {
   if (!hiddenAbilityAddButton) return;
 
-  hiddenAbilityAddButton.disabled =
-    selectedHiddenAbilities.size === 0;
+  // hiddenAbilityAddButton.disabled = selectedHiddenAbilities.size === 0;
+  hiddenAbilityAddButton.disabled = false; // 항상 활성화
 }
 
 modalCloseButton?.addEventListener("click", () => {
+  selectedHiddenAbilities = new Set(confirmedHiddenAbilities);
   modalOverlay.style.display = "none";
 });
 
 modalOverlay?.addEventListener("click", (event) => {
   if (event.target === modalOverlay) {
+    selectedHiddenAbilities = new Set(confirmedHiddenAbilities);
     modalOverlay.style.display = "none";
   }
 });
 
-hiddenAbilityAddButton?.addEventListener(
-  "click",
-  () => {
-    syncHiddenAbilitiesInput();
-    modalOverlay.style.display = "none";
+hiddenAbilityAddButton?.addEventListener("click", () => {
+  confirmedHiddenAbilities = new Set(selectedHiddenAbilities);
+  syncHiddenAbilitiesInput();
+  modalOverlay.style.display = "none";
 
-    hiddenAbilityButton.textContent =
-      selectedHiddenAbilities.size > 0
-        ? `${selectedHiddenAbilities.size}개 추가됨`
-        : "추가하기";
-  },
-);
+  hiddenAbilityButton.textContent =
+    selectedHiddenAbilities.size > 0
+      ? `${selectedHiddenAbilities.size}개 추가됨`
+      : "추가하기";
+});
 
 function syncHiddenAbilitiesInput() {
-  hiddenAbilitiesInput.value = JSON.stringify(
-    [...selectedHiddenAbilities],
-  );
+  hiddenAbilitiesInput.value = JSON.stringify([...selectedHiddenAbilities]);
 }
 
 /* 필수 항목 검사 */
 function hasCheckedInput(name) {
-  return Boolean(
-    document.querySelector(
-      `input[name="${name}"]:checked`,
-    ),
-  );
+  return Boolean(document.querySelector(`input[name="${name}"]:checked`));
 }
 
 function validateForm() {
@@ -414,10 +365,7 @@ function validateForm() {
   const textFilled = requiredTextIds.every((id) => {
     const element = document.getElementById(id);
 
-    return (
-      element &&
-      String(element.value).trim() !== ""
-    );
+    return element && String(element.value).trim() !== "";
   });
 
   const radioFilled = [
@@ -433,11 +381,7 @@ function validateForm() {
     "skill_required",
   ].every(hasCheckedInput);
 
-  submitButton.disabled = !(
-    textFilled &&
-    radioFilled &&
-    checkboxFilled
-  );
+  submitButton.disabled = !(textFilled && radioFilled && checkboxFilled);
 }
 
 form?.addEventListener("input", validateForm);
@@ -471,11 +415,17 @@ function initializeForm() {
   syncHiddenAbilitiesInput();
 
   if (selectedHiddenAbilities.size > 0) {
-    hiddenAbilityButton.textContent =
-      `${selectedHiddenAbilities.size}개 추가됨`;
+    hiddenAbilityButton.textContent = `${selectedHiddenAbilities.size}개 추가됨`;
   }
 
   validateForm();
 }
 
 initializeForm();
+
+// 입력창 선택 시 날짜 선택창 뜨도록
+const dateInput = document.querySelector('.form-input[type="date"]');
+
+dateInput.addEventListener("click", () => {
+  dateInput.showPicker();
+});

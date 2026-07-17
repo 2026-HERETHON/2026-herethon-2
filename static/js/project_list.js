@@ -1,3 +1,20 @@
+// 헤더 active 클래스 추가
+const menuLinks = document.querySelectorAll(".header-menu a");
+console.log(menuLinks);
+const currentPath = window.location.pathname;
+
+menuLinks.forEach((link) => {
+  link.classList.remove("active");
+
+  const linkPath = new URL(link.href).pathname;
+  console.log(`currentPath: ${currentPath}`);
+  console.log(`linkPath: ${linkPath}`);
+  if (linkPath === currentPath) {
+    link.classList.add("active");
+    console.log(link.classList);
+  }
+});
+
 document.addEventListener("DOMContentLoaded", function () {
   const filterForm = document.getElementById("filter-form");
   const sortLinks = document.querySelectorAll(".bar-sort a");
@@ -52,8 +69,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       window.location.href = "?" + params.toString();
-
-      
     });
   });
 
