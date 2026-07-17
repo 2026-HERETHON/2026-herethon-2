@@ -141,3 +141,9 @@ def role_select(request):
 def logout_view(request):
     logout(request)
     return redirect('accounts:landing')
+
+def home_redirect(request):
+    if not request.user.is_authenticated:
+        return redirect('accounts:landing')
+
+    return redirect(resolve_redirect_url(user=request.user, request=request))
