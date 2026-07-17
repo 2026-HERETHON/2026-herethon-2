@@ -147,7 +147,7 @@
 
 .project-group {
   flex: 2;
-  padding: 1.5rem 19.88rem 1.56rem 2.06rem;
+  padding: 1.5rem 2.06rem 1.56rem 2.06rem;
 
   background-color: #fff;
   border: 1px solid #e5e7eb;
@@ -423,10 +423,7 @@
 /* 참여자가 여러 명일 때 카드 반복 배치 */
 .participant-list {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(13rem, 1fr)
-  );
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
   gap: 0.75rem;
   margin-top: 0.75rem;
 }

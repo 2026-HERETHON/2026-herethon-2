@@ -144,22 +144,20 @@
   border-radius: 0.75rem;
 
   display: flex;
-  padding-left: 1.75rem;
-  padding-right: 4.06rem;
+  align-items: flex-start;
+  padding: 1.44rem 4.06rem 1.44rem 1.75rem;
 }
 
 .applicant-card .applicant-profile {
   width: 2.75rem;
-  height: 2.75rem;
+  aspect-ratio: 1/1;
   font-size: 0.8125rem;
   align-self: center;
   margin-right: 0.88rem;
 }
 
 .applicant-card .applicant-detail {
-  padding-top: 1.44rem;
-  align-self: flex-start;
-  flex: 0 0 17.12rem;
+  flex: 0 0 17rem;
 
   display: flex;
   flex-direction: column;
@@ -192,8 +190,7 @@
   font-weight: 700;
   line-height: normal;
 
-  margin-top: 1.56rem;
-  margin-bottom: 2.44rem;
+  transform: translateY(0.12rem);
 
   display: flex;
   justify-content: center;
@@ -215,8 +212,7 @@
   margin-left: auto;
   display: flex;
   gap: 0.94rem;
-  margin-top: 1.56rem;
-  margin-bottom: 2.44rem;
+  transform: translateY(0.12rem);
 }
 
 .applicant-action-btns button {
@@ -289,7 +285,6 @@
 .applicant-profile-modal .divider {
   width: 100%;
   height: 0;
-  margin: 1.19rem 0 0;
   border-bottom: 1px solid #e5e7eb;
 }
 
@@ -342,19 +337,23 @@ body.modal-open {
   transform: translateX(0.41rem);
 }
 
+.empty-item-msg,
+.empty-applicants {
+  font-size: 0.8125rem;
+  margin-bottom: 1rem;
+}
+
 .user-info {
   display: flex;
   gap: 0.87rem;
-  margin-top: 1.69rem;
+  padding-top: 1.69rem;
+  padding-bottom: 1.19rem;
+  align-items: flex-start;
 }
 
 .user-info .applicant-profile {
   width: 3.25rem;
   height: 3.25rem;
-}
-
-.user-info .applicant-detail {
-  padding-top: 0.44rem;
 }
 
 .user-info .applicant-name {
@@ -364,6 +363,8 @@ body.modal-open {
 .user-info .applicant-des {
   color: #6b7280;
   font-size: 0.75rem;
+
+  margin-top: 0.31rem;
 }
 
 .user-info .applicant-email {
@@ -373,6 +374,8 @@ body.modal-open {
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+
+  margin-top: 0.44rem;
 }
 
 .career-group {
