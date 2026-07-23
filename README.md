@@ -45,6 +45,12 @@
  
 <br/>
 
+## 📹 시연 영상
+
+https://github.com/user-attachments/assets/9b1dbff2-5f9f-4622-bec8-d0971a36851e
+
+
+
 ## 🛠 기술 스택
  
 **Frontend**
